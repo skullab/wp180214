@@ -1,0 +1,13 @@
+############################
+	WP_180214
+############################
+REQUISITI (MINIMI)
+WordPress ver: 	3.7.1
+PHP ver: 	5.2.4
+MySql ver:	5.0
+############################
+REQUISITI (CONSIGLIATI)
+WordPress ver: 	3.8.1
+PHP ver: 	5.4.12
+MySql ver:	5.6.12
+############################
