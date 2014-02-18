@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workstations>
+	<workstation id="001">
+		<location>
+			GE
+		</location>
+	</workstation>
+	<workstation id="002">
+		<location>
+			SV
+		</location>
+	</workstation>
+</workstations>
