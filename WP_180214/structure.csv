@@ -1,0 +1,12 @@
+#[package com.skullab.git.wp180214];;
+#[begin structure];;
+WP_180214;;
+*;CSS[DIR];
+;*;wp180214_style.css
+*;JS[DIR];
+;*;wp180214_ajax.js
+;*;wp180214_utils.js
+;*;wp180214_fx.js
+*;index.php;
+*;constants.php;
+#[end structure];;
