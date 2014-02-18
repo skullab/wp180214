@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2014 Ivan Maruca
+ Copyright 2014 Ivan Maruca
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,10 +15,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-define('SWP180214_PREFIX','swp180214_');
-define('SWP180214_VERSION','0.0.1');
-define('SWP180214_DISPLAY_NAME','WP180214');
-define('SWP180214_SLUG_NAME','wp180214');
-define('SWP180214_DB_VERSION','1.0');
-define('SWP180214_DB_OPTION_NAME','swp180214_db');
+$swp180214_debug_enable = true ;
+
+function swp180214_debug($output,$err = false){
+	global $swp180214_debug_enable ;
+	if($swp180214_debug_enable){
+		if($err){
+			$color_code = '#ff3232' ;
+		}else{$color_code = '#329932' ;}
+		
+		$rect = '<div style="width:3px;background-color:'.$color_code.';"float:left;>&nbsp;</div>' ;
+		echo '<table><tr><td>'.$rect.'</td><td>'.date("F j, Y, g:i a").' : '.$output.'</td></tr></table>' ;
+	}
+}
 ?>

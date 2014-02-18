@@ -24,4 +24,25 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
+// Safe execution...
+if ( !function_exists( 'add_action' ) ) {
+	echo '<b>ERRORE : </b> Questo è un plugin per WordPress e non può essere eseguito come script PHP';
+	exit;
+}
+
+/*****************************************************************************************************
+									GLOBAL REQUIRE SECTION																   	
+******************************************************************************************************/
+require_once 'constants.php' ;
+require_once 'debug.php';
+require_once 'installation.php';
+/*****************************************************************************************************/
+
+register_activation_hook( __FILE__, 'swp180214_activation');
+function swp180214_activation(){
+	swp180214_debug('attivazione plugin');	
+	swp180214_update();
+}
+add_action( 'plugins_loaded', 'swp180214_update' );
 ?>

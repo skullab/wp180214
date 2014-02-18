@@ -1,12 +1,16 @@
 #[package com.skullab.git.wp180214];;
 #[begin structure];;
-WP_180214;;
-*;CSS[DIR];
-;*;wp180214_style.css
-*;JS[DIR];
-;*;wp180214_ajax.js
+[root WP_180214];;
+*;[dir css];
+;*;swp180214_style.css
+*;[dir js];
+;*;swp180214_ajax.js
 ;*;wp180214_utils.js
-;*;wp180214_fx.js
+;*;swp180214_fx.js
+*;[dir res];
+;*;[dir images]
 *;index.php;
 *;constants.php;
+*;swp180214;
+*;installation.php;
 #[end structure];;

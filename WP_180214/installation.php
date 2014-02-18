@@ -15,10 +15,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-define('SWP180214_PREFIX','swp180214_');
-define('SWP180214_VERSION','0.0.1');
-define('SWP180214_DISPLAY_NAME','WP180214');
-define('SWP180214_SLUG_NAME','wp180214');
-define('SWP180214_DB_VERSION','1.0');
-define('SWP180214_DB_OPTION_NAME','swp180214_db');
+function swp180214_install(){
+	swp180214_debug('inizio installazione');
+	require_once 'utils.php' ;
+	swp180214_show_warning();
+}
+
+function swp180214_update(){
+	swp180214_debug('verifica aggiornamenti');
+	$current_db_version = get_option(SWP180214_DB_OPTION_NAME);
+	if($current_db_version != SWP180214_DB_VERSION){
+		swp180214_debug('nuova versione del db trovata');
+		swp180214_install();
+	}
+}
 ?>
