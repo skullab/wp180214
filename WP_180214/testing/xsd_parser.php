@@ -23,6 +23,7 @@ class XSDParser {
 	const SIMPLE_TYPE 			= 'xs:simpleType' ;
 	const ANY					= 'xs:any' ;
 	const ANY_ATTRIBUTE			= 'xs:anyAttribute';
+	const ATTRIBUTE				= 'xs:attribute';
 	/*======================================================*/
 	// INDICATORS
 	/*ORDER*/
@@ -180,31 +181,85 @@ class XSDParser {
 	public function is_restriction_node($node){
 		return $this->is_this_node($node, self::RESTRICTION);
 	}
+	public function is_attribute_node($node){
+		return $this->is_this_node($node, self::ATTRIBUTE);
+	}
 	public function has_complextype($node){
 		if(!$this->is_this_node($node, self::ELEMENT) || !$node->hasChildNodes())return false;
-		$sub_node = $this->XPath->evaluate('*',$node)->item(0);
-		return $this->is_complextype_node($sub_node);
+		$sub_nodes = $this->XPath->evaluate('*',$node);
+		foreach ($sub_nodes as $sub_node){
+			if($this->is_complextype_node($sub_node))return true;
+		}
+		return false ;
 	}
 	public function has_simpletype($node){
-		if(!$this->is_this_node($node, self::ELEMENT) || !$node->hasChildNodes())return false;
-		$sub_node = $this->XPath->evaluate('*',$node)->item(0);
-		return $this->is_simpletype_node($sub_node);
+		if((!$this->is_this_node($node, self::ELEMENT)||
+			!$this->is_this_node($node, self::ATTRIBUTE))
+			&& !$node->hasChildNodes())return false;
+		$sub_nodes = $this->XPath->evaluate('*',$node);
+		foreach ($sub_nodes as $sub_node){
+			if($this->is_simpletype_node($sub_node))return true;
+		}
+		return false ;
 	}
 	public function has_sequence($node){
 		if(
-			!$this->is_this_node($node, self::COMPLEX_TYPE) ||
-			/*!$this->is_this_node($node, self::GROUP) ||
+			(!$this->is_this_node($node, self::COMPLEX_TYPE) ||
+			!$this->is_this_node($node, self::GROUP) ||
 			!$this->is_this_node($node, self::CHOICE) ||
 			!$this->is_this_node($node, self::SEQUENCE) ||
 			!$this->is_this_node($node, self::RESTRICTION) ||
 			!$this->is_this_node($node, self::EXTENSION) ||
 			!$this->is_this_node($node, self::SIMPLE_CONTENT) ||
-			!$this->is_this_node($node, self::COMPLEX_CONTENT)||*/
-			
+			!$this->is_this_node($node, self::COMPLEX_CONTENT))&&			
 			!$node->hasChildNodes())return false;
 		
-		$sub_node = $this->XPath->evaluate('*',$node)->item(0);
-		return $this->is_sequence_node($sub_node);
+		$sub_nodes = $this->XPath->evaluate('*',$node);
+		foreach ($sub_nodes as $sub_node){
+			if($this->is_sequence_node($sub_node))return true;
+		}
+		return false ;
+	}
+	public function get_attribute_array($node){
+		if((!$this->is_this_node($node, self::ELEMENT)||
+			!$this->is_this_node($node, self::COMPLEX_TYPE)||
+			!$this->is_this_node($node, self::SIMPLE_TYPE))&&
+			(!$node->hasChildNodes()))return false;
+		
+		$sub_nodes = $this->XPath->evaluate('*',$node);
+		$attribute = array();
+		foreach ($sub_nodes as $sub_node){
+			if($this->is_attribute_node($sub_node)){
+				array_push($attribute, $sub_node);
+			}
+		}
+		return $attribute;
+		
+	}
+	public function get_attribute_explode($node){
+		$attribute = $this->get_attribute_array($node);
+		if(empty($attribute))return false;
+		$attrs_explode = array();
+		foreach ($attribute as $node){			
+			$name = $node->getAttribute('name');
+			$type =  $node->getAttribute('type');
+			$default = $node->getAttribute('default');
+			$fixed = $node->getAttribute('fixed');
+			$use = $node->getAttribute('use');
+			$has_simpletype = $this->has_simpletype($node);
+			$simpletype = null ;
+			if($has_simpletype){$simpletype = $this->get_next_node($node);}
+			array_push($attrs_explode,
+						array(  'name'=>$name,
+								'type'=>$type,
+								'default'=>$default,
+								'fixed'=>$fixed,
+								'use'=>$use,
+								'has_simpletype'=>$has_simpletype,
+								'simpletype'=>$simpletype));
+		}
+		return $attrs_explode;
+		
 	}
 	public function get_complextype_sequence($node){
 		if($this->has_sequence($node)){
