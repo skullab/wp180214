@@ -309,6 +309,139 @@ class XSDParser {
 		}
 		return new ArrayIterator($this->iterator_array) ;
 	}
+	public function convert_datatype_to_mysql($datatype){
+		switch ($datatype){
+			case self::DATA_INT:
+				return 'INT' ;
+				break;
+			case self::DATA_FLOAT:
+				return 'FLOAT';
+				break;
+			case self::DATA_DOUBLE:
+				return 'DOUBLE' ;
+				break;
+			case self::DATA_DECIMAL:
+				return 'DECIMAL(20,5)';
+				break;
+			case self::DATA_STRING:
+				return 'TEXT';
+				break;
+			case self::DATA_BOOL:
+				return 'BOOLEAN';
+				break;
+			case self::DATA_DATE:
+				return 'DATE';
+				break;
+			case self::DATA_TIME:
+				return 'TIME';
+				break;
+			case self::DATA_DATE_TIME:
+				return 'DATETIME';
+				break;
+			case self::DATA_DURATION:
+				return 'TIMESTAMP';
+				break;
+			case self::DATA_G_YEAR_MONTH:
+				return 'DATETIME';
+				break;
+			case self::DATA_G_YEAR:
+				return 'DATETIME';
+				break;
+			case self::DATA_G_MONTH_DAY:
+				return 'DATETIME';
+				break;
+			case self::DATA_G_DAY:
+				return 'DATETIME';
+				break;
+			case self::DATA_G_MONTH:
+				return 'DATETIME';
+				break;
+			case self::DATA_HEX_BINARY:
+				return 'VARBINARY';
+				break;
+			case self::DATA_BASE_64_BINARY:
+				return 'BIT(64)';
+				break;
+			case self::DATA_ANY_URI:
+				return 'VARCHAR';
+				break;
+			case self::DATA_Q_NAME:
+				return 'VARCHAR';
+				break;
+			case self::DATA_NOTATION:
+				return 'VARCHAR';
+				break;
+			case self::DATA_INTEGER:
+				return 'INT';
+				break;
+			case self::DATA_NEG_INT:
+				return 'INT' ;
+				break;
+			case self::DATA_NON_NEG_INT:
+				return 'INT UNSIGNED';
+				break;
+			case self::DATA_POS_INT:
+				return 'INT UNSIGNED';
+				break;
+			case self::DATA_NON_POS_INT:
+				return 'INT';
+				break;
+			case self::DATA_SHORT:
+				return 'SMALLINT';
+				break;
+			case self::DATA_LONG:
+				return 'BIGINT';
+				break;
+			case self::DATA_BYTE:
+				return 'TINYINT';
+				break;
+			case self::DATA_UNSIGNED_BYTE:
+				return 'TINYINT UNSIGNED';
+				break;
+			case self::DATA_UNSIGNED_SHORT:
+				return 'SMALLINT UNSIGNED';
+				break;
+			case self::DATA_UNSIGNED_LONG:
+				return 'BIGINT UNSIGNED';
+				break;
+			case self::DATA_NAME:
+				return 'VARCHAR';
+				break;
+			default:
+				return 'VARCHAR';
+		}
+	}
+	/******************************************************************************************/
+	public function mysql_generate_create_table(
+			$tablename,					//the name of the table
+			$col_datatype,				// multidimensional array with 2 values : name(string) and type(in xs:format)
+			$ifnotexist = true,
+			$with_primary_key = false,
+			$id_autoincrement = false,
+			$engine){
+		$sql = $ifnotexist?'CREATE TABLE %s IF NOT EXIST ( %s )':'CREATE TABLE %s ( %s )';
+		$cols = '' ;
+		foreach ($col_datatype as $col){
+			$cols .= strtolower($col['name']).' '.$this->convert_datatype_to_mysql($col['type']);
+			if($id_autoincrement){
+				$keys = array_keys($col_datatype,$col);
+				if($keys[0] == 0){
+					$cols .= ' AUTO_INCREMENT, ';
+					$id_autoincrement = false ;
+				}
+			}else $cols .= ', ';
+		}
+		if($with_primary_key){
+			$cols .= 'PRIMARY KEY ( '.strtolower($col_datatype[0]['name']).' )';
+		}
+		
+		$generate_sql = sprintf($sql,$tablename,$cols);
+		if(!empty($engine)){
+			$generate_sql .= ' ENGINE = '.$engine ;
+		}
+		
+		return $generate_sql;
+	}
 }
 
 ?>
