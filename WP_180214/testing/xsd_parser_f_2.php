@@ -2,9 +2,11 @@
 define ( 'SCHEMA_URI_1', 'http://feed.getrix.it/xml/feed_1_0_0.xsd' );
 define ( 'SCHEMA_URI_2', 'http://feed.getrix.it/xml/feed_2_0_0.xsd' );
 define ( 'TABLE_REFERENCE', 'TABLE_REFERENCE' );
+define ( 'GETRIX_TREE', 'Getrix_tree' );
+define ('INNODB','InnoDB');
 require_once 'xsd_parser.php';
 
-//$parser = new XSDParser(SCHEMA_URI_1);
+// $parser = new XSDParser(SCHEMA_URI_1);
 $parser = new XSDParser ( SCHEMA_URI_2 );
 if ($parser->get_error () == XSDParser::ERROR_RET_VALUE)
 	die ( 'XSDParser ERROR : NO SCHEMA to prepare :( !' );
@@ -46,15 +48,15 @@ foreach ( $getrix_tables as $table ) {
 	// $table_node = $parser->get_xpath ()->evaluate ( '//xs:element[@name="' . $table . '"]' )->item(0);
 	$table_node = $parser->get_xpath ()->evaluate ( '
 			//xs:element[@name="' . $table . '"]' );
-	//echo $table.' trovati n : '.$table_node->length.'<br>';
-	if($table_node->length > 1){
-		//var_dump($table_node);
+	// echo $table.' trovati n : '.$table_node->length.'<br>';
+	if ($table_node->length > 1) {
+		// var_dump($table_node);
 		$table_node = $parser->get_xpath ()->evaluate ( '
-			//xs:element[@name="' . $getrix_tables[0] . '"]/xs:complexType/xs:sequence/xs:element[@name="'.$table.'"]' );
-		//echo 'sostituito con <br>';
-		//var_dump($table_node);
+			//xs:element[@name="' . $getrix_tables [0] . '"]/xs:complexType/xs:sequence/xs:element[@name="' . $table . '"]' );
+		// echo 'sostituito con <br>';
+		// var_dump($table_node);
 	}
-	$table_node = $table_node->item(0);
+	$table_node = $table_node->item ( 0 );
 	$table_iterators [$table] = $parser->get_iterator ( $table_node );
 }
 // echo 'SKIPPED TABLES<br>';
@@ -129,18 +131,18 @@ foreach ( $getrix_tables as $table ) {
 // RICERCA DEGLI ATTRIBUTI DEGLI ELEMENTI TABELLARI
 foreach ( $getrix_tables as $table ) {
 	$node = $parser->get_xpath ()->evaluate ( '//xs:element[@name="' . $table . '"]' );
-	if($node->length > 1){		
+	if ($node->length > 1) {
 		$node = $parser->get_xpath ()->evaluate ( '
-			//xs:element[@name="' . $getrix_tables[0] . '"]/xs:complexType/xs:sequence/xs:element[@name="'.$table.'"]' );		
+			//xs:element[@name="' . $getrix_tables [0] . '"]/xs:complexType/xs:sequence/xs:element[@name="' . $table . '"]' );
 	}
-	$node = $node->item(0);
+	$node = $node->item ( 0 );
 	$node_attributes = $parser->get_attribute_explode ( $parser->get_next_node ( $node ) );
 	if ($node_attributes) {
 		// echo '<p>'.$table.'</p>';
 		// var_dump($node_attributes);
 		foreach ( $node_attributes as $attribute ) {
-			if($table == $getrix_tables[0] && $attribute['name'] == $node_attributes[0]['name']){
-				$root_table_reference = $attribute['name'];
+			if ($table == $getrix_tables [0] && $attribute ['name'] == $node_attributes [0] ['name']) {
+				$root_table_reference = $attribute ['name'];
 			}
 			array_push ( $tables_structure_sanitized [$table], $attribute );
 		}
@@ -150,31 +152,42 @@ foreach ( $getrix_tables as $table ) {
 // ==================================================================================
 // GENERAZIONE ALBERO TABELLE
 $sql_tables_structure = array ();
-$getrix_tables_tree_structure = array(
-		array('name'=>'_id','type'=>XSDParser::DATA_INT),
-		array('name'=>'table','type'=>''));
-$sql_tables_structure['Getrix_tree'] = $parser->mysql_generate_create_table ( 'Getrix_tree', $getrix_tables_tree_structure, true, true, true, 'InnoDB' );
+$getrix_tables_tree_structure = array (
+		array (
+				'name' => '_id',
+				'type' => XSDParser::DATA_INT 
+		),
+		array (
+				'name' => 'table',
+				'type' => '' 
+		) 
+);
+$sql_tables_structure [GETRIX_TREE] = $parser->mysql_generate_create_table ( GETRIX_TREE, $getrix_tables_tree_structure, false, true, true, false, null, null, INNODB );
 
 // GENERAZIONE STRUTTURE TABELLARI SQL
 foreach ( $getrix_tables as $table ) {
-	//echo count($tables_structure_sanitized[$table]).'<br>';
-	$id = array('name'=>'_id','type'=>XSDParser::DATA_INT);
-	$foreign_key = strtolower($root_table_reference);
-	$structure = array($id);
-	foreach ($tables_structure_sanitized[$table] as $col){
-		array_push($structure, $col);
+	// echo count($tables_structure_sanitized[$table]).'<br>';
+	$id = array (
+			'name' => '_id',
+			'type' => XSDParser::DATA_INT 
+	);
+	$foreign_key = strtolower ( $root_table_reference );
+	$structure = array (
+			$id 
+	);
+	foreach ( $tables_structure_sanitized [$table] as $col ) {
+		array_push ( $structure, $col );
 	}
-	if($table != 'Immobile'){
-		$sql_tables_structure[$table] = $parser->mysql_generate_create_table($table, $structure,true,true,true,true,$foreign_key ,$getrix_tables[1] ,'InnoDB');
-	}else{
-		
-		$sql_tables_structure[$table] = $parser->mysql_generate_create_table($table, $structure,true,true,true,false,null ,null ,'InnoDB');
-	}	
-	
+	if ($table != $getrix_tables [0]) {
+		$sql_tables_structure [$table] = $parser->mysql_generate_create_table ( $table, $structure, false, true, true, true, $foreign_key, $getrix_tables [0], INNODB );
+	} else {
+		$sql_tables_structure [$table] = $parser->mysql_generate_create_table ( $table, $structure, false, true, true, false, null, null, INNODB );
+	}
 }
+
 // ==================================================================================
-foreach ($sql_tables_structure as $sql){
-	echo $sql.'<br><br>';
+foreach ( $sql_tables_structure as $sql ) {
+	echo $sql . '<br><br>';
 }
 // ==================================================================================
 

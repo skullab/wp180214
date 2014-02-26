@@ -1,13 +1,23 @@
 <?php
 require_once 'xsd_parser.php';
 
-$parser = new XSDParser ( 'http://feed.getrix.it/xml/feed_2_0_0.xsd' );
+$parser = new XSDParser ( 'http://feed.getrix.it/xml/feed_1_0_0.xsd' );
 if ($parser->get_error () == XSDParser::ERROR_RET_VALUE)
 	die ( 'XSDParser ERROR : NO SCHEMA to prepare :( !' );
 $getrix = $parser->get_xpath ()->evaluate ( '//xs:element[@name="Getrix"]' )->item ( 0 );
 $getrix_complex = $parser->get_next_node ( $getrix );
 $getrix_attrs = $parser->get_attribute_explode ( $getrix_complex );
+$getrix_iterator = $parser->get_iterator($getrix);
 // var_dump($getrix_attrs);
+$tables = array();
+foreach ($getrix_iterator as $node){
+	if($parser->is_element_node($node)){
+		if($parser->has_complextype($node)){
+			$table_name = $node->getAttribute('name').'<br>';
+			array_push($tables,$table_name);
+		}
+	}
+}
 
 $immobile = $parser->get_xpath ()->evaluate ( '//xs:element[@name="Immobile"]' )->item ( 0 );
 $immobile_complex = $parser->get_next_node ( $immobile );
@@ -15,6 +25,8 @@ $immobile_attrs = $parser->get_attribute_explode ( $immobile_complex );
 //var_dump($immobile_attrs);
 
 $iterator_immobile = $parser->get_iterator ( $immobile );
+
+$iterators = array();
 
 $immobile_reference = array ();
 foreach ( $iterator_immobile as $node ) {
@@ -46,7 +58,12 @@ foreach ( $iterator_immobile as $node ) {
 		}
 		$node_array ['dom_element'] = $node;
 		
-		switch ($name) {
+		foreach ($tables as $table_name){
+			if($name == $table_name){
+				$iterators[$name]= $parser->get_iterator($node);
+			}
+		}
+		/*switch ($name) {
 			case 'Descrizioni' :
 				$iterator_descrizioni = $parser->get_iterator ( $node );				
 				break;
@@ -74,7 +91,7 @@ foreach ( $iterator_immobile as $node ) {
 			case 'Allegati' :
 				$iterator_allegati = $parser->get_iterator ( $node );
 				break;
-		}
+		}*/
 		
 		array_push ( $immobile_reference, $node_array );
 	}
@@ -116,7 +133,7 @@ function get_array_from_iterator($iterator) {
 	return $ret_array;
 }
 
-$iterators = array (
+/*$iterators = array (
 		'descrizioni'=>$iterator_descrizioni,
 		'residenziale'=>$iterator_residenziale,
 		'commerciale'=>$iterator_commerciale,
@@ -125,7 +142,7 @@ $iterators = array (
 		'vacanze'=>$iterator_vacanze,
 		'immagini'=>$iterator_immagini,
 		'allegati'=>$iterator_allegati 
-);
+);*/
 
 // var_dump($immobile_reference);
 
@@ -249,7 +266,7 @@ $allegati_sql = $parser->mysql_generate_create_table('allegati', get_table($alle
 
 $sql_array = array($immobili_sql,$descrizioni_sql,$residenziale_sql,$commerciale_sql,$attivita_sql,$terreno_sql,$vacanze_sql,$immagini_sql,$allegati_sql);
 foreach ($sql_array as $sql){
-	echo $sql.'<br><br>';
+	//echo $sql.'<br><br>';
 }
 // echo $immobili_sql.'<br>' ;
 
