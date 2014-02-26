@@ -40,14 +40,32 @@ for($i = 0; $i < $getrix_tables_count; $i ++) {
 // RELAZIONE TABELLARE SANA
 // GENERAZIONE ITERATORI
 $table_iterators = array ();
+
+// TODO REMOVE
+// $table_node = $parser->get_xpath ()->evaluate ( '//xs:element[@name="'.$getrix_tables[0].'"]/xs:complexType/xs:sequence/xs:element[@name="Terreno"]' );
+// echo 'trovati Terreno n : '.$table_node->length;
+// exit;
+// TODO REMOVE
 foreach ( $getrix_tables as $table ) {
 	// echo 'GENERARE TABELLA : '.$table.'<br>';
-	$table_node = $parser->get_xpath ()->evaluate ( '//xs:element[@name="' . $table . '"]' )->item ( 0 );
+	// $table_node = $parser->get_xpath ()->evaluate ( '//xs:element[@name="' . $table . '"]' )->item(0);
+	$table_node = $parser->get_xpath ()->evaluate ( '
+			//xs:element[@name="' . $table . '"]' );
+	//echo $table.' trovati n : '.$table_node->length.'<br>';
+	if($table_node->length > 1){
+		//var_dump($table_node);
+		$table_node = $parser->get_xpath ()->evaluate ( '
+			//xs:element[@name="' . $getrix_tables[0] . '"]/xs:complexType/xs:sequence/xs:element[@name="'.$table.'"]' );
+		//echo 'sostituito con <br>';
+		//var_dump($table_node);
+	}
+	$table_node = $table_node->item(0);
 	$table_iterators [$table] = $parser->get_iterator ( $table_node );
 }
 // echo 'SKIPPED TABLES<br>';
 // var_dump($skipped_tables);
 // ==================================================================================
+// GENERAZIONE RELAZIONI TABELLARI SPORCHE
 function get_array_from_iterator($iterator) {
 	global $parser;
 	$ret_array = array ();
@@ -102,7 +120,7 @@ foreach ( $table_iterators as $key => $iterator ) {
 }
 // var_dump ( $tables_structure ['Immobile'] );
 // ==================================================================================
-// GENERAZIONE STRUTTURE TABELLARI SQL
+// GENERAZIONE RELAZIONI TABELLARI SANE
 $tables_structure_sanitized = array ();
 foreach ( $getrix_tables as $table ) {
 	$tables_structure_sanitized [$table] = array ();
@@ -112,19 +130,27 @@ foreach ( $getrix_tables as $table ) {
 		array_push ( $tables_structure_sanitized [$table], $ts );
 	}
 }
-//var_dump($tables_structure_sanitized);
+// var_dump($tables_structure_sanitized);
 // RICERCA DEGLI ATTRIBUTI DEGLI ELEMENTI TABELLARI
 foreach ( $getrix_tables as $table ) {
 	$node = $parser->get_xpath ()->evaluate ( '//xs:element[@name="' . $table . '"]' )->item ( 0 );
 	$node_attributes = $parser->get_attribute_explode ( $parser->get_next_node ( $node ) );
-	if($node_attributes){
-		//echo '<p>'.$table.'</p>';
-		//var_dump($node_attributes);
-		foreach ($node_attributes as $attribute){
-			array_push($tables_structure_sanitized[$table],$attribute);
+	if ($node_attributes) {
+		// echo '<p>'.$table.'</p>';
+		// var_dump($node_attributes);
+		foreach ( $node_attributes as $attribute ) {
+			array_push ( $tables_structure_sanitized [$table], $attribute );
 		}
 	}
 }
-var_dump($tables_structure_sanitized);
+// var_dump($tables_structure_sanitized);
+// ==================================================================================
+// GENERAZIONE STRUTTURE TABELLARI SQL
+$sql_tables_structure = array ();
+foreach ( $getrix_tables as $table ) {
+	var_dump ( $tables_structure_sanitized[$table] );
+	// $sql_tables_structure[$table] = $parser->mysql_generate_create_table ( $table, $tables_structure_sanitized[$table], true, true, true, 'InnoDB' );
+}
+// var_dump($sql_tables_structure);
 // ==================================================================================
 ?>
