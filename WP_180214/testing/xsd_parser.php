@@ -111,7 +111,7 @@ class XSDParser {
 	public function __construct($url_schema){
 		$this->schema_defined_url = $url_schema ;
 		$this->Document = new DOMDocument();
-		$this->Document->load($url_schema);
+		@$this->Document->load($url_schema)or die('<b> XSDParser Error : </b> impossible to load file : '.$url_schema);
 		$this->XPath = new DOMXPath($this->Document);
 		$this->XPath->registerNamespace($this->schema_prefix, $this->schema_uri);
 		$error = $this->prepare();
@@ -418,23 +418,31 @@ class XSDParser {
 			$ifnotexist = true,
 			$with_primary_key = false,
 			$id_autoincrement = false,
+			$with_foreign_key = false,
+			$foreign_key = null,		// the same for the two table
+			$foreign_references = null,
 			$engine){
-		$sql = $ifnotexist?'CREATE TABLE %s IF NOT EXIST ( %s )':'CREATE TABLE %s ( %s )';
+		$sql = $ifnotexist?'CREATE TABLE IF NOT EXIST %s ( %s )':'CREATE TABLE %s ( %s )';
 		$cols = '' ;
 		foreach ($col_datatype as $col){
 			$cols .= strtolower($col['name']).' '.$this->convert_datatype_to_mysql($col['type']);
 			if($id_autoincrement){
 				$keys = array_keys($col_datatype,$col);
 				if($keys[0] == 0){
-					$cols .= ' AUTO_INCREMENT, ';
+					$cols .= ' NOT NULL AUTO_INCREMENT, ';
 					$id_autoincrement = false ;
 				}
 			}else $cols .= ', ';
 		}
 		if($with_primary_key){
+			if($with_foreign_key){
+				$cols .= strtolower($foreign_key).' INT, ' ;
+			}
 			$cols .= 'PRIMARY KEY ( '.strtolower($col_datatype[0]['name']).' )';
 		}
-		
+		if($with_foreign_key){
+			$cols .= 'FOREIGN KEY ( '.strtolower($foreign_key).' ) REFERENCES '.$foreign_references.'( '.strtolower($foreign_key).' )' ;
+		}
 		$generate_sql = sprintf($sql,$tablename,$cols);
 		if(!empty($engine)){
 			$generate_sql .= ' ENGINE = '.$engine ;
@@ -442,6 +450,13 @@ class XSDParser {
 		
 		return $generate_sql;
 	}
+	
+	public function mysql_generate_drop_table($tablename,$ifexist = true){
+		$sql = $ifexist?'DROP TABLE IF EXIST %s':'DROP TABLE %s';
+		$generate_sql = sprintf($sql,$tablename);
+		return $generate_sql;
+		
+	} 
 }
 
 ?>
