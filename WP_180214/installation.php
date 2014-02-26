@@ -23,7 +23,7 @@ function swp180214_install(){
 
 function swp180214_update(){
 	swp180214_debug('verifica aggiornamenti');
-	$current_db_version = get_option(SWP180214_DB_OPTION_NAME);
+	$current_db_version = get_option(SWP180214_OPT_DB_NAME);
 	if($current_db_version != SWP180214_DB_VERSION){
 		swp180214_debug('nuova versione del db trovata');
 		swp180214_install();

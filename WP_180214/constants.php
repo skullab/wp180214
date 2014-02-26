@@ -20,5 +20,7 @@ define('SWP180214_VERSION','0.0.1');
 define('SWP180214_DISPLAY_NAME','WP180214');
 define('SWP180214_SLUG_NAME','wp180214');
 define('SWP180214_DB_VERSION','1.0');
-define('SWP180214_DB_OPTION_NAME','swp180214_db');
+define('SWP180214_OPT_DB_NAME','swp180214_db');
+define('SWP180214_OPT_GETRIX_SCHEMA_URI','swp180214_getrix_schema_uri');
+
 ?>

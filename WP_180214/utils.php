@@ -18,7 +18,7 @@ limitations under the License.
 function swp180214_show_warning(){
 	//Verificare le impostazioni corrette per il plugin
 	//Altrimenti avvisa con un WARNING BOX
-	if (!get_option(SWP180214_DB_OPTION_NAME)) {		
+	if (!get_option(SWP180214_OPT_DB_NAME)) {		
 		function swp180214_warning_first_install(){
 			global $hook_suffix, $current_user;
 			if ( $hook_suffix == 'plugins.php' ) {
