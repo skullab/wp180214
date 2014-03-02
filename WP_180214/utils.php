@@ -18,7 +18,7 @@ limitations under the License.
 function swp180214_show_warning(){
 	//Verificare le impostazioni corrette per il plugin
 	//Altrimenti avvisa con un WARNING BOX
-	if (!get_option(SWP180214_OPT_DB_NAME)) {		
+	if (get_option(SWP180214_OPT_FIRST_INSTALL)) {		
 		function swp180214_warning_first_install(){
 			global $hook_suffix, $current_user;
 			if ( $hook_suffix == 'plugins.php' ) {
@@ -28,7 +28,7 @@ function swp180214_show_warning(){
 				</style>
 				<div class="swp180214_install">
 				<div class="swp180214_a">'.SWP180214_DISPLAY_NAME.'</div>
-				<div class="swp180214_button_container" onclick="window.location.href = \'admin.php?page='.SWP180214_SLUG_NAME.'-settings\';">
+				<div class="swp180214_button_container" onclick="window.location.href = \'admin.php?page='.SWP180214_SLUG_SETTINGS.'\';">
 				<div class="swp180214_button_border">
 				<div class="swp180214_button">Installa '.SWP180214_DISPLAY_NAME.' !</div>
 				</div>

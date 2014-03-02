@@ -16,17 +16,25 @@ limitations under the License.
 */
 
 function swp180214_install(){
-	swp180214_debug('inizio installazione');
+	//swp180214_debug('inizio installazione');
 	require_once 'utils.php' ;
 	swp180214_show_warning();
 }
 
 function swp180214_update(){
-	swp180214_debug('verifica aggiornamenti');
-	$current_db_version = get_option(SWP180214_OPT_DB_NAME);
+	//swp180214_debug('verifica aggiornamenti');
+	$current_db_version = get_option(SWP180214_OPT_DB_VERSION);
 	if($current_db_version != SWP180214_DB_VERSION){
-		swp180214_debug('nuova versione del db trovata');
+		//swp180214_debug('nuova versione del db trovata');
 		swp180214_install();
 	}
+}
+
+/*****************************************************************************************************
+										INSTALLATION SECTION
+******************************************************************************************************/
+
+function swp180214_install_db(){
+	//swp180214_debug('creazione tabelle sql');
 }
 ?>

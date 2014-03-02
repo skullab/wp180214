@@ -38,11 +38,39 @@ require_once 'constants.php' ;
 require_once 'debug.php';
 require_once 'installation.php';
 /*****************************************************************************************************/
-
 register_activation_hook( __FILE__, 'swp180214_activation');
 function swp180214_activation(){
-	swp180214_debug('attivazione plugin');	
-	swp180214_update();
+	
+	// UPDATE DB VERSION
+	if(!get_option(SWP180214_OPT_DB_VERSION)){
+		add_option(SWP180214_OPT_DB_VERSION,SWP180214_DB_VERSION);
+	}else{
+		update_option(SWP180214_OPT_DB_VERSION,SWP180214_DB_VERSION);
+	}
+	
+	add_option(SWP180214_OPT_FIRST_INSTALL,true);
+	add_option(SWP180214_OPT_GETRIX_SCHEMA_URI,SWP180214_DEFAULT_GETRIX_SCHEMA_URI);
+	add_option(SWP180214_OPT_GETRIX_SCHEMA_VERSION,SWP180214_DEFAULT_GETRIX_SCHEMA_VERSION);
+}
+
+function swp180214_register_options_install(){
+	register_setting(SWP180214_OPT_GROUP_INSTALL,SWP180214_OPT_GETRIX_SCHEMA_URI);
+	register_setting(SWP180214_OPT_GROUP_INSTALL,SWP180214_OPT_GETRIX_SCHEMA_VERSION);
+	register_setting(SWP180214_OPT_GROUP_INSTALL,SWP180214_OPT_GETRIX_USER);
+}
+
+if(is_admin()){
+	add_action('admin_init','swp180214_install');
+	add_action('admin_init','swp180214_register_options_install');
+	add_action('admin_menu','swp180214_add_menu_pages');
 }
 add_action( 'plugins_loaded', 'swp180214_update' );
+
+/*****************************************************************************************************
+										ADD ADMIN MENU PAGE
+******************************************************************************************************/
+function swp180214_add_menu_pages(){
+	require_once 'menu_pages.php';
+	add_menu_page('WP180214','WP180214','manage_options',SWP180214_SLUG_SETTINGS,'swp180214_page_settings');
+}
 ?>
