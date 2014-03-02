@@ -37,9 +37,11 @@ if ( !function_exists( 'add_action' ) ) {
 require_once 'constants.php' ;
 require_once 'debug.php';
 require_once 'installation.php';
+require_once 'menu_pages.php';
 /*****************************************************************************************************/
 register_activation_hook( __FILE__, 'swp180214_activation');
 function swp180214_activation(){
+	update_option(SWP180214_OPT_FIRST_INSTALL,true);
 	
 	// UPDATE DB VERSION
 	if(!get_option(SWP180214_OPT_DB_VERSION)){
@@ -52,20 +54,27 @@ function swp180214_activation(){
 	add_option(SWP180214_OPT_GETRIX_SCHEMA_URI,SWP180214_DEFAULT_GETRIX_SCHEMA_URI);
 	add_option(SWP180214_OPT_GETRIX_SCHEMA_VERSION,SWP180214_DEFAULT_GETRIX_SCHEMA_VERSION);
 }
-
+/*****************************************************************************************************/
 function swp180214_register_options_install(){
 	register_setting(SWP180214_OPT_GROUP_INSTALL,SWP180214_OPT_GETRIX_SCHEMA_URI);
 	register_setting(SWP180214_OPT_GROUP_INSTALL,SWP180214_OPT_GETRIX_SCHEMA_VERSION);
 	register_setting(SWP180214_OPT_GROUP_INSTALL,SWP180214_OPT_GETRIX_USER);
 }
-
+/*****************************************************************************************************/
+function swp180214_register_script(){
+	wp_register_script(SWP180214_JS_JQUERY_VALIDATOR,plugins_url('js/jquery.validate.js',__FILE__),array('jquery'));
+	wp_register_script(SWP180214_JS_VALIDATOR,plugins_url('js/validator.install.js',__FILE__),array(SWP180214_JS_JQUERY_VALIDATOR));
+}
+/*****************************************************************************************************/
 if(is_admin()){
 	add_action('admin_init','swp180214_install');
 	add_action('admin_init','swp180214_register_options_install');
+	add_action('admin_init','swp180214_register_script');
 	add_action('admin_menu','swp180214_add_menu_pages');
+	add_action( 'plugins_loaded', 'swp180214_update' );
+	
+	add_action('wp_ajax_swp180214_action_submit_install', 'swp180214_page_install_confirm');
 }
-add_action( 'plugins_loaded', 'swp180214_update' );
-
 /*****************************************************************************************************
 										ADD ADMIN MENU PAGE
 ******************************************************************************************************/

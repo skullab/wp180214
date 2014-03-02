@@ -35,6 +35,7 @@ function swp180214_update(){
 ******************************************************************************************************/
 
 function swp180214_install_db(){
-	//swp180214_debug('creazione tabelle sql');
+	echo 'Installazione...';
+	update_option(SWP180214_OPT_FIRST_INSTALL,false);
 }
 ?>

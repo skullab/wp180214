@@ -29,6 +29,7 @@ define('SWP180214_DB_VERSION','1.0');
 /*******************************************************************************************************************/
 define('SWP180214_DEFAULT_GETRIX_SCHEMA_URI','http://feed.getrix.it/xml/feed_2_0_0.xsd');
 define('SWP180214_DEFAULT_GETRIX_SCHEMA_VERSION','2.0.0');
+define('SWP180214_DEFAULT_GETRIX_USER','9F431778-4CAC-4534-B5F9-F458A87E2279');
 /*******************************************************************************************************************/
 /** The db version option */
 define('SWP180214_OPT_DB_VERSION','swp180214_opt_db_version');
@@ -47,4 +48,7 @@ define('SWP180214_PAGE_NAME_SETTINGS_DESCRIPTION','Impostazioni generali per il 
 
 define('SWP180214_PAGE_NAME_INSTALL',SWP180214_DISPLAY_NAME.' - Installazione');
 define('SWP180214_PAGE_NAME_INSTALL_DESCRIPTION','Procedura guidata per la prima installazione del plugin.');
+/*******************************************************************************************************************/
+define('SWP180214_JS_JQUERY_VALIDATOR','swp180214_js_jquery_validator');
+define('SWP180214_JS_VALIDATOR','swp180214_js_validator');
 ?>
