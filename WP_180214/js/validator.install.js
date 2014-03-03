@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+var swp180214_install_process = swp180214_js_placeholder.process ;
+
 jQuery(document).ready(function($){
 	$('#swp180214_install_form').validate({
 		rules:{
@@ -40,18 +42,32 @@ function swp180214_restore_default_install_values(){
 	jQuery('input[name=swp180214_opt_getrix_schema_version]').val('2.0.0');
 	jQuery('input[name=swp180214_opt_getrix_user]').val(swp180214_js_placeholder.usercode);
 }
+function swp180214_restore_default_feed_values(){
+	jQuery('input[name=swp180214_opt_getrix_feed_uri]').val(swp180214_js_placeholder.feeduri);
+}
 
 function swp180214_onsubmit(){
 	
 	if(!jQuery('#swp180214_install_form').valid())return false ;
-	
 	jQuery('#swp180214_loader').css('display','block');
-	jQuery.post(swp180214_ajax_placeholder.url,{
-		action:'swp180214_action_submit_install',
-		_nonce:swp180214_ajax_placeholder.nonce,
-	},function(response) {
-		jQuery('#swp180214_loader').css('display','none');
-	});
+	
+	if(swp180214_install_process == 0){
+		setTimeout(function(){
+			jQuery.post(swp180214_ajax_placeholder.url,{
+				action:'swp180214_action_submit_install',
+				_nonce:swp180214_ajax_placeholder.nonce,
+			},function(response) {			
+			});
+		},10);
+	}else if(swp180214_install_process == 2){
+		setTimeout(function(){
+			jQuery.post(swp180214_ajax_placeholder.url,{
+				action:'swp180214_action_submit_feed',
+				_nonce:swp180214_ajax_placeholder.nonce,
+			},function(response) {			
+			});
+		},10);
+	}
 	
 	return true;
 }

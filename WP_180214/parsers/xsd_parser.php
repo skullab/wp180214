@@ -111,7 +111,9 @@ class XSDParser {
 	public function __construct($url_schema){
 		$this->schema_defined_url = $url_schema ;
 		$this->Document = new DOMDocument();
-		@$this->Document->load($url_schema)or die('<b> XSDParser Error : </b> impossible to load file : '.$url_schema);
+		$this->error = @$this->Document->load($url_schema);//or die('<b> XSDParser Error : </b> impossible to load file : '.$url_schema);
+		if($this->error == false){$this->error = self::ERROR_RET_VALUE;return;}
+		
 		$this->XPath = new DOMXPath($this->Document);
 		$this->XPath->registerNamespace($this->schema_prefix, $this->schema_uri);
 		$error = $this->prepare();
@@ -363,13 +365,13 @@ class XSDParser {
 				return 'BIT(64)';
 				break;
 			case self::DATA_ANY_URI:
-				return 'VARCHAR';
+				return 'VARCHAR(255)';
 				break;
 			case self::DATA_Q_NAME:
-				return 'VARCHAR';
+				return 'VARCHAR(255)';
 				break;
 			case self::DATA_NOTATION:
-				return 'VARCHAR';
+				return 'VARCHAR(255)';
 				break;
 			case self::DATA_INTEGER:
 				return 'INT';
@@ -405,10 +407,10 @@ class XSDParser {
 				return 'BIGINT UNSIGNED';
 				break;
 			case self::DATA_NAME:
-				return 'VARCHAR';
+				return 'VARCHAR(255)';
 				break;
 			default:
-				return 'VARCHAR';
+				return 'VARCHAR(255)';
 		}
 	}
 	/******************************************************************************************/
@@ -418,53 +420,55 @@ class XSDParser {
 			$ifnotexist = true,
 			$with_primary_key = false,
 			$id_autoincrement = false,
+			$other_index = null,
 			$with_foreign_key = false,
 			$foreign_key = null,		// the same for the two table
 			$foreign_references = null,
-			$engine){
-		$sql = $ifnotexist?'CREATE TABLE IF NOT EXIST %s ( 
-							%s 
-							)':'CREATE TABLE %s ( 
-								%s 
-								)';
-		$cols = '' ;
+			$engine = null){
+		$sql = $ifnotexist?"CREATE TABLE IF NOT EXIST %s (\xA%s\xA)":"CREATE TABLE %s (\xA%s\xA)";
+		$cols = "" ;
 		foreach ($col_datatype as $col){
 			$cols .= strtolower($col['name']).' '.$this->convert_datatype_to_mysql($col['type']);
 			if($id_autoincrement){
 				$keys = array_keys($col_datatype,$col);
 				if($keys[0] == 0){
-					$cols .= ' NOT NULL AUTO_INCREMENT, 
-							 ';
+					$cols .= " NOT NULL AUTO_INCREMENT,\xA";
 					$id_autoincrement = false ;
 				}
-			}else $cols .= ', 
-						   ';
+			}else $cols .= ",\xA";
 		}
+		
 		if($with_primary_key){
 			if($with_foreign_key){
-				$cols .= strtolower($foreign_key).' INT, 
-						 ' ;
+				$cols .= strtolower($foreign_key)." INT UNSIGNED NOT NULL," ;
 			}
-			$cols .= 'PRIMARY KEY ( '.strtolower($col_datatype[0]['name']).' )
-					 ';
+			$cols .= "PRIMARY KEY  (".strtolower($col_datatype[0]['name']).")";
 		}
+		
+		if(!is_null($other_index)){
+			$cols .= ",\xAINDEX ".$other_index." (".$other_index." ASC)\xA";	
+		}else{
+			$cols .= "\xA" ;
+		}
+		
 		if($with_foreign_key){
-			$cols .= ', ';
-			$cols .= ' FOREIGN KEY ( '.strtolower($foreign_key).' ) REFERENCES '.$foreign_references.' ( '.strtolower($foreign_key).' )
-					 ' ;
+			$cols .= ",\xA";
+			$cols .= "CONSTRAINT ".$foreign_key."_".strtolower($tablename)." \xA" ;
+			$cols .= "FOREIGN KEY (".strtolower($foreign_key).") REFERENCES ".strtolower($foreign_references)." (".strtolower($foreign_key).") \xA" ;
+			$cols .= "ON DELETE CASCADE\xAON UPDATE CASCADE";
 		}
-		$generate_sql = sprintf($sql,$tablename,$cols);
-		if(!empty($engine)){
-			$generate_sql .= ' ENGINE = '.$engine.' ;' ;
+		$generate_sql = sprintf($sql,strtolower($tablename),$cols);
+		if(!is_null($engine)){
+			$generate_sql .= " ENGINE=".$engine.";" ;
 		}else {
-			$generate_sql .= ';';
+			$generate_sql .= ";";
 		}
 		
 		return $generate_sql;
 	}
 	
 	public function mysql_generate_drop_table($tablename,$ifexist = true){
-		$sql = $ifexist?'DROP TABLE IF EXIST %s':'DROP TABLE %s';
+		$sql = $ifexist?"DROP TABLE IF EXIST %s":"DROP TABLE %s";
 		$generate_sql = sprintf($sql,$tablename);
 		return $generate_sql;
 		

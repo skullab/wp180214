@@ -41,8 +41,7 @@ require_once 'menu_pages.php';
 /*****************************************************************************************************/
 register_activation_hook( __FILE__, 'swp180214_activation');
 function swp180214_activation(){
-	update_option(SWP180214_OPT_FIRST_INSTALL,true);
-	
+	//update_option(SWP180214_OPT_INSTALL_PROCESS,0);
 	// UPDATE DB VERSION
 	if(!get_option(SWP180214_OPT_DB_VERSION)){
 		add_option(SWP180214_OPT_DB_VERSION,SWP180214_DB_VERSION);
@@ -51,14 +50,25 @@ function swp180214_activation(){
 	}
 	
 	add_option(SWP180214_OPT_FIRST_INSTALL,true);
+	add_option(SWP180214_OPT_INSTALL_PROCESS,0);
+	
 	add_option(SWP180214_OPT_GETRIX_SCHEMA_URI,SWP180214_DEFAULT_GETRIX_SCHEMA_URI);
 	add_option(SWP180214_OPT_GETRIX_SCHEMA_VERSION,SWP180214_DEFAULT_GETRIX_SCHEMA_VERSION);
+	add_option(SWP180214_OPT_GETRIX_USER,SWP180214_DEFAULT_GETRIX_USER);
+	
+	add_option(SWP180214_OPT_GETRIX_FEED_URI,SWP180214_DEFAULT_GETRIX_FEED_URI);
+	add_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE,SWP180214_DEFAULT_GETRIX_FEED_UPDATE_MODE);
 }
 /*****************************************************************************************************/
 function swp180214_register_options_install(){
 	register_setting(SWP180214_OPT_GROUP_INSTALL,SWP180214_OPT_GETRIX_SCHEMA_URI);
 	register_setting(SWP180214_OPT_GROUP_INSTALL,SWP180214_OPT_GETRIX_SCHEMA_VERSION);
 	register_setting(SWP180214_OPT_GROUP_INSTALL,SWP180214_OPT_GETRIX_USER);
+}
+/*****************************************************************************************************/
+function swp180214_register_options_feed(){
+	register_setting(SWP180214_OPT_GROUP_FEED,SWP180214_OPT_GETRIX_FEED_URI);
+	register_setting(SWP180214_OPT_GROUP_FEED,SWP180214_OPT_GETRIX_FEED_UPDATE_MODE);
 }
 /*****************************************************************************************************/
 function swp180214_register_script(){
@@ -69,11 +79,13 @@ function swp180214_register_script(){
 if(is_admin()){
 	add_action('admin_init','swp180214_install');
 	add_action('admin_init','swp180214_register_options_install');
+	add_action('admin_init','swp180214_register_options_feed');
 	add_action('admin_init','swp180214_register_script');
 	add_action('admin_menu','swp180214_add_menu_pages');
 	add_action( 'plugins_loaded', 'swp180214_update' );
 	
 	add_action('wp_ajax_swp180214_action_submit_install', 'swp180214_page_install_confirm');
+	add_action('wp_ajax_swp180214_action_submit_feed', 'swp180214_page_feed_confirm');
 }
 /*****************************************************************************************************
 										ADD ADMIN MENU PAGE
