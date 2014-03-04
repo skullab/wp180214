@@ -25,6 +25,7 @@ function swp180214_page_settings(){
 		<div id="icon-options-general" class="icon32"></div>
 		<h2><?php echo SWP180214_PAGE_NAME_SETTINGS ; ?></h2>
 		<span class="description"><?php echo SWP180214_PAGE_NAME_SETTINGS_DESCRIPTION?></span>
+		
 	</div><?php 
 }
 
@@ -37,9 +38,17 @@ function swp180214_page_install_confirm(){
 
 function swp180214_page_feed_confirm(){
 	if(wp_verify_nonce( $_REQUEST['_nonce'], 'swp180214_action_submit_install_nonce' )){
-		if(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE) == SWP180214_AUTOMATIC){
-			
+		switch (get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE)){
+			case SWP180214_AUTOMATIC:
+				if (!wp_next_scheduled(SWP180214_UPDATE_DATA_HOOK)) {
+					wp_schedule_event( time(), 'daily', SWP180214_UPDATE_DATA_HOOK);
+				}
+				break;
+			case SWP180214_MANUAL:
+				wp_clear_scheduled_hook( SWP180214_UPDATE_DATA_HOOK );
+				break;
 		}
+		
 		update_option(SWP180214_OPT_INSTALL_PROCESS,3);
 	}else die('ERRORE DURANTE L\'INSTALLAZIONE');
 	die();

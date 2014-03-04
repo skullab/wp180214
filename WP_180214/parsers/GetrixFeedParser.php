@@ -110,6 +110,9 @@ class GetrixFeedParser{
 							if(is_numeric($value)){
 								$value = intval($value);
 							}
+							if(is_string($value) && (strtolower($value) == 'true' || strtolower($value) == 'false')){
+								$value = $value === 'true'? 1 : 0;
+							}
 							$a[strtolower($node->nodeName)] = $value;
 						}
 					}
@@ -123,6 +126,9 @@ class GetrixFeedParser{
 					if(is_numeric($value)){
 						$value = intval($value);
 					}
+					if(is_string($value) && (strtolower($value) == 'true' || strtolower($value) == 'false')){
+						$value = $value === 'true'? 1 : 0;
+					}
 					$a[strtolower($node->nodeName)] = $value;
 				}
 				array_push($ret_array,$a);
@@ -133,6 +139,9 @@ class GetrixFeedParser{
 					$value = $node->nodeValue ;
 					if(is_numeric($value)){
 						$value = intval($value);
+					}
+					if(is_string($value) && (strtolower($value) == 'true' || strtolower($value) == 'false')){
+						$value = $value === 'true'? 1 : 0;
 					}
 					$a[strtolower($node->nodeName)] = $value;
 				}
@@ -145,6 +154,9 @@ class GetrixFeedParser{
 					if(is_numeric($value)){
 						$value = intval($value);
 					}
+					if(is_string($value) && (strtolower($value) == 'true' || strtolower($value) == 'false')){
+						$value = $value === 'true'? 1 : 0;
+					}
 					$a[strtolower($node->nodeName)] = $value;
 				}
 				array_push($ret_array,$a);
@@ -156,6 +168,9 @@ class GetrixFeedParser{
 					if(is_numeric($value)){
 						$value = intval($value);
 					}
+					if(is_string($value) && (strtolower($value) == 'true' || strtolower($value) == 'false')){
+						$value = $value === 'true'? 1 : 0;
+					}
 					$a[strtolower($node->nodeName)] = $value;
 				}
 				array_push($ret_array,$a);
@@ -166,6 +181,9 @@ class GetrixFeedParser{
 					$value = $node->nodeValue ;
 					if(is_numeric($value)){
 						$value = intval($value);
+					}
+					if(is_string($value) && (strtolower($value) == 'true' || strtolower($value) == 'false')){
+						$value = $value === 'true'? 1 : 0;
 					}
 					$a[strtolower($node->nodeName)] = $value;
 				}
@@ -186,6 +204,9 @@ class GetrixFeedParser{
 							if(is_numeric($value)){
 								$value = intval($value);
 							}
+							if(is_string($value) && (strtolower($value) == 'true' || strtolower($value) == 'false')){
+								$value = $value === 'true'? 1 : 0;
+							}
 							$a[strtolower($node->nodeName)] = $value;
 						}
 					}
@@ -203,6 +224,9 @@ class GetrixFeedParser{
 							$value = $node->nodeValue ;
 							if(is_numeric($value)){
 								$value = intval($value);
+							}
+							if(is_string($value) && (strtolower($value) == 'true' || strtolower($value) == 'false')){
+								$value = $value === 'true'? 1 : 0;
 							}
 							$a[strtolower($node->nodeName)] = $value ;
 						}

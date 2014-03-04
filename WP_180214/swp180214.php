@@ -94,6 +94,8 @@ if(is_admin()){
 	
 	add_action('wp_ajax_swp180214_action_submit_install', 'swp180214_page_install_confirm');
 	add_action('wp_ajax_swp180214_action_submit_feed', 'swp180214_page_feed_confirm');
+	
+	add_action( SWP180214_UPDATE_DATA_HOOK, 'swp180214_populate_database' );
 }
 /*****************************************************************************************************
 										ADD ADMIN MENU PAGE

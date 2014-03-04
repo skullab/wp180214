@@ -41,6 +41,8 @@ define('SWP180214_ERROR_DOWNLOAD_FEED_URI',200);
 define('SWP180214_ERROR_UNZIP_FEED',300);
 define('SWP180214_ERROR_RENAME_FEED',400);
 define('SWP180214_ERROR_MKDIR',500);
+define('SWP180214_ERROR_FEED_VERSION',600);
+define('SWP180214_ERROR_FEED_USER',700);
 /*******************************************************************************************************************/
 define('SWP180214_DEFAULT_GETRIX_SCHEMA_URI','http://feed.getrix.it/xml/feed_2_0_0.xsd');
 define('SWP180214_DEFAULT_GETRIX_SCHEMA_VERSION','2.0.0');
