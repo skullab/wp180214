@@ -25,7 +25,7 @@ if ( !function_exists( 'add_action' ) ) {
 /** The internal plugin prefix */
 define('SWP180214_PREFIX','swp180214_');
 /** The plugin version */
-define('SWP180214_VERSION','0.0.1');
+define('SWP180214_VERSION','1.0.0');
 /** The display plugin name */
 define('SWP180214_DISPLAY_NAME','WP180214');
 /** The slug plugin name */
@@ -51,6 +51,7 @@ define('SWP180214_DEFAULT_GETRIX_FEED_URI','http://feed.getrix.it/xml/'.SWP18021
 define('SWP180214_DEFAULT_GETRIX_FEED_UPDATE_MODE',SWP180214_AUTOMATIC);
 /*******************************************************************************************************************/
 /** The db version option */
+define('SWP180214_OPT_PLUGIN_VERSION','swp180214_opt_plugin_version');
 define('SWP180214_OPT_DB_VERSION','swp180214_opt_db_version');
 define('SWP180214_OPT_FIRST_INSTALL','swp180214_opt_first_install');
 define('SWP180214_OPT_INSTALL_PROCESS','swp180214_opt_install_process');
@@ -69,6 +70,8 @@ define('SWP180214_OPT_UPLOAD_DIR','swp180214_opt_upload_dir');
 /*******************************************************************************************************************/
 define('SWP180214_OPT_GLOBAL_ERROR','swp180214_opt_global_error');
 /*******************************************************************************************************************/
+define('SWP180214_OPT_UPDATE_AVAILABLE','swp180214_opt_update_available');
+/*******************************************************************************************************************/
 define('SWP180214_SLUG_SETTINGS',SWP180214_SLUG_NAME.'-settings');
 /*******************************************************************************************************************/
 define('SWP180214_PAGE_NAME_SETTINGS',SWP180214_DISPLAY_NAME.' - Impostazioni');
@@ -79,4 +82,7 @@ define('SWP180214_PAGE_NAME_INSTALL_DESCRIPTION','Procedura guidata per la prima
 /*******************************************************************************************************************/
 define('SWP180214_JS_JQUERY_VALIDATOR','swp180214_js_jquery_validator');
 define('SWP180214_JS_VALIDATOR','swp180214_js_validator');
+define('SWP180214_JS_SETTINGS_PAGE','swp180214_js_settings_page');
+/*******************************************************************************************************************/
+define('SWP180214_CSS_SETTINGS_MENU','swp180214_css_settings_menu');
 ?>

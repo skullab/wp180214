@@ -45,6 +45,7 @@ register_activation_hook( __FILE__, 'swp180214_activation');
 function swp180214_activation(){
 	
 	//UPDATE DB
+	add_option(SWP180214_OPT_PLUGIN_VERSION,SWP180214_VERSION);
 	add_option(SWP180214_OPT_DB_VERSION,SWP180214_DB_VERSION);
 	
 	add_option(SWP180214_OPT_FIRST_INSTALL,true);
@@ -59,6 +60,8 @@ function swp180214_activation(){
 	
 	add_option(SWP180214_OPT_UPLOAD_DIR,false);
 	add_option(SWP180214_OPT_GLOBAL_ERROR,false);
+	
+	add_option(SWP180214_OPT_UPDATE_AVAILABLE,false);
 }
 /*****************************************************************************************************/
 register_deactivation_hook( __FILE__, 'swp180214_deactivation' );
@@ -80,6 +83,7 @@ function swp180214_register_options_feed(){
 function swp180214_register_script(){
 	wp_register_script(SWP180214_JS_JQUERY_VALIDATOR,plugins_url('js/jquery.validate.js',__FILE__),array('jquery'));
 	wp_register_script(SWP180214_JS_VALIDATOR,plugins_url('js/validator.install.js',__FILE__),array(SWP180214_JS_JQUERY_VALIDATOR));
+	wp_register_script(SWP180214_JS_SETTINGS_PAGE,plugins_url('js/settings_page.js',__FILE__),array('jquery'));
 }
 /*****************************************************************************************************/
 if(is_admin()){

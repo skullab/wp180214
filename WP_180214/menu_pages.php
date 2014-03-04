@@ -20,12 +20,161 @@ function swp180214_page_settings(){
 		swp180214_page_install();
 		return ;
 	}
+	
+	wp_enqueue_style(SWP180214_CSS_SETTINGS_MENU,plugins_url('css/settings_style.css',__FILE__));
+	wp_enqueue_script(SWP180214_JS_SETTINGS_PAGE);
+	
+	wp_enqueue_script(SWP180214_JS_VALIDATOR);
+	wp_localize_script(SWP180214_JS_VALIDATOR,'swp180214_js_placeholder',
+		array('usercode' => SWP180214_DEFAULT_GETRIX_USER,
+			  'feeduri' => SWP180214_DEFAULT_GETRIX_FEED_URI,
+			  'process' => get_option(SWP180214_OPT_INSTALL_PROCESS)));
+	wp_localize_script(SWP180214_JS_VALIDATOR,'swp180214_ajax_placeholder',
+		array('url' => admin_url('admin-ajax.php'),'nonce' => wp_create_nonce('swp180214_action_submit_install_nonce')));
 	?>
 	<div class="wrap">
 		<div id="icon-options-general" class="icon32"></div>
 		<h2><?php echo SWP180214_PAGE_NAME_SETTINGS ; ?></h2>
 		<span class="description"><?php echo SWP180214_PAGE_NAME_SETTINGS_DESCRIPTION?></span>
+		<div id="swp180214_cssmenu">
+			<ul id="swp180214_menulist">
+   				<li id="swp180214_generale" class="active" onclick="swp180214_show_content(this);"><a><span>Generale</span></a></li>
+   				<li id="swp180214_visualizzazione" onclick="swp180214_show_content(this);"><a><span>Pagina di visualizzazione</span></a></li>
+   				<li id="swp180214_database" onclick="swp180214_show_content(this);"><a><span>Gestione Database</span></a></li>
+   				<li id="swp180214_doc" onclick="swp180214_show_content(this);"><a><span>Documentazione</span></a></li>
+   				<li id="swp180214_contatti" class="last" onclick="swp180214_show_content(this);"><a><span>Contatti</span></a></li>
+			</ul>
+		</div>
+		<div id="swp180214_content">
+			<div id="swp180214_content_list">
+				
+				<div id="swp180214_generale_content">
+				<span class="description">
+				<h3><?php echo SWP180214_DISPLAY_NAME;?> > <a href="admin.php?page=<?php echo SWP180214_SLUG_SETTINGS ;?>">Impostazioni</a> > <a>Generale</a></h3>
+				<?php 
+					if(get_option(SWP180214_OPT_UPDATE_AVAILABLE)){
+						?>
+						<strong>E' disponibile un aggiornamento del plugin !</strong>
+						<?php 
+					}else{
+						?>
+						Il plugin &egrave; installato correttamente !<br><br>
+						<?php 
+					}
+				?>
+				</span>
+				<h3>Opzioni</h3>
+				<ul>
+					<li><a class="button-primary" onclick="swp180214_show_install_parameters();">Modifica i parametri di installazione</a>
+					<div id="swp180214_install_parameters" class="swp180214_content_parameters">
+					<strong>ATTENZIONE ! La modifica dei parametri di installazione puo compromettere l'uso del plugin.</strong>
+						<style type="text/css">
+							#swp180214_install_form label.error { color:#a10000; margin-left:5px;}
+						</style>
+					
+					<form id="<?php echo SWP180214_PREFIX.'install_form'?>" method="post" action="options.php" onsubmit="swp180214_onsubmit()">
+					<?php 
+						settings_fields(SWP180214_OPT_GROUP_FEED);
+						do_settings_sections(SWP180214_OPT_GROUP_FEED);
+					?>
+					<table class="form-table">
+					<tbody>
+					<tr valign="top">
+					<th scope="row">Getrix Feed URI</th>
+					<td>
+						<label for="<?php echo SWP180214_OPT_GETRIX_FEED_URI ;?>"></label>
+						<input id="<?php echo SWP180214_OPT_GETRIX_FEED_URI ;?>" type="url" size="100" name="<?php echo SWP180214_OPT_GETRIX_FEED_URI ;?>" value="<?php echo get_option(SWP180214_OPT_GETRIX_FEED_URI);?>" required/><br>
+						<span class="description">
+						Indirizzo URI relativo al feed XML da utilizzare.<br>Se non si &egrave; sicuri lasciare le impostazioni di default.
+						</span>
+					</td>
+					</tr>
+				
+					<tr valign="top">
+					<th scope="row">Modalita di aggiornamento dati</th>
+					<td>
+						
+						<input id="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" type="radio" name="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" value="<?php echo SWP180214_AUTOMATIC;?>" <?php checked(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE),SWP180214_AUTOMATIC);?>/>
+						<label for="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>">Automatica (CronJob)</label>
+						<br>
+						<input id="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" type="radio" name="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" value="<?php echo SWP180214_MANUAL;?>" <?php checked(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE),SWP180214_MANUAL);?>/>
+						<label for="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>">Manuale</label>
+						<br>
+						<span class="description">
+						Specifica la modalita di aggiornamento dei dati.<br>Se non si &egrave; sicuri lasciare le impostazioni di default.
+						</span>
+					</td>
+					</tr>
+				
+					<tr valign="top">
+                	<th scope="row"></th>
+                    	<td>
+                        	<p>
+                            	<input type="submit" class="button-primary" id="submit" name="submit" value="<?php _e('Salva') ?> " />
+                               	<input type="button" class="button-primary" onclick="swp180214_restore_default_feed_values()" value="<?php _e('Ripristina valori di default') ?> " />
+                               	<input type="button" class="button-primary" onclick="swp180214_show_advanced();" style="float:right;" value="<?php _e('Avanzate') ?> " />
+                               	<div id="swp180214_loader" style="display: none;">
+               						<img style="float:left;padding-right:10px;" src="<?php echo plugins_url('res/images/circular_loader.gif',__FILE__);?>"/>
+               						<div><h3>Salvataggio in corso...</h3></div>
+               					</div>                                  
+                            </p>
+                        </td>
+                	</tr>
+				
+				</tbody>
+				</table>
+				</form>
 		
+					</div>
+					<li><a class="button-primary" onclick="swp180214_show_uninstall();">Disintalla il plugin</a>
+					<div id="swp180214_uninstall_box" class="swp180214_content_parameters">
+					<span class="description">
+					Per disinstallare il plugin recarsi nella pagina <a href="plugins.php">Plugins</a>, disattivare questo plugin e poi cliccare su <em style="color:#ff4629;">Cancella</em>
+					</span>
+					</div>
+				</ul>
+				</div>
+				
+				<div id="swp180214_visualizzazione_content">
+				<span class="description">
+				<h3><?php echo SWP180214_DISPLAY_NAME;?> > <a href="admin.php?page=<?php echo SWP180214_SLUG_SETTINGS ;?>">Impostazioni</a> > <a>Pagina di visualizzazione<a></a></h3>
+				</span>
+				</div>
+				
+				<div id="swp180214_database_content">
+				<span class="description">
+				<h3><?php echo SWP180214_DISPLAY_NAME;?> > <a href="admin.php?page=<?php echo SWP180214_SLUG_SETTINGS ;?>">Impostazioni</a> > <a>Gestione Database<a></a></h3>
+				</span>
+				</div>
+				
+				<div id="swp180214_doc_content">
+				<span class="description">
+				<h3><?php echo SWP180214_DISPLAY_NAME;?> > <a href="admin.php?page=<?php echo SWP180214_SLUG_SETTINGS ;?>">Impostazioni</a> > <a>Documentazione<a></a></h3>
+				La documentazione di questo plugin &egrave; disponibile in formato PDF <a href="<?php echo plugins_url('doc/doc.pdf',__FILE__);?>">QUI</a>
+				</span>
+				</div>
+				
+				<div id="swp180214_contatti_content">
+				<span class="description">
+				<h3><?php echo SWP180214_DISPLAY_NAME;?> > <a href="admin.php?page=<?php echo SWP180214_SLUG_SETTINGS ;?>">Impostazioni</a> > <a>Contatti</a></h3>
+				Questo plugin &egrave; stato realizzato da <A HREF="mailto:ivan.maruca@gmail.com?subject=WP180214">Ivan Maruca</A> Copyrights(c) 2014<br>
+				Per ogni informazione rivolgersi a :
+				<ul>
+					<li><A HREF="mailto:ivan.maruca@gmail.com?subject=WP180214">Ivan Maruca</A> (Skullab.com)
+					<li><A HREF="mailto:daniele@gcore.it?subject=WP180214">Daniele Territo</A> (Gcore.it)
+					<li><A HREF="mailto:stefano@gcore.it?subject=WP180214">Stefano Zarba</A> (Gcore.it)
+				</ul>
+				</span>
+				</div>
+				
+				<div id="swp180214_avanzate_content">
+				<span class="description">
+				<h3><?php echo SWP180214_DISPLAY_NAME;?> > <a href="admin.php?page=<?php echo SWP180214_SLUG_SETTINGS ;?>">Impostazioni</a> > <a href="#" onclick="swp180214_hide_advanced();">Generale</a> > <a>Avanzate</a></h3>
+				</span>
+				<div>
+				
+			</div>
+		</div>
 	</div><?php 
 }
 
@@ -57,7 +206,6 @@ function swp180214_page_feed_confirm(){
 // PROCEDURA DI INSTALLAZIONE
 function swp180214_page_install(){
 	wp_enqueue_script(SWP180214_JS_VALIDATOR);
-	//'9F431778-4CAC-4534-B5F9-F458A87E2279'
 	wp_localize_script(SWP180214_JS_VALIDATOR,'swp180214_js_placeholder',
 		array('usercode' => SWP180214_DEFAULT_GETRIX_USER,
 			  'feeduri' => SWP180214_DEFAULT_GETRIX_FEED_URI,
