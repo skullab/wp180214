@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 function swp180214_page_settings(){
-	if(get_option(SWP180214_OPT_FIRST_INSTALL)){
+	if(get_option(SWP180214_OPT_FIRST_INSTALL) || get_option(SWP180214_OPT_INSTALL_PROCESS) < 3){
 		swp180214_page_install();
 		return ;
 	}
@@ -37,6 +37,9 @@ function swp180214_page_install_confirm(){
 
 function swp180214_page_feed_confirm(){
 	if(wp_verify_nonce( $_REQUEST['_nonce'], 'swp180214_action_submit_install_nonce' )){
+		if(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE) == SWP180214_AUTOMATIC){
+			
+		}
 		update_option(SWP180214_OPT_INSTALL_PROCESS,3);
 	}else die('ERRORE DURANTE L\'INSTALLAZIONE');
 	die();

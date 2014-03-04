@@ -3,8 +3,8 @@
 Plugin Name: WP180214
 Plugin URI: http://www.skullab.com
 Description: Questo plugin &egrave; stato sviluppato ad uso esclusivo del richiedente e non &egrave; disponibile in nessun repository pubblico.Per ulteriori dettagli contattare il fornitore dei servizi e/o il programmatore del plugin. PROCEDURA DI INSTALAZZIONE : (1) Cliccare su "Attiva" a sinistra di questa descrizione (2) Accedere alla pagina delle Impostazioni per apportare modifiche al plugin.Per ulteriori dettagli si consiglia la lettura della <strong>documentazione allegata</strong>.
-Version: 0.0.1
-Author: <A HREF="mailto:ivan.maruca@gmail.com?subject=WPplugin_vetrinaImmobiliare">Ivan Maruca</A>
+Version: 1.0.0
+Author: <A HREF="mailto:ivan.maruca@gmail.com?subject=WP180214">Ivan Maruca</A>
 Author URI: http://www.skullab.com
 License: Apache License, Version 2.0
 */
@@ -36,18 +36,16 @@ if ( !function_exists( 'add_action' ) ) {
 ******************************************************************************************************/
 require_once 'constants.php' ;
 require_once 'debug.php';
+require_once 'utils.php';
 require_once 'installation.php';
 require_once 'menu_pages.php';
+require_once 'updatedata.php';
 /*****************************************************************************************************/
 register_activation_hook( __FILE__, 'swp180214_activation');
 function swp180214_activation(){
-	//update_option(SWP180214_OPT_INSTALL_PROCESS,0);
-	// UPDATE DB VERSION
-	if(!get_option(SWP180214_OPT_DB_VERSION)){
-		add_option(SWP180214_OPT_DB_VERSION,SWP180214_DB_VERSION);
-	}else{
-		update_option(SWP180214_OPT_DB_VERSION,SWP180214_DB_VERSION);
-	}
+	
+	//UPDATE DB
+	add_option(SWP180214_OPT_DB_VERSION,SWP180214_DB_VERSION);
 	
 	add_option(SWP180214_OPT_FIRST_INSTALL,true);
 	add_option(SWP180214_OPT_INSTALL_PROCESS,0);
@@ -58,6 +56,14 @@ function swp180214_activation(){
 	
 	add_option(SWP180214_OPT_GETRIX_FEED_URI,SWP180214_DEFAULT_GETRIX_FEED_URI);
 	add_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE,SWP180214_DEFAULT_GETRIX_FEED_UPDATE_MODE);
+	
+	add_option(SWP180214_OPT_UPLOAD_DIR,false);
+	add_option(SWP180214_OPT_GLOBAL_ERROR,false);
+}
+/*****************************************************************************************************/
+register_deactivation_hook( __FILE__, 'swp180214_deactivation' );
+function swp180214_deactivation(){
+	wp_clear_scheduled_hook( SWP180214_UPDATE_DATA_HOOK );
 }
 /*****************************************************************************************************/
 function swp180214_register_options_install(){
@@ -81,6 +87,8 @@ if(is_admin()){
 	add_action('admin_init','swp180214_register_options_install');
 	add_action('admin_init','swp180214_register_options_feed');
 	add_action('admin_init','swp180214_register_script');
+	add_action('admin_init','swp180214_upload_dir');
+	
 	add_action('admin_menu','swp180214_add_menu_pages');
 	add_action( 'plugins_loaded', 'swp180214_update' );
 	
@@ -91,7 +99,6 @@ if(is_admin()){
 										ADD ADMIN MENU PAGE
 ******************************************************************************************************/
 function swp180214_add_menu_pages(){
-	require_once 'menu_pages.php';
 	add_menu_page('WP180214','WP180214','manage_options',SWP180214_SLUG_SETTINGS,'swp180214_page_settings');
 }
 ?>

@@ -15,6 +15,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// Safe execution...
+if ( !function_exists( 'add_action' ) ) {
+	echo '<b>ERRORE : </b> Questo è un plugin per WordPress e non può essere eseguito come script PHP';
+	exit;
+}
+
 /*******************************************************************************************************************/
 /** The internal plugin prefix */
 define('SWP180214_PREFIX','swp180214_');
@@ -28,6 +34,13 @@ define('SWP180214_SLUG_NAME','wp180214');
 define('SWP180214_DB_VERSION','1.0');
 define('SWP180214_AUTOMATIC','swp180214_automatic');
 define('SWP180214_MANUAL','swp180214_manual');
+define('SWP180214_UPDATE_DATA_HOOK','swp180214_update_data_hook');
+/*******************************************************************************************************************/
+define('SWP180214_ERROR_MALFORMED_FEED_URI',100);
+define('SWP180214_ERROR_DOWNLOAD_FEED_URI',200);
+define('SWP180214_ERROR_UNZIP_FEED',300);
+define('SWP180214_ERROR_RENAME_FEED',400);
+define('SWP180214_ERROR_MKDIR',500);
 /*******************************************************************************************************************/
 define('SWP180214_DEFAULT_GETRIX_SCHEMA_URI','http://feed.getrix.it/xml/feed_2_0_0.xsd');
 define('SWP180214_DEFAULT_GETRIX_SCHEMA_VERSION','2.0.0');
@@ -49,6 +62,10 @@ define('SWP180214_OPT_GETRIX_USER','swp180214_opt_getrix_user');
 define('SWP180214_OPT_GROUP_FEED','swp180214_opt_group_feed');
 define('SWP180214_OPT_GETRIX_FEED_URI','swp180214_opt_getrix_feed_uri');
 define('SWP180214_OPT_GETRIX_FEED_UPDATE_MODE','swp180214_opt_getrix_feed_update_mode');
+/*******************************************************************************************************************/
+define('SWP180214_OPT_UPLOAD_DIR','swp180214_opt_upload_dir');
+/*******************************************************************************************************************/
+define('SWP180214_OPT_GLOBAL_ERROR','swp180214_opt_global_error');
 /*******************************************************************************************************************/
 define('SWP180214_SLUG_SETTINGS',SWP180214_SLUG_NAME.'-settings');
 /*******************************************************************************************************************/

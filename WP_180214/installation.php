@@ -15,10 +15,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-function swp180214_install(){
+function swp180214_install($update = false){
 	//swp180214_debug('inizio installazione');
-	require_once 'utils.php' ;
-	swp180214_show_warning();
+	if($update || get_option(SWP180214_OPT_FIRST_INSTALL)){	
+		swp180214_show_warning($update);
+	}
 }
 
 function swp180214_update(){
@@ -26,7 +27,7 @@ function swp180214_update(){
 	$current_db_version = get_option(SWP180214_OPT_DB_VERSION);
 	if($current_db_version != SWP180214_DB_VERSION){
 		//swp180214_debug('nuova versione del db trovata');
-		swp180214_install();
+		swp180214_install(true);
 	}
 }
 
