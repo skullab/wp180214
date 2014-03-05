@@ -38,6 +38,7 @@ require_once 'constants.php' ;
 require_once 'debug.php';
 require_once 'utils.php';
 require_once 'installation.php';
+require_once 'display_page_setting.php';
 require_once 'menu_pages.php';
 require_once 'updatedata.php';
 /*****************************************************************************************************/
@@ -57,6 +58,17 @@ function swp180214_activation(){
 	
 	add_option(SWP180214_OPT_GETRIX_FEED_URI,SWP180214_DEFAULT_GETRIX_FEED_URI);
 	add_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE,SWP180214_DEFAULT_GETRIX_FEED_UPDATE_MODE);
+	
+	add_option(SWP180214_OPT_PAGE_CREATED,false);
+	add_option(SWP180214_OPT_PAGE_UPDATED,false);
+	add_option(SWP180214_OPT_GETRIX_PAGE_ID,0);
+	add_option(SWP180214_OPT_GETRIX_PAGE_NAME,'');
+	add_option(SWP180214_OPT_GETRIX_PAGE_TITLE,'');
+	add_option(SWP180214_OPT_GETRIX_PAGE_CONTENT,'');
+	add_option(SWP180214_OPT_GETRIX_PAGE_PARENT_ID,0);
+	add_option(SWP180214_OPT_GETRIX_PAGE_MENU_ORDER,0);
+	add_option(SWP180214_OPT_GETRIX_PAGE_USER_ID,false);
+	add_option(SWP180214_OPT_GETRIX_PAGE_STATUS,'publish');
 	
 	add_option(SWP180214_OPT_UPLOAD_DIR,false);
 	add_option(SWP180214_OPT_GLOBAL_ERROR,false);
@@ -80,6 +92,17 @@ function swp180214_register_options_feed(){
 	register_setting(SWP180214_OPT_GROUP_FEED,SWP180214_OPT_GETRIX_FEED_UPDATE_MODE);
 }
 /*****************************************************************************************************/
+function swp180214_register_options_page(){
+	register_setting(SWP180214_OPT_GROUP_PAGE,SWP180214_OPT_GETRIX_PAGE_ID);
+	register_setting(SWP180214_OPT_GROUP_PAGE,SWP180214_OPT_GETRIX_PAGE_NAME);
+	register_setting(SWP180214_OPT_GROUP_PAGE,SWP180214_OPT_GETRIX_PAGE_TITLE);
+	register_setting(SWP180214_OPT_GROUP_PAGE,SWP180214_OPT_GETRIX_PAGE_CONTENT);
+	register_setting(SWP180214_OPT_GROUP_PAGE,SWP180214_OPT_GETRIX_PAGE_PARENT_ID);
+	register_setting(SWP180214_OPT_GROUP_PAGE,SWP180214_OPT_GETRIX_PAGE_MENU_ORDER);
+	register_setting(SWP180214_OPT_GROUP_PAGE,SWP180214_OPT_GETRIX_PAGE_USER_ID);
+	register_setting(SWP180214_OPT_GROUP_PAGE,SWP180214_OPT_GETRIX_PAGE_STATUS);
+}
+/*****************************************************************************************************/
 function swp180214_register_script(){
 	wp_register_script(SWP180214_JS_JQUERY_VALIDATOR,plugins_url('js/jquery.validate.js',__FILE__),array('jquery'));
 	wp_register_script(SWP180214_JS_VALIDATOR,plugins_url('js/validator.install.js',__FILE__),array(SWP180214_JS_JQUERY_VALIDATOR));
@@ -90,6 +113,7 @@ if(is_admin()){
 	add_action('admin_init','swp180214_install');
 	add_action('admin_init','swp180214_register_options_install');
 	add_action('admin_init','swp180214_register_options_feed');
+	add_action('admin_init','swp180214_register_options_page');
 	add_action('admin_init','swp180214_register_script');
 	add_action('admin_init','swp180214_upload_dir');
 	
@@ -98,8 +122,27 @@ if(is_admin()){
 	
 	add_action('wp_ajax_swp180214_action_submit_install', 'swp180214_page_install_confirm');
 	add_action('wp_ajax_swp180214_action_submit_feed', 'swp180214_page_feed_confirm');
+	add_action('wp_ajax_swp180214_action_update_db', 'swp180214_page_update_db');
+	add_action('wp_ajax_swp180214_action_create_page', 'swp180214_confirm_create_page');
+	add_action('wp_ajax_swp180214_action_delete_page', 'swp180214_confirm_delete_page');
+	add_action('wp_ajax_swp180214_action_update_page', 'swp180214_confirm_update_page');
 	
 	add_action( SWP180214_UPDATE_DATA_HOOK, 'swp180214_populate_database' );
+}
+/*****************************************************************************************************/
+switch (get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE)){
+	case SWP180214_AUTOMATIC:
+		if (!wp_next_scheduled(SWP180214_UPDATE_DATA_HOOK)) {
+			$ret = wp_schedule_event( time(), 'daily', SWP180214_UPDATE_DATA_HOOK);
+			if($ret != null){
+				swp180214_debug('ERRORE : EVENTO NON SCHEDULATO');
+			}
+		}
+		break;
+	case SWP180214_MANUAL:
+		wp_clear_scheduled_hook( SWP180214_UPDATE_DATA_HOOK );
+		//swp180214_debug('EVENTO RIMOSSO');
+		break;
 }
 /*****************************************************************************************************
 										ADD ADMIN MENU PAGE

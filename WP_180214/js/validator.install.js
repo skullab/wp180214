@@ -46,27 +46,31 @@ function swp180214_restore_default_feed_values(){
 	jQuery('input[name=swp180214_opt_getrix_feed_uri]').val(swp180214_js_placeholder.feeduri);
 }
 
-function swp180214_onsubmit(){
+function swp180214_onsubmit(settings){
 	
 	if(!jQuery('#swp180214_install_form').valid())return false ;
 	jQuery('#swp180214_loader').css('display','block');
 	
-	if(swp180214_install_process == 0){
+	if(swp180214_install_process == 0 || settings == 1){
 		setTimeout(function(){
 			jQuery.post(swp180214_ajax_placeholder.url,{
 				action:'swp180214_action_submit_install',
 				_nonce:swp180214_ajax_placeholder.nonce,
-			},function(response) {			
+			},function(response) {
+				console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
+				if(response != '')alert(response);
 			});
-		},10);
-	}else if(swp180214_install_process == 2){
+		},0);
+	}else if(swp180214_install_process == 2 || settings == 2){
 		setTimeout(function(){
 			jQuery.post(swp180214_ajax_placeholder.url,{
 				action:'swp180214_action_submit_feed',
 				_nonce:swp180214_ajax_placeholder.nonce,
-			},function(response) {			
+			},function(response) {
+				console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
+				if(response != '')alert(response);
 			});
-		},10);
+		},0);
 	}
 	
 	return true;

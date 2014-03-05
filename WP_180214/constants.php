@@ -50,12 +50,12 @@ define('SWP180214_DEFAULT_GETRIX_USER','9F431778-4CAC-4534-B5F9-F458A87E2279');
 define('SWP180214_DEFAULT_GETRIX_FEED_URI','http://feed.getrix.it/xml/'.SWP180214_DEFAULT_GETRIX_USER.'.zip');
 define('SWP180214_DEFAULT_GETRIX_FEED_UPDATE_MODE',SWP180214_AUTOMATIC);
 /*******************************************************************************************************************/
-/** The db version option */
 define('SWP180214_OPT_PLUGIN_VERSION','swp180214_opt_plugin_version');
 define('SWP180214_OPT_DB_VERSION','swp180214_opt_db_version');
 define('SWP180214_OPT_FIRST_INSTALL','swp180214_opt_first_install');
 define('SWP180214_OPT_INSTALL_PROCESS','swp180214_opt_install_process');
-/** The Getrix Schema URI Location */
+define('SWP180214_OPT_PAGE_CREATED','swp180214_opt_page_created');
+define('SWP180214_OPT_PAGE_UPDATED','swp180214_opt_page_updated');
 /*******************************************************************************************************************/
 define('SWP180214_OPT_GROUP_INSTALL','swp180214_opt_group_install');
 define('SWP180214_OPT_GETRIX_SCHEMA_URI','swp180214_opt_getrix_schema_uri');
@@ -65,6 +65,16 @@ define('SWP180214_OPT_GETRIX_USER','swp180214_opt_getrix_user');
 define('SWP180214_OPT_GROUP_FEED','swp180214_opt_group_feed');
 define('SWP180214_OPT_GETRIX_FEED_URI','swp180214_opt_getrix_feed_uri');
 define('SWP180214_OPT_GETRIX_FEED_UPDATE_MODE','swp180214_opt_getrix_feed_update_mode');
+/*******************************************************************************************************************/
+define('SWP180214_OPT_GROUP_PAGE','swp180214_opt_group_page');
+define('SWP180214_OPT_GETRIX_PAGE_ID','swp180214_opt_getrix_page_id');
+define('SWP180214_OPT_GETRIX_PAGE_NAME','swp180214_opt_getrix_page_name');
+define('SWP180214_OPT_GETRIX_PAGE_CONTENT','swp180214_opt_getrix_page_content');
+define('SWP180214_OPT_GETRIX_PAGE_TITLE','swp180214_opt_getrix_page_title');
+define('SWP180214_OPT_GETRIX_PAGE_USER_ID','swp180214_opt_getrix_page_user_id');
+define('SWP180214_OPT_GETRIX_PAGE_MENU_ORDER','swp180214_opt_getrix_page_menu_order');
+define('SWP180214_OPT_GETRIX_PAGE_PARENT_ID','swp180214_opt_getrix_page_parent_id');
+define('SWP180214_OPT_GETRIX_PAGE_STATUS','swp180214_opt_getrix_page_status');
 /*******************************************************************************************************************/
 define('SWP180214_OPT_UPLOAD_DIR','swp180214_opt_upload_dir');
 /*******************************************************************************************************************/

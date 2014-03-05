@@ -23,6 +23,8 @@ function swp180214_page_settings(){
 	
 	wp_enqueue_style(SWP180214_CSS_SETTINGS_MENU,plugins_url('css/settings_style.css',__FILE__));
 	wp_enqueue_script(SWP180214_JS_SETTINGS_PAGE);
+	wp_localize_script(SWP180214_JS_SETTINGS_PAGE,'swp180214_ajax_placeholder',
+	array('url' => admin_url('admin-ajax.php')));
 	
 	wp_enqueue_script(SWP180214_JS_VALIDATOR);
 	wp_localize_script(SWP180214_JS_VALIDATOR,'swp180214_js_placeholder',
@@ -46,6 +48,7 @@ function swp180214_page_settings(){
 			</ul>
 		</div>
 		<div id="swp180214_content">
+		
 			<div id="swp180214_content_list">
 				
 				<div id="swp180214_generale_content">
@@ -63,6 +66,18 @@ function swp180214_page_settings(){
 					}
 				?>
 				</span>
+				<h3>Info</h3>
+				<span class="description">
+				<ul>
+					<li>Versione plugin : <?php echo SWP180214_VERSION ;?>
+					<li>Versione Getrix schema : <?php echo get_option(SWP180214_OPT_GETRIX_SCHEMA_VERSION);?>
+					<li>Modalita di aggiornamento dati : 
+					<?php
+						$mode = get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE) == SWP180214_AUTOMATIC ? 'Automatica (CronJob)' : 'Manuale' ;
+						echo $mode ; 
+					?>
+				</ul>
+				</span>
 				<h3>Opzioni</h3>
 				<ul>
 					<li><a class="button-primary" onclick="swp180214_show_install_parameters();">Modifica i parametri di installazione</a>
@@ -72,7 +87,7 @@ function swp180214_page_settings(){
 							#swp180214_install_form label.error { color:#a10000; margin-left:5px;}
 						</style>
 					
-					<form id="<?php echo SWP180214_PREFIX.'install_form'?>" method="post" action="options.php" onsubmit="swp180214_onsubmit()">
+					<form id="<?php echo SWP180214_PREFIX.'install_form'?>" method="post" action="options.php" onsubmit="swp180214_onsubmit(2);">
 					<?php 
 						settings_fields(SWP180214_OPT_GROUP_FEED);
 						do_settings_sections(SWP180214_OPT_GROUP_FEED);
@@ -93,13 +108,13 @@ function swp180214_page_settings(){
 					<tr valign="top">
 					<th scope="row">Modalita di aggiornamento dati</th>
 					<td>
-						
-						<input id="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" type="radio" name="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" value="<?php echo SWP180214_AUTOMATIC;?>" <?php checked(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE),SWP180214_AUTOMATIC);?>/>
-						<label for="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>">Automatica (CronJob)</label>
+						<input id="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>_auto" type="radio" name="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" value="<?php echo SWP180214_AUTOMATIC;?>" <?php checked(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE),SWP180214_AUTOMATIC);?>/>
+						<label for="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>_auto">Automatica (CronJob)</label>						
 						<br>
-						<input id="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" type="radio" name="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" value="<?php echo SWP180214_MANUAL;?>" <?php checked(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE),SWP180214_MANUAL);?>/>
-						<label for="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>">Manuale</label>
+						<input id="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>_manual" type="radio" name="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" value="<?php echo SWP180214_MANUAL;?>" <?php checked(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE),SWP180214_MANUAL);?>/>
+						<label for="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>_manual">Manuale</label>						
 						<br>
+
 						<span class="description">
 						Specifica la modalita di aggiornamento dei dati.<br>Se non si &egrave; sicuri lasciare le impostazioni di default.
 						</span>
@@ -139,12 +154,34 @@ function swp180214_page_settings(){
 				<span class="description">
 				<h3><?php echo SWP180214_DISPLAY_NAME;?> > <a href="admin.php?page=<?php echo SWP180214_SLUG_SETTINGS ;?>">Impostazioni</a> > <a>Pagina di visualizzazione<a></a></h3>
 				</span>
+				<?php swp180214_get_display_page_settings();?>
 				</div>
 				
 				<div id="swp180214_database_content">
 				<span class="description">
 				<h3><?php echo SWP180214_DISPLAY_NAME;?> > <a href="admin.php?page=<?php echo SWP180214_SLUG_SETTINGS ;?>">Impostazioni</a> > <a>Gestione Database<a></a></h3>
 				</span>
+				<?php
+					if(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE) == SWP180214_MANUAL){
+						?>
+						<strong>L'aggiornamento dati &egrave; in modalita manuale.</strong>
+						<a class="button-primary" onclick="swp180214_request_update_db('<?php echo wp_create_nonce('swp180214_action_update_db_nonce');?>');">Aggiornare i dati ora</a><br>
+						
+						<div id="swp180214_loader_db" style="display: none;">
+               				<img style="float:left;padding-right:10px;" src="<?php echo plugins_url('res/images/circular_loader.gif',__FILE__);?>"/>
+               				<div><h3>Aggiornamento dati in corso...</h3></div>
+               			</div>
+						<?php 
+					}else{
+						?>
+						<span class="description">
+						I dati vengono aggiornati automaticamente ogni giorno.<br>
+						Per aggiornare i dati ora, modificare le impostazioni di aggiornamento<br>
+						dal menu <a href="#" onclick="swp180214_hide_advanced();">Generale</a>
+						</span>
+						<?php 
+					} 
+				?>
 				</div>
 				
 				<div id="swp180214_doc_content">
@@ -171,6 +208,68 @@ function swp180214_page_settings(){
 				<span class="description">
 				<h3><?php echo SWP180214_DISPLAY_NAME;?> > <a href="admin.php?page=<?php echo SWP180214_SLUG_SETTINGS ;?>">Impostazioni</a> > <a href="#" onclick="swp180214_hide_advanced();">Generale</a> > <a>Avanzate</a></h3>
 				</span>
+				<strong>ATTENZIONE ! La modifica dei parametri di installazione puo compromettere l'uso del plugin.</strong>
+				<style type="text/css">
+					#swp180214_install_form label.error { color:#a10000; margin-left:5px;}
+				</style>
+	
+				<form id="<?php echo SWP180214_PREFIX.'install_form'?>" method="post" action="options.php" onsubmit="swp180214_onsubmit(1);">
+				<?php 
+					settings_fields(SWP180214_OPT_GROUP_INSTALL);
+					do_settings_sections(SWP180214_OPT_GROUP_INSTALL);
+				?>
+				<table class="form-table">
+				<tbody>
+				<tr valign="top">
+				<th scope="row">Getrix Schema URI</th>
+				<td>
+					<label for="<?php echo SWP180214_OPT_GETRIX_SCHEMA_URI ;?>"></label>
+					<input id="<?php echo SWP180214_OPT_GETRIX_SCHEMA_URI ;?>" type="url" size="100" name="<?php echo SWP180214_OPT_GETRIX_SCHEMA_URI ;?>" value="<?php echo get_option(SWP180214_OPT_GETRIX_SCHEMA_URI);?>" required/><br>
+					<span class="description">
+					Indirizzo URI relativo allo schema XSD da utilizzare.<br>Se non si &egrave; sicuri lasciare le impostazioni di default.
+					</span>
+				</td>
+				</tr>
+			
+				<tr valign="top">
+				<th scope="row">Getrix versione schema</th>
+				<td>
+					<label for="<?php echo SWP180214_OPT_GETRIX_SCHEMA_VERSION ;?>"></label>
+					<input id="<?php echo SWP180214_OPT_GETRIX_SCHEMA_VERSION ;?>" type="text" size="10" name="<?php echo SWP180214_OPT_GETRIX_SCHEMA_VERSION ;?>" value="<?php echo get_option(SWP180214_OPT_GETRIX_SCHEMA_VERSION);?>" required/><br>
+					<span class="description">
+					Versione dello schema da utilizzare.<br>Se non si &egrave; sicuri lasciare le impostazioni di default.
+					</span>
+				</td>
+				</tr>
+			
+				<tr valign="top">
+				<th scope="row">Getrix codice utente</th>
+				<td>
+					<label for="<?php echo SWP180214_OPT_GETRIX_USER ;?>"></label>
+					<input id="<?php echo SWP180214_OPT_GETRIX_USER ;?>" type="text" size="100" name="<?php echo SWP180214_OPT_GETRIX_USER ;?>" value="<?php echo get_option(SWP180214_OPT_GETRIX_USER);?>" required/><br>
+					<span class="description">
+					Inserire il codice utente rilasciato dal fornitore del feed.<br>Se non si &egrave; sicuri lasciare le impostazioni di default.
+					</span>
+				</td>
+				</tr>
+			
+				<tr valign="top">
+                <th scope="row"></th>
+                <td>
+                	<p>
+                    	<input type="submit" class="button-primary" id="submit" name="submit" value="<?php _e('Salva') ?> " />
+                        <input type="button" class="button-primary" onclick="swp180214_restore_default_install_values()" value="<?php _e('Ripristina valori di default') ?> " />
+                        <div id="swp180214_loader" style="display: none;">
+               				<img style="float:left;padding-right:10px;" src="<?php echo plugins_url('res/images/circular_loader.gif',__FILE__);?>"/>
+               				<div><h3>Salvataggio in corso...</h3></div>
+               			</div>                                  
+                    </p>
+           		</td>
+               	</tr>
+				</tbody>
+				</table>
+				</form>
+	
 				<div>
 				
 			</div>
@@ -178,28 +277,27 @@ function swp180214_page_settings(){
 	</div><?php 
 }
 
+function swp180214_page_update_db(){
+	if(wp_verify_nonce( $_REQUEST['_dbnonce'], 'swp180214_action_update_db_nonce' )){
+		swp180214_populate_database();
+		echo 'Aggiornamento eseguito !';
+	}else die('RICHIESTA NON PERMESSA');
+	die();
+}
+
 function swp180214_page_install_confirm(){
 	if(wp_verify_nonce( $_REQUEST['_nonce'], 'swp180214_action_submit_install_nonce' )){
-		update_option(SWP180214_OPT_INSTALL_PROCESS,1);
-	}else die('ERRORE DURANTE L\'INSTALLAZIONE');
+		if(get_option(SWP180214_OPT_FIRST_INSTALL)){
+			update_option(SWP180214_OPT_INSTALL_PROCESS,1);
+		}
+	}else die('RICHIESTA NON PERMESSA');
 	die();
 }
 
 function swp180214_page_feed_confirm(){
-	if(wp_verify_nonce( $_REQUEST['_nonce'], 'swp180214_action_submit_install_nonce' )){
-		switch (get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE)){
-			case SWP180214_AUTOMATIC:
-				if (!wp_next_scheduled(SWP180214_UPDATE_DATA_HOOK)) {
-					wp_schedule_event( time(), 'daily', SWP180214_UPDATE_DATA_HOOK);
-				}
-				break;
-			case SWP180214_MANUAL:
-				wp_clear_scheduled_hook( SWP180214_UPDATE_DATA_HOOK );
-				break;
-		}
-		
+	if(wp_verify_nonce( $_REQUEST['_nonce'], 'swp180214_action_submit_install_nonce' )){		
 		update_option(SWP180214_OPT_INSTALL_PROCESS,3);
-	}else die('ERRORE DURANTE L\'INSTALLAZIONE');
+	}else die('RICHIESTA NON PERMESSA');
 	die();
 }
 
@@ -267,12 +365,13 @@ function swp180214_page_install(){
 				<tr valign="top">
 					<th scope="row">Modalita di aggiornamento dati</th>
 					<td>
-						
-						<input id="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" type="radio" name="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" value="<?php echo SWP180214_AUTOMATIC;?>" <?php checked(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE),SWP180214_AUTOMATIC);?>/>
-						<label for="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>">Automatica (CronJob)</label>
+					
+						<input id="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>_auto" type="radio" name="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" value="<?php echo SWP180214_AUTOMATIC;?>" <?php checked(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE),SWP180214_AUTOMATIC);?>/>
+						<label for="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>_auto">Automatica (CronJob)</label>						
 						<br>
-						<input id="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" type="radio" name="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" value="<?php echo SWP180214_MANUAL;?>" <?php checked(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE),SWP180214_MANUAL);?>/>
-						<label for="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>">Manuale</label>
+						<input id="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>_manual" type="radio" name="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" value="<?php echo SWP180214_MANUAL;?>" <?php checked(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE),SWP180214_MANUAL);?>/>
+						<label for="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>_manual">Manuale</label>	
+						
 						<br>
 						<span class="description">
 						Specifica la modalita di aggiornamento dei dati.<br>Se non si &egrave; sicuri lasciare le impostazioni di default.
