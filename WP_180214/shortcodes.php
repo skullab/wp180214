@@ -17,30 +17,96 @@ limitations under the License.
 
 /* SHORTCODE TAG : WP180214
  * ATTRIBUTI :
- * DIV = RICERCA | RISULTATI | IMMOBILI
- * CLASS = nome della classe css
+ * DIV = STRING - RICERCA | RISULTATI | IMMOBILI - DEFAULT NULL
+ * CLASS = STRING (nome della classe css) - DEFAULT NULL
  * 
  * DIV => RICERCA
- * 	CONTRATTO = TRUE | FALSE
- * 	TIPOLOGIA = TRUE | FALSE
- * 	PREZZO = TRUE | FALSE
+ * 	CONTRATTO = BOOLEAN - DEFAULT TRUE
+ * 	TIPOLOGIA = BOOLEAN - DEFAULT TRUE
+ * 	PREZZO = BOOLEAN - DEFAULT TRUE
+ * 
+ * DIV => RISULTATI
+ *  LIMIT = INTEGER | 0 = SENZA LIMITI - DEFAULT 0
+ *  TITOLO = BOOLEAN - DEFAULT TRUE
+ *  TESTOBREVE = BOOLEAN - DEFAULT FALSE
+ *  THUMB = BOOLEAN - DEFAULT TRUE
+ *  ULTIMI = INTEGER | 0 = NESSUNO - DEFAULT 0
+ *  
+ * DIV => DETTAGLIO
+ *  DESCRIZIONE = BOOLEAN - DEFAULT TRUE
+ *  TITOLO = BOOLEAN - DEFAULT TRUE
+ *  TESTOBREVE = BOOLEAN - DEFAULT FALSE
+ *  TESTO = BOOLEAN - DEFAULT TRUE
+ *  LINGUA = BOOLEAN - DEFAULT TRUE
+ *  CODICENAZIONE = BOOLEAN - DEFAULT FALSE
+ *  CODICECOMUNE = BOOLEAN - DEFAULT TRUE
+ *  QUARTIERE = BOOLEAN - DEFAULT TRUE
+ *  LOCALITA = BOOLEAN - DEFAULT TRUE
+ *  ZONA = BOOLEAN - DEFAULT TRUE
+ *  STRADA = BOOLEAN - DEFAULT TRUE
+ *  INDIRIZZO = BOOLEAN - DEFAULT TRUE
+ *  CIVICO = BOOELAN - DEFAULT TRUE
+ *  CAP = BOOLEAN - DEFAULT TRUE
+ *  MAPPA = BOOLEAN - DEFAULT TRUE
+ *  NRLOCALI = BOOLEAN - DEFAULT TRUE
+ *  NRVANI = BOOLEAN - DEFAULT TRUE
+ *  PREZZO = BOOLEAN - DEFAULT TRUE
+ *  MQSUPERFICIE = BOOLEAN - DEFAULT TRUE
+ *  RIFERIMENTO = BOOLEAN - DEFAULT TRUE
+ *  SPESEMENSILI = BOOLEAN - DEFAULT TRUE
+ *  TIPOSPESE = BOOLEAN - DEFAULT TRUE
+ *  DURATACONTRATTO = BOOLEAN - DEFAULT TRUE
+ *  TIPOPROPRIETA = BOOLEAN - DEFAULT TRUE
+ *  BAGNI = BOOLEAN - DEFAULT TRUE
+ *  CUCINA = BOOLEAN - DEFAULT TRUE
+ *  TERRAZZI = BOOLEAN - DEFAULT TRUE
+ *  BOXAUTO = BOOLEAN - DEFAULT TRUE
+ *  CANTINA = BOOLEAN - DEFAULT TRUE
+ *  GIARDINO = BOOLEAN - DEFAULT TRUE
+ *  RISCALDAMENTO = BOOLEAN - DEFAULT TRUE
+ *  ARREDAMENTO = BOOLEAN - DEFAULT TRUE
+ *  CLASSEENERGETICA = BOOLEAN - DEFAULT TRUE
+ *  IPE = BOOLEAN - DEFAULT TRUE
+ *  VIDEO = BOOLEAN - DEFAULT TRUE
+ *  IMMAGINI = BOOLEAN - DEFAULT TRUE
+ *  ALLEGATI = BOOLEAN - DEFAULT FALSE
+ *  CUSTOM = STRING - (INDICA IL NOME DELLA COLONNA DEL DATABASE DA VISUALIZZARE)
  */
 $swp180214_shortcode_atts = array(
-'div' 		=> null,
-'class' 	=> null,
-'contratto' => 'true',
-'tipologia' => 'true',
-'prezzo'	=> 'true',
+'div' 			=> null,
+'class' 		=> null,
+'contratto' 	=> 'true',
+'tipologia' 	=> 'true',
+'prezzo'		=> 'true',
+'thumb'			=> 'true',
+'ultimi'		=> 0,
+'limit'			=> 0,
+'descrizione'	=> 'true',
+'titolo'		=> 'true',
+'testobreve'	=> 'false',
+'testo'			=> 'true',
+'lingua'		=> 'true',
+'codicenazione'	=> 'false',
+'codicecomune'	=> 'true',
+'quartiere'		=> 'true',
+'localita'		=> 'true',
+'zona'			=> 'true',
+'strada'		=> 'true',
+'indirizzo'		=> 'true',
+'civico'		=> 'true',
+'cap'			=> 'true',
+'mappa'			=> 'true',
+'nrlocali'		=> 'true',
+'nrvani'
 );
-function swp180214_shortcode($atts,$content){
+function swp180214_shortcode($atts,$content = null){
 	global $swp180214_shortcode_atts,$wpdb ;
 	extract(shortcode_atts($swp180214_shortcode_atts,$atts));
 	
 	ob_start();
 	if($div != null){
 		?><div id="wp180214_<?php echo strtolower($div) ;?>" <?php if($class != null) echo "class=\"$class\"" ; ?> >
-			
-		<?php
+		<?php 		
 			switch (strtolower($div)){
 //===================================================================================================
 				case 'ricerca' :
@@ -98,12 +164,19 @@ function swp180214_shortcode($atts,$content){
 //===================================================================================================
 				case 'risultati':
 					?>
-					
+					risultati
 					<?php 
 					break;
 //===================================================================================================
-				case 'immobili':
+				case 'dettaglio':
+					?>
+					immobili
+					<?php 
 					break;
+				default:
+					if(!is_null($content)){
+						echo do_shortcode($content);
+					}	
 			} 
 		?>		
 		</div>
