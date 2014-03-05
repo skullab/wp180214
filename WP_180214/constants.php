@@ -35,6 +35,7 @@ define('SWP180214_DB_VERSION','1.0');
 define('SWP180214_AUTOMATIC','swp180214_automatic');
 define('SWP180214_MANUAL','swp180214_manual');
 define('SWP180214_UPDATE_DATA_HOOK','swp180214_update_data_hook');
+define('SWP180214_SHORTCODE','WP180214');
 /*******************************************************************************************************************/
 define('SWP180214_ERROR_MALFORMED_FEED_URI',100);
 define('SWP180214_ERROR_DOWNLOAD_FEED_URI',200);

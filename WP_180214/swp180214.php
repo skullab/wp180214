@@ -41,6 +41,7 @@ require_once 'installation.php';
 require_once 'display_page_setting.php';
 require_once 'menu_pages.php';
 require_once 'updatedata.php';
+require_once 'shortcodes.php';
 /*****************************************************************************************************/
 register_activation_hook( __FILE__, 'swp180214_activation');
 function swp180214_activation(){
@@ -73,12 +74,13 @@ function swp180214_activation(){
 	add_option(SWP180214_OPT_UPLOAD_DIR,false);
 	add_option(SWP180214_OPT_GLOBAL_ERROR,false);
 	
-	add_option(SWP180214_OPT_UPDATE_AVAILABLE,false);
+	add_option(SWP180214_OPT_UPDATE_AVAILABLE,false);	
 }
 /*****************************************************************************************************/
 register_deactivation_hook( __FILE__, 'swp180214_deactivation' );
 function swp180214_deactivation(){
 	wp_clear_scheduled_hook( SWP180214_UPDATE_DATA_HOOK );
+	remove_shortcode(SWP180214_SHORTCODE);
 }
 /*****************************************************************************************************/
 function swp180214_register_options_install(){
