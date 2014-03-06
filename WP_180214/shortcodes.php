@@ -67,48 +67,125 @@ limitations under the License.
  *  RISCALDAMENTO = BOOLEAN - DEFAULT TRUE
  *  ARREDAMENTO = BOOLEAN - DEFAULT TRUE
  *  CLASSEENERGETICA = BOOLEAN - DEFAULT TRUE
+ *  TIPOLOGIA = BOOLEAN - DEFAULT TRUE
  *  IPE = BOOLEAN - DEFAULT TRUE
  *  VIDEO = BOOLEAN - DEFAULT TRUE
  *  IMMAGINI = BOOLEAN - DEFAULT TRUE
  *  ALLEGATI = BOOLEAN - DEFAULT FALSE
- *  CUSTOM = {STRING - (nome tabella) , STRING - (nome colonna)}
+ *  CUSTOM = {STRING - (nome tabella) , STRING - (nome colonna)} - DEFAULT EMPTY STRING
  */
 $swp180214_shortcode_atts = array(
-'div' 			=> null,
-'class' 		=> null,
-'contratto' 	=> 'true',
-'categoria' 	=> 'true',
-'prezzo'		=> 'true',
-'libero'		=> 'false',
-'thumb'			=> 'true',
-'ultimi'		=> 0,
-'limit'			=> 0,
-'descrizione'	=> 'true',
-'titolo'		=> 'true',
-'testobreve'	=> 'true',
-'testo'			=> 'true',
-'lingua'		=> 'true',
-'codicenazione'	=> 'false',
-'codicecomune'	=> 'true',
-'quartiere'		=> 'true',
-'localita'		=> 'true',
-'zona'			=> 'true',
-'strada'		=> 'true',
-'indirizzo'		=> 'true',
-'civico'		=> 'true',
-'cap'			=> 'true',
-'mappa'			=> 'true',
-'nrlocali'		=> 'true',
-'nrvani'
+'div' 				=> null,
+'class' 			=> null,
+'contratto' 		=> 'true',
+'categoria' 		=> 'true',
+'prezzo'			=> 'true',
+'libero'			=> 'false',
+'thumb'				=> 'true',
+'ultimi'			=> 0,
+'limit'				=> 0,
+'descrizione'		=> 'true',
+'titolo'			=> 'true',
+'testobreve'		=> 'true',
+'datainserimento'	=> 'true',
+'testo'				=> 'true',
+'lingua'			=> 'true',
+'codicenazione'		=> 'false',
+'codicecomune'		=> 'true',
+'quartiere'			=> 'true',
+'localita'			=> 'true',
+'zona'				=> 'true',
+'strada'			=> 'false',
+'indirizzo'			=> 'true',
+'civico'			=> 'true',
+'cap'				=> 'true',
+'mappa'				=> 'true',
+'nrlocali'			=> 'true',
+'nrvani'			=> 'true',
+'mqsuperficie'		=> 'true',
+'riferimento'		=> 'true',
+'spesemensili'		=> 'true',
+'tipospese'			=> 'true',
+'duratacontratto'	=> 'true',
+'tipoproprieta'		=> 'true',
+'bagni'				=> 'true',
+'cucina'			=> 'true',
+'terrazzi'			=> 'true',
+'boxauto'			=> 'true',
+'cantina'			=> 'true',
+'giardino'			=> 'true',
+'riscaldamento'		=> 'true',
+'arredamento'		=> 'true',
+'classeenergetica'	=> 'true',
+'tipologia'			=> 'true',
+'ipe'				=> 'true',
+'video'				=> 'true',
+'immagini'			=> 'true',
+'allegati'			=> 'false',
+'custom'			=> ''
 );
 
 function swp180214_shortcode($atts,$content = null){
 	global $swp180214_shortcode_atts,$wpdb ;
 	extract(shortcode_atts($swp180214_shortcode_atts,$atts));
+	
+	//wp_enqueue_style(SWP180214_CSS_PRETTYPHOTO);
 	wp_enqueue_style(SWP180214_CSS_SHORTCODE);
+	
+	//wp_enqueue_script(SWP180214_JS_PRETTYPHOTO);
 	wp_enqueue_script(SWP180214_JS_SHORTCODE);
 	wp_localize_script(SWP180214_JS_SHORTCODE,'swp180214_ajax_placeholder',
 	array('url' => admin_url('admin-ajax.php')));
+	wp_localize_script(SWP180214_JS_SHORTCODE,'swp180214_js_placeholder',
+	array(
+	'limit'				=> is_numeric($limit)? $limit : 0 ,
+	'titolo' 			=> strtolower($titolo) == 'true' ? true : false ,
+	'testobreve' 		=> strtolower($testobreve) == 'true' ? true : false ,
+	'thumb' 			=> strtolower($thumb) == 'true' ? true : false ,
+	'ultimi'			=> is_numeric($ultimi)? $ultimi : 0 ,
+	'loader'			=> '<div id="wp180214_risultati_loader"><img src="'.plugins_url('res/images/circular_loader.gif',__FILE__).'" />&nbsp;Ricerca in corso...</div>',
+	'noimage'			=> plugins_url('res/images/no_image.png',__FILE__),
+	'arrow'				=> plugins_url('res/images/arrow_back.png',__FILE__),
+	'descrizione'		=> strtolower($descrizione) == 'true' ? true : false ,
+	'titolo'			=> strtolower($titolo) == 'true' ? true : false ,
+	'datainserimento'	=> strtolower($datainserimento) == 'true' ? true : false,
+	'testo'				=> strtolower($testo) == 'true' ? true : false,
+	'lingua'			=> strtolower($lingua) == 'true' ? true : false,
+	'codicenazione'		=> strtolower($codicenazione) == 'true' ? true : false,
+	'codicecomune'		=> strtolower($codicecomune) == 'true' ? true : false,
+	'quartiere'			=> strtolower($quartiere) == 'true' ? true : false,
+	'localita'			=> strtolower($localita) == 'true' ? true : false,
+	'zona'				=> strtolower($zona) == 'true' ? true : false,
+	'strada'			=> strtolower($strada) == 'true' ? true : false,
+	'indirizzo'			=> strtolower($indirizzo) == 'true' ? true : false,
+	'civico'			=> strtolower($civico) == 'true' ? true : false,
+	'cap'				=> strtolower($cap) == 'true' ? true : false,
+	'mappa'				=> strtolower($mappa) == 'true' ? true : false,
+	'nrlocali'			=> strtolower($nrlocali) == 'true' ? true : false,
+	'nrvani'			=> strtolower($nrvani) == 'true' ? true : false,
+	'prezzo'			=> strtolower($prezzo) == 'true' ? true : false,
+	'mqsuperficie'		=> strtolower($mqsuperficie) == 'true' ? true : false,
+	'riferimento'		=> strtolower($riferimento) == 'true' ? true : false,
+	'spesemensili'		=> strtolower($spesemensili) == 'true' ? true : false,
+	'tipospese'			=> strtolower($tipospese) == 'true' ? true : false,
+	'duratacontratto'	=> strtolower($duratacontratto) == 'true' ? true : false,
+	'tipoproprieta'		=> strtolower($tipoproprieta) == 'true' ? true : false,
+	'bagni'				=> strtolower($bagni) == 'true' ? true : false,
+	'cucina'			=> strtolower($cucina) == 'true' ? true : false,
+	'terrazzi'			=> strtolower($terrazzi) == 'true' ? true : false,
+	'boxauto'			=> strtolower($boxauto) == 'true' ? true : false,
+	'cantina'			=> strtolower($cantina) == 'true' ? true : false,
+	'giardino'			=> strtolower($giardino) == 'true' ? true : false,
+	'riscaldamento'		=> strtolower($riscaldamento) == 'true' ? true : false,
+	'arredamento'		=> strtolower($arredamento) == 'true' ? true : false,
+	'classeenergetica'	=> strtolower($classeenergetica) == 'true' ? true : false,
+	'tipologia'			=> strtolower($tipologia) == 'true' ? true : false,
+	'ipe'				=> strtolower($ipe) == 'true' ? true : false,
+	'video'				=> strtolower($video) == 'true' ? true : false,
+	'immagini'			=> strtolower($immagini) == 'true' ? true : false,
+	'allegati'			=> strtolower($allegati) == 'true' ? true : false,
+	'custom'			=> $custom
+	));
 	
 	ob_start();
 	if($div != null){
@@ -182,16 +259,6 @@ function swp180214_shortcode($atts,$content = null){
 					break;
 //===================================================================================================
 				case 'risultati':
-					wp_localize_script(SWP180214_JS_SHORTCODE,'swp180214_js_placeholder',
-					array(
-						'limit'			=> is_numeric($limit)? $limit : 0 ,
-						'titolo' 		=> strtolower($titolo) == 'true' ? true : false ,
-						'testobreve' 	=> strtolower($testobreve) == 'true' ? true : false ,
-						'thumb' 		=> strtolower($thumb) == 'true' ? true : false ,
-						'ultimi'		=> is_numeric($ultimi)? $ultimi : 0 ,
-						'loader'		=> '<div id="wp180214_risultati_loader"><img src="'.plugins_url('res/images/circular_loader.gif',__FILE__).'" />&nbsp;Ricerca in corso...</div>',
- 						'noimage'		=> plugins_url('res/images/no_image.png',__FILE__)
-						));
 					if(is_numeric($ultimi) && $ultimi > 0){
 						$sql = 	"SELECT ".swp180214_table_prefix()."descrizione.idimmobile,
  								".swp180214_table_prefix()."descrizione.titolo,
@@ -240,10 +307,7 @@ function swp180214_shortcode($atts,$content = null){
 							<?php
 							}
 							 
-						}else{
-							
-						}
-										
+						}				
 					}
 					break;
 //===================================================================================================
@@ -275,15 +339,27 @@ function swp180214_shortcode_search(){
 	$prezzo_massimo = isset($_REQUEST['prezzo_massimo']) ? $_REQUEST['prezzo_massimo'] : '' ;
 	$libero = isset($_REQUEST['libero']) ? $_REQUEST['libero'] : '' ;
 	
-	$sql = 	"SELECT ".swp180214_table_prefix()."descrizione.idimmobile,
+	/*$sql = 	"SELECT ".swp180214_table_prefix()."descrizione.idimmobile,
  			".swp180214_table_prefix()."descrizione.titolo,
  			".swp180214_table_prefix()."descrizione.testo,
  			".swp180214_table_prefix()."descrizione.testobreve,
  			".swp180214_table_prefix()."immagine.url AS thumb
  			FROM ".swp180214_table_prefix()."descrizione 
  			LEFT OUTER JOIN ".swp180214_table_prefix()."immagine 
- 			ON ".swp180214_table_prefix()."descrizione.idimmobile = ".swp180214_table_prefix()."immagine.idimmobile 
- 			WHERE ".swp180214_table_prefix()."descrizione.idimmobile IN (" ;
+ 			ON ".swp180214_table_prefix()."descrizione.idimmobile = ".swp180214_table_prefix()."immagine.idimmobile
+ 			WHERE ".swp180214_table_prefix()."descrizione.idimmobile IN (" ;*/
+	$sql = 	"SELECT ".swp180214_table_prefix()."descrizione.idimmobile,
+ 								".swp180214_table_prefix()."descrizione.titolo,
+ 								".swp180214_table_prefix()."descrizione.testo,
+ 								".swp180214_table_prefix()."descrizione.testobreve,
+ 								".swp180214_table_prefix()."immagine.url AS thumb,
+ 								".swp180214_table_prefix()."immobile.datamodifica
+ 								FROM ".swp180214_table_prefix()."descrizione
+ 								LEFT OUTER JOIN ".swp180214_table_prefix()."immagine
+ 								ON ".swp180214_table_prefix()."descrizione.idimmobile = ".swp180214_table_prefix()."immagine.idimmobile
+ 								LEFT OUTER JOIN ".swp180214_table_prefix()."immobile
+ 								ON ".swp180214_table_prefix()."descrizione.idimmobile = ".swp180214_table_prefix()."immobile.idimmobile
+ 								WHERE ".swp180214_table_prefix()."descrizione.idimmobile IN (" ;
 	
 	$sql .= "SELECT idimmobile FROM ".swp180214_table_prefix()."immobile" ;
 	
@@ -310,7 +386,7 @@ function swp180214_shortcode_search(){
 		$sql .= " AND ( codicecomune LIKE '%$libero%' OR quartiere LIKE '%$libero%' OR zona LIKE '%$libero%' OR indirizzo LIKE '%$libero%' OR cap LIKE '%$libero%' or strada LIKE '%$libero%' or tipologia LIKE '%$libero%' OR riferimento LIKE '%$libero%')" ;
 	}
 	
-	$sql .= ") GROUP BY idimmobile" ;
+	$sql .= ") GROUP BY idimmobile ORDER BY ".swp180214_table_prefix()."immobile.datamodifica" ;
 	
 	$results = $wpdb->get_results($sql,ARRAY_A);
 	if($wpdb->num_rows > 0){
@@ -328,8 +404,19 @@ function swp180214_shortcode_details(){
 	if(isset($_REQUEST['idimmobile'])){
 		global $wpdb ;
 		$idimmobile = $_REQUEST['idimmobile'] ;
-		$sql_immobile = "SELECT * FROM ".swp180214_table_prefix()."immobile WHERE idimmobile = $idimmobile" ;
+		$details = array();
+		$sql = "SELECT * FROM %s WHERE idimmobile = $idimmobile" ;
 		
+		$sql_tables = "SELECT tables FROM ".swp180214_table_prefix()."getrix_tree" ;
+		$tables = $wpdb->get_results($sql_tables,ARRAY_A);
+		$count = 0 ;
+		foreach ($tables as $table){
+			$sql_sane = sprintf($sql,$table['tables']);
+			$D = $wpdb->get_results($sql_sane,ARRAY_A);
+			$details['T'.$count] = $D ;
+			$count++ ;
+		}
+		echo json_encode($details);
 	}else die('error');
 	die();
 }

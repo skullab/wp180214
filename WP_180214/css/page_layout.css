@@ -48,3 +48,22 @@ limitations under the License.
 #wp180214_risultati .wp180214_risultati_risultato .wp180214_risultati_risultato_testobreve {}
 /******************************************************************************************************************/
 #wp180214_dettaglio {}
+#wp180214_dettaglio .wp180214_dettaglio_back {
+	cursor:pointer;
+}
+#wp180214_dettaglio #wp180214_dettaglio_titolo {
+	font-weight:bold;
+	font-size: 14pt;
+}
+#wp180214_dettaglio #wp180214_dettaglio_immagini_label {
+	font-weight:bold;
+}
+#wp180214_dettaglio #wp180214_dettaglio_immagini {}
+#wp180214_dettaglio #wp180214_dettaglio_immagini a {
+	margin: 2px;
+}
+#wp180214_dettaglio #wp180214_dettaglio_immagini img {}
+#wp180214_dettaglio #wp180214_dettaglio_dettagli_label {
+	font-weight:bold;
+}
+#wp180214_dettaglio #wp180214_dettaglio_dettagli_table {}

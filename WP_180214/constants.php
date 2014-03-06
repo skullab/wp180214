@@ -95,7 +95,9 @@ define('SWP180214_JS_JQUERY_VALIDATOR','swp180214_js_jquery_validator');
 define('SWP180214_JS_VALIDATOR','swp180214_js_validator');
 define('SWP180214_JS_SETTINGS_PAGE','swp180214_js_settings_page');
 define('SWP180214_JS_SHORTCODE','swp180214_js_shortcode');
+define('SWP180214_JS_PRETTYPHOTO','swp180214_js_prettycode');
 /*******************************************************************************************************************/
 define('SWP180214_CSS_SETTINGS_MENU','swp180214_css_settings_menu');
 define('SWP180214_CSS_SHORTCODE','swp180214_css_shortcode');
+define('SWP180214_CSS_PRETTYPHOTO','swp180214_css_prettycode');
 ?>

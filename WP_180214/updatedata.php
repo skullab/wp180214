@@ -206,6 +206,7 @@ function swp180214_populate_database(){
 			//UPDATE
 			// ==================================================================================
 			$datamodifica = $wpdb->get_var("SELECT datamodifica FROM $table_immobile WHERE idimmobile = $idimmobile");
+			//$datamodifica = "1970-01-01 00:00:00" ;
 			
 			if($datamodifica != null && $datamodifica != $immobile_data['datamodifica']){
 				//swp180214_debug('UPDATE');
