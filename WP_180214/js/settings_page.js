@@ -127,3 +127,20 @@ function swp180214_request_update_page(nonce){
 		},0);
 		return true ;
 }
+
+function swp180214_request_install_update(nonce){
+	
+	jQuery('#swp180214_loader_install_update').css('display','block');
+	
+	setTimeout(function(){
+		jQuery.post(swp180214_ajax_placeholder.url,{
+			action:'swp180214_action_install_update',
+			_nonce:nonce,
+		},function(response) {
+			console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
+			jQuery('#swp180214_loader_install_update').css('display','none');
+			location.reload();
+		});
+		},0);
+	
+}

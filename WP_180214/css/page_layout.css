@@ -1,0 +1,50 @@
+@CHARSET "ISO-8859-1";
+/*
+ Copyright 2014 Ivan Maruca
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+#wp180214_ricerca {}
+#wp180214_ricerca [name=wp180214_form_ricerca] {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_contratto_affitto {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_contratto_vendita {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table [name=wp180214_ricerca_categoria] {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_prezzo_minimo {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_prezzo_massimo {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_libero {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_button {}
+/******************************************************************************************************************/
+#wp180214_risultati {}
+#wp180214_risultati #wp180214_risultati_loader {}
+#wp180214_risultati #wp180214_risultati_risultato_nessuno {}
+#wp180214_risultati .wp180214_risultati_risultato {
+	border: 1px solid #d3d3d3;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	padding: 5px;
+	margin-bottom: 5px;
+	cursor:pointer;
+}
+#wp180214_risultati .wp180214_risultati_risultato:hover {
+	border: 1px solid 	#7fb2e5;
+}
+#wp180214_risultati .wp180214_risultati_risultato .wp180214_risultati_risultato_thumb {}
+#wp180214_risultati .wp180214_risultati_risultato .wp180214_risultati_risultato_titolo {
+	font-weight:bold;
+}
+#wp180214_risultati .wp180214_risultati_risultato .wp180214_risultati_risultato_testobreve {}
+/******************************************************************************************************************/
+#wp180214_dettaglio {}

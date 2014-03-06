@@ -86,5 +86,5 @@ INSERT INTO ".swp180214_table_prefix()."proprieta (tipo, annotazione) VALUES ('6
 $sql_insert_spese = "INSERT INTO ".swp180214_table_prefix()."spese (tipo, annotazione) VALUES ('0', 'mensili');
 INSERT INTO ".swp180214_table_prefix()."spese (tipo, annotazione) VALUES ('1', 'annuali')";
 
-
+$sql_insert_getrix_tree = "INSERT INTO ".swp180214_table_prefix()."getrix_tree (tables) VALUES ('%s')";
 ?>

@@ -110,6 +110,12 @@ function swp180214_register_script(){
 	wp_register_script(SWP180214_JS_VALIDATOR,plugins_url('js/validator.install.js',__FILE__),array(SWP180214_JS_JQUERY_VALIDATOR));
 	wp_register_script(SWP180214_JS_SETTINGS_PAGE,plugins_url('js/settings_page.js',__FILE__),array('jquery'));
 }
+function swp180214_register_script_shortcode(){
+	wp_register_script(SWP180214_JS_SHORTCODE,plugins_url('js/shortcode.js',__FILE__),array('jquery'));
+}
+function swp180214_register_style_shortcode(){
+	wp_register_style(SWP180214_CSS_SHORTCODE,plugins_url('css/page_layout.css',__FILE__));
+}
 /*****************************************************************************************************/
 if(is_admin()){
 	add_action('admin_init','swp180214_install');
@@ -128,9 +134,16 @@ if(is_admin()){
 	add_action('wp_ajax_swp180214_action_create_page', 'swp180214_confirm_create_page');
 	add_action('wp_ajax_swp180214_action_delete_page', 'swp180214_confirm_delete_page');
 	add_action('wp_ajax_swp180214_action_update_page', 'swp180214_confirm_update_page');
+	add_action('wp_ajax_swp180214_action_install_update', 'swp180214_confirm_install_update');
 	
 	add_action( SWP180214_UPDATE_DATA_HOOK, 'swp180214_populate_database' );
 }
+/*****************************************************************************************************/
+// 											SHORTCODE
+add_action('init','swp180214_register_script_shortcode');
+add_action('init','swp180214_register_style_shortcode');
+add_action('wp_ajax_swp180214_action_shortcode_search', 'swp180214_shortcode_search');
+add_action('wp_ajax_swp180214_action_shortcode_details', 'swp180214_shortcode_details');
 /*****************************************************************************************************/
 switch (get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE)){
 	case SWP180214_AUTOMATIC:

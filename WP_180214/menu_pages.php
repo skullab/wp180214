@@ -58,6 +58,11 @@ function swp180214_page_settings(){
 					if(get_option(SWP180214_OPT_UPDATE_AVAILABLE)){
 						?>
 						<strong>E' disponibile un aggiornamento del plugin !</strong>
+						<input type="button" class="button-primary" value="Aggiorna ora !" onclick=" swp180214_request_install_update('<?php echo wp_create_nonce('swp180214_action_install_update_nonce');?>');"/>
+						<div id="swp180214_loader_install_update" style="display: none;">
+               				<img style="float:left;padding-right:10px;" src="<?php echo plugins_url('res/images/circular_loader.gif',__FILE__);?>"/>
+               				<div><h3>Aggiornamento in corso...</h3></div>
+               			</div> 
 						<?php 
 					}else{
 						?>
@@ -160,6 +165,18 @@ function swp180214_page_settings(){
 				<div id="swp180214_database_content">
 				<span class="description">
 				<h3><?php echo SWP180214_DISPLAY_NAME;?> > <a href="admin.php?page=<?php echo SWP180214_SLUG_SETTINGS ;?>">Impostazioni</a> > <a>Gestione Database<a></a></h3>
+				</span>
+				<h3>Info</h3>
+				<span class="description">
+				<ul>
+					<li>Versione database : <?php echo SWP180214_DB_VERSION; ?>
+					<?php
+					if(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE) == SWP180214_AUTOMATIC){
+					?>
+					<li>Prossimo aggiornamento : <?php echo date("d/m/Y H:i:s",wp_next_scheduled(SWP180214_UPDATE_DATA_HOOK));?><?php 
+					}
+					?>
+				</ul>
 				</span>
 				<?php
 					if(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE) == SWP180214_MANUAL){
@@ -277,6 +294,15 @@ function swp180214_page_settings(){
 	</div><?php 
 }
 
+function swp180214_confirm_install_update(){
+	if(wp_verify_nonce( $_REQUEST['_nonce'], 'swp180214_action_install_update_nonce' )){
+		swp180214_install_db();
+		update_option(SWP180214_OPT_DB_VERSION,SWP180214_DB_VERSION);
+		update_option(SWP180214_OPT_UPDATE_AVAILABLE,false);
+		echo 'Aggiornamento eseguito !';
+	}else die('RICHIESTA NON PERMESSA');
+	die();
+}
 function swp180214_page_update_db(){
 	if(wp_verify_nonce( $_REQUEST['_dbnonce'], 'swp180214_action_update_db_nonce' )){
 		swp180214_populate_database();

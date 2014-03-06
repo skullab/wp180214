@@ -31,7 +31,7 @@ define('SWP180214_DISPLAY_NAME','WP180214');
 /** The slug plugin name */
 define('SWP180214_SLUG_NAME','wp180214');
 /** THE CURRENT DB VERSION */
-define('SWP180214_DB_VERSION','1.0');
+define('SWP180214_DB_VERSION','1.4');
 define('SWP180214_AUTOMATIC','swp180214_automatic');
 define('SWP180214_MANUAL','swp180214_manual');
 define('SWP180214_UPDATE_DATA_HOOK','swp180214_update_data_hook');
@@ -94,6 +94,8 @@ define('SWP180214_PAGE_NAME_INSTALL_DESCRIPTION','Procedura guidata per la prima
 define('SWP180214_JS_JQUERY_VALIDATOR','swp180214_js_jquery_validator');
 define('SWP180214_JS_VALIDATOR','swp180214_js_validator');
 define('SWP180214_JS_SETTINGS_PAGE','swp180214_js_settings_page');
+define('SWP180214_JS_SHORTCODE','swp180214_js_shortcode');
 /*******************************************************************************************************************/
 define('SWP180214_CSS_SETTINGS_MENU','swp180214_css_settings_menu');
+define('SWP180214_CSS_SHORTCODE','swp180214_css_shortcode');
 ?>

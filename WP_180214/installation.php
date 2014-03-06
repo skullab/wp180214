@@ -27,7 +27,7 @@ function swp180214_update(){
 	$current_db_version = get_option(SWP180214_OPT_DB_VERSION);
 	$current_plugin_version = get_option(SWP180214_OPT_PLUGIN_VERSION);
 	//TODO ONLINE UPDATE RESPONSE
-	if($current_plugin_version != SWP180214_VERSION || $current_db_version != SWP180214_DB_VERSION){
+	if($current_db_version != SWP180214_DB_VERSION){
 		update_option(SWP180214_OPT_UPDATE_AVAILABLE,true);
 		swp180214_install(true);
 		return;
@@ -275,11 +275,15 @@ function swp180214_install_db(){
 	foreach ($spese as $sql){
 		$wpdb->query($sql);
 	}
+	foreach ($getrix_tables as $table){
+		$wpdb->query($wpdb->prepare($sql_insert_getrix_tree,strtolower(swp180214_table_prefix().$table)));
+	}
 	// ==================================================================================
 	echo '<li>CREAZIONE DATABASE COMPLETATA !';
 	// ==================================================================================
-	//update_option(SWP180214_OPT_FIRST_INSTALL,false);
-	update_option(SWP180214_OPT_INSTALL_PROCESS,2);
+	if(get_option(SWP180214_OPT_FIRST_INSTALL)){
+		update_option(SWP180214_OPT_INSTALL_PROCESS,2);
+	}
 	return;
 }
 ?>
