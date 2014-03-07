@@ -142,8 +142,12 @@ add_action( SWP180214_UPDATE_DATA_HOOK, 'swp180214_populate_database' );
 // 											SHORTCODE
 add_action('init','swp180214_register_script_shortcode');
 add_action('init','swp180214_register_style_shortcode');
+
 add_action('wp_ajax_swp180214_action_shortcode_search', 'swp180214_shortcode_search');
+add_action('wp_ajax_nopriv_swp180214_action_shortcode_search', 'swp180214_shortcode_search');
+
 add_action('wp_ajax_swp180214_action_shortcode_details', 'swp180214_shortcode_details');
+add_action('wp_ajax_nopriv_swp180214_action_shortcode_details', 'swp180214_shortcode_details');
 /*****************************************************************************************************/
 switch (get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE)){
 	case SWP180214_AUTOMATIC:

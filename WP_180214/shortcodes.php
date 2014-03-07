@@ -345,13 +345,10 @@ function swp180214_shortcode_search(){
  			".swp180214_table_prefix()."descrizione.titolo,
  			".swp180214_table_prefix()."descrizione.testo,
  			".swp180214_table_prefix()."descrizione.testobreve,
- 			".swp180214_table_prefix()."immagine.url AS thumb,
- 			".swp180214_table_prefix()."immobile.datamodifica
+ 			".swp180214_table_prefix()."immagine.url AS thumb
  			FROM ".swp180214_table_prefix()."descrizione
  			LEFT OUTER JOIN ".swp180214_table_prefix()."immagine
  			ON ".swp180214_table_prefix()."descrizione.idimmobile = ".swp180214_table_prefix()."immagine.idimmobile
- 			LEFT OUTER JOIN ".swp180214_table_prefix()."immobile
- 			ON ".swp180214_table_prefix()."descrizione.idimmobile = ".swp180214_table_prefix()."immobile.idimmobile
  			WHERE ".swp180214_table_prefix()."descrizione.idimmobile IN (" ;
 	
 	$sql .= "SELECT idimmobile FROM ".swp180214_table_prefix()."immobile" ;
@@ -379,7 +376,7 @@ function swp180214_shortcode_search(){
 		$sql .= " AND ( codicecomune LIKE '%$libero%' OR quartiere LIKE '%$libero%' OR zona LIKE '%$libero%' OR indirizzo LIKE '%$libero%' OR cap LIKE '%$libero%' or strada LIKE '%$libero%' or tipologia LIKE '%$libero%' OR riferimento LIKE '%$libero%')" ;
 	}
 	
-	$sql .= ") GROUP BY idimmobile ORDER BY ".swp180214_table_prefix()."immobile.datamodifica" ;
+	$sql .= ") GROUP BY idimmobile" ;
 	
 	$results = $wpdb->get_results($sql,ARRAY_A);
 	if($wpdb->num_rows > 0){
