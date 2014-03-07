@@ -25,12 +25,12 @@ var swp180214_risultati_response 			= swp180214_js_placeholder.response ;
 
 var swp180214_dettaglio_youtube				= swp180214_js_placeholder.youtube ;
 var swp180214_dettaglio_arrow				= swp180214_js_placeholder.arrow ;
-var swp180214_dettaglio_descrizione			= swp180214_js_placeholder.descrizione ;//ok
-var swp180214_dettaglio_titolo				= swp180214_js_placeholder.titolo ;//ok
-var swp180214_dettaglio_datainserimento		= swp180214_js_placeholder.datainserimento ;//ok
-var swp180214_dettaglio_testo				= swp180214_js_placeholder.testo ;//ok
-var swp180214_dettaglio_lingua				= swp180214_js_placeholder.lingua ; // non serve
-var swp180214_dettaglio_codicenazione		= swp180214_js_placeholder.codicenazione ; // non serve
+var swp180214_dettaglio_descrizione			= swp180214_js_placeholder.descrizione ;
+var swp180214_dettaglio_titolo				= swp180214_js_placeholder.titolo ;
+var swp180214_dettaglio_datainserimento		= swp180214_js_placeholder.datainserimento ;
+var swp180214_dettaglio_testo				= swp180214_js_placeholder.testo ;
+var swp180214_dettaglio_lingua				= swp180214_js_placeholder.lingua ; 
+var swp180214_dettaglio_codicenazione		= swp180214_js_placeholder.codicenazione ; 
 var swp180214_dettaglio_codicecomune		= swp180214_js_placeholder.codicecomune ;
 var swp180214_dettaglio_quartiere			= swp180214_js_placeholder.quartiere ;
 var swp180214_dettaglio_localita			= swp180214_js_placeholder.localita ;
@@ -38,36 +38,36 @@ var swp180214_dettaglio_zona				= swp180214_js_placeholder.zona ;
 var swp180214_dettaglio_strada				= swp180214_js_placeholder.strada ;
 var swp180214_dettaglio_indirizzo			= swp180214_js_placeholder.indirizzo ;
 var swp180214_dettaglio_civico				= swp180214_js_placeholder.civico ;
-var swp180214_dettaglio_cap					= swp180214_js_placeholder.cap ; // fin qui ok
+var swp180214_dettaglio_cap					= swp180214_js_placeholder.cap ; 
 
-var swp180214_dettaglio_mappa				= swp180214_js_placeholder.mappa ; //todo
+var swp180214_dettaglio_mappa				= swp180214_js_placeholder.mappa ; //TODO
 
-var swp180214_dettaglio_nrlocali			= swp180214_js_placeholder.nrlocali ; //ok
-var swp180214_dettaglio_nrvani				= swp180214_js_placeholder.nrvani ; //ok
-var swp180214_dettaglio_prezzo				= swp180214_js_placeholder.prezzo ; //ok
+var swp180214_dettaglio_nrlocali			= swp180214_js_placeholder.nrlocali ; 
+var swp180214_dettaglio_nrvani				= swp180214_js_placeholder.nrvani ; 
+var swp180214_dettaglio_prezzo				= swp180214_js_placeholder.prezzo ; 
 var swp180214_dettaglio_mqsuperficie		= swp180214_js_placeholder.mqsuperficie ;
 var swp180214_dettaglio_riferimento			= swp180214_js_placeholder.riferimento ;
 var swp180214_dettaglio_spesemensili		= swp180214_js_placeholder.spesemensili ;
 var swp180214_dettaglio_tipospese			= swp180214_js_placeholder.tipospese ;
 var swp180214_dettaglio_duratacontratto		= swp180214_js_placeholder.duratacontratto ;
-var swp180214_dettaglio_tipoproprieta		= swp180214_js_placeholder.tipoproprieta ;//fin qui ok
+var swp180214_dettaglio_tipoproprieta		= swp180214_js_placeholder.tipoproprieta ;
 
-var swp180214_dettaglio_bagni				= swp180214_js_placeholder.bagni ; //ok
-var swp180214_dettaglio_cucina				= swp180214_js_placeholder.cucina ; //ok
-var swp180214_dettaglio_terrazzi			= swp180214_js_placeholder.terrazzi ;//ok
-var swp180214_dettaglio_boxauto				= swp180214_js_placeholder.boxauto ;//ok
-var swp180214_dettaglio_cantina				= swp180214_js_placeholder.cantina ;//ok
-var swp180214_dettaglio_giardino			= swp180214_js_placeholder.giardino ;//ok
-var swp180214_dettaglio_riscaldamento		= swp180214_js_placeholder.riscaldamento ;//ok
-var swp180214_dettaglio_arredamento			= swp180214_js_placeholder.arredamento ;//ok
+var swp180214_dettaglio_bagni				= swp180214_js_placeholder.bagni ; 
+var swp180214_dettaglio_cucina				= swp180214_js_placeholder.cucina ; 
+var swp180214_dettaglio_terrazzi			= swp180214_js_placeholder.terrazzi ;
+var swp180214_dettaglio_boxauto				= swp180214_js_placeholder.boxauto ;
+var swp180214_dettaglio_cantina				= swp180214_js_placeholder.cantina ;
+var swp180214_dettaglio_giardino			= swp180214_js_placeholder.giardino ;
+var swp180214_dettaglio_riscaldamento		= swp180214_js_placeholder.riscaldamento ;
+var swp180214_dettaglio_arredamento			= swp180214_js_placeholder.arredamento ;
 
-var swp180214_dettaglio_classeenergetica	= swp180214_js_placeholder.classeenergetica ; //ok
-var swp180214_dettaglio_tipologia			= swp180214_js_placeholder.tipologia ; //ok
-var swp180214_dettaglio_ipe					= swp180214_js_placeholder.ipe ;//ok
+var swp180214_dettaglio_classeenergetica	= swp180214_js_placeholder.classeenergetica ; 
+var swp180214_dettaglio_tipologia			= swp180214_js_placeholder.tipologia ; 
+var swp180214_dettaglio_ipe					= swp180214_js_placeholder.ipe ;
 var swp180214_dettaglio_video				= swp180214_js_placeholder.video ;
-var swp180214_dettaglio_immagini			= swp180214_js_placeholder.immagini ;//ok
-var swp180214_dettaglio_allegati			= swp180214_js_placeholder.allegati ;//todo
-var swp180214_dettaglio_custom				= swp180214_js_placeholder.custom ; //todo
+var swp180214_dettaglio_immagini			= swp180214_js_placeholder.immagini ;
+var swp180214_dettaglio_allegati			= swp180214_js_placeholder.allegati ;
+var swp180214_dettaglio_custom				= swp180214_js_placeholder.custom ; //TODO
 
 function swp180214_shortcode_search(nonce){
 	
