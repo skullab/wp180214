@@ -154,7 +154,7 @@ switch (get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE)){
 		if (!wp_next_scheduled(SWP180214_UPDATE_DATA_HOOK)) {
 			$ret = wp_schedule_event( time(), 'daily', SWP180214_UPDATE_DATA_HOOK);
 			if($ret != null){
-				swp180214_debug('ERRORE : EVENTO NON SCHEDULATO');
+				//swp180214_debug('ERRORE : EVENTO NON SCHEDULATO');
 			}
 		}
 		break;
