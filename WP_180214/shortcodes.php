@@ -90,12 +90,12 @@ $swp180214_shortcode_atts = array(
 'datainserimento'	=> 'true',
 'testo'				=> 'true',
 'lingua'			=> 'true',
-'codicenazione'		=> 'false',
+'codicenazione'		=> 'true', // false
 'codicecomune'		=> 'true',
 'quartiere'			=> 'true',
 'localita'			=> 'true',
 'zona'				=> 'true',
-'strada'			=> 'false',
+'strada'			=> 'true', // false
 'indirizzo'			=> 'true',
 'civico'			=> 'true',
 'cap'				=> 'true',
@@ -146,6 +146,7 @@ function swp180214_shortcode($atts,$content = null){
 	'loader'			=> '<div id="wp180214_risultati_loader"><img src="'.plugins_url('res/images/circular_loader.gif',__FILE__).'" />&nbsp;Ricerca in corso...</div>',
 	'noimage'			=> plugins_url('res/images/no_image.png',__FILE__),
 	'arrow'				=> plugins_url('res/images/arrow_back.png',__FILE__),
+	'youtube'			=> plugins_url('res/images/youtube.png',__FILE__),
 	'descrizione'		=> strtolower($descrizione) == 'true' ? true : false ,
 	'titolo'			=> strtolower($titolo) == 'true' ? true : false ,
 	'datainserimento'	=> strtolower($datainserimento) == 'true' ? true : false,

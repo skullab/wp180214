@@ -67,3 +67,14 @@ limitations under the License.
 	font-weight:bold;
 }
 #wp180214_dettaglio #wp180214_dettaglio_dettagli_table {}
+#wp180214_dettaglio #wp180214_dettaglio_descrizione_label {
+	font-weight:bold;
+}
+#wp180214_dettaglio #wp180214_dettaglio_video_label {
+	font-weight:bold;
+}
+#wp180214_dettaglio #wp180214_dettaglio_video {}
+#wp180214_dettaglio #wp180214_dettaglio_video iframe {}
+#wp180214_dettaglio #wp180214_dettaglio_mappa_label {
+	font-weight:bold;
+}
