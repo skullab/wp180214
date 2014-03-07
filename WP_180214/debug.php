@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-$swp180214_debug_enable = true ;
+$swp180214_debug_enable = false ;
 
 function swp180214_debug($output,$err = false){
 	global $swp180214_debug_enable ;

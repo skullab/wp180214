@@ -57,7 +57,7 @@ function swp180214_onsubmit(settings){
 				action:'swp180214_action_submit_install',
 				_nonce:swp180214_ajax_placeholder.nonce,
 			},function(response) {
-				console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
+				//console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
 				if(response != '')alert(response);
 			});
 		},0);
@@ -67,7 +67,7 @@ function swp180214_onsubmit(settings){
 				action:'swp180214_action_submit_feed',
 				_nonce:swp180214_ajax_placeholder.nonce,
 			},function(response) {
-				console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
+				//console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
 				if(response != '')alert(response);
 			});
 		},0);

@@ -74,7 +74,7 @@ function swp180214_request_update_db(nonce){
 		action:'swp180214_action_update_db',
 		_dbnonce:nonce,
 	},function(response) {
-		console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
+		//console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
 		jQuery('#swp180214_loader_db').css('display','none');
 		alert(response);
 	});
@@ -93,7 +93,7 @@ function swp180214_request_create_page(nonce){
 		action:'swp180214_action_create_page',
 		_nonce:nonce,
 	},function(response) {
-		console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
+		//console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
 		jQuery('#swp180214_loader_page').css('display','none');
 		location.reload(); 
 	});
@@ -107,7 +107,7 @@ function swp180214_request_delete_page(nonce){
 			action:'swp180214_action_delete_page',
 			_nonce:nonce,
 		},function(response) {
-			console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
+			//console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
 			alert(response);
 			location.reload(); 
 		});
@@ -121,7 +121,7 @@ function swp180214_request_update_page(nonce){
 			action:'swp180214_action_update_page',
 			_nonce:nonce,
 		},function(response) {
-			console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
+			//console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
 			//location.reload(); 
 		});
 		},0);
@@ -137,7 +137,7 @@ function swp180214_request_install_update(nonce){
 			action:'swp180214_action_install_update',
 			_nonce:nonce,
 		},function(response) {
-			console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
+			//console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
 			jQuery('#swp180214_loader_install_update').css('display','none');
 			location.reload();
 		});

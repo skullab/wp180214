@@ -50,8 +50,8 @@ function swp180214_activation(){
 	add_option(SWP180214_OPT_PLUGIN_VERSION,SWP180214_VERSION);
 	add_option(SWP180214_OPT_DB_VERSION,SWP180214_DB_VERSION);
 	
-	update_option(SWP180214_OPT_FIRST_INSTALL,true);
-	update_option(SWP180214_OPT_INSTALL_PROCESS,0);
+	add_option(SWP180214_OPT_FIRST_INSTALL,true);
+	add_option(SWP180214_OPT_INSTALL_PROCESS,0);
 	
 	add_option(SWP180214_OPT_GETRIX_SCHEMA_URI,SWP180214_DEFAULT_GETRIX_SCHEMA_URI);
 	add_option(SWP180214_OPT_GETRIX_SCHEMA_VERSION,SWP180214_DEFAULT_GETRIX_SCHEMA_VERSION);
@@ -135,9 +135,9 @@ if(is_admin()){
 	add_action('wp_ajax_swp180214_action_delete_page', 'swp180214_confirm_delete_page');
 	add_action('wp_ajax_swp180214_action_update_page', 'swp180214_confirm_update_page');
 	add_action('wp_ajax_swp180214_action_install_update', 'swp180214_confirm_install_update');
-	
-	add_action( SWP180214_UPDATE_DATA_HOOK, 'swp180214_populate_database' );
 }
+/*****************************************************************************************************/
+add_action( SWP180214_UPDATE_DATA_HOOK, 'swp180214_populate_database' );
 /*****************************************************************************************************/
 // 											SHORTCODE
 add_action('init','swp180214_register_script_shortcode');
@@ -156,7 +156,6 @@ switch (get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE)){
 		break;
 	case SWP180214_MANUAL:
 		wp_clear_scheduled_hook( SWP180214_UPDATE_DATA_HOOK );
-		//swp180214_debug('EVENTO RIMOSSO');
 		break;
 }
 /*****************************************************************************************************

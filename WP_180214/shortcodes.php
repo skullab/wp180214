@@ -90,12 +90,12 @@ $swp180214_shortcode_atts = array(
 'datainserimento'	=> 'true',
 'testo'				=> 'true',
 'lingua'			=> 'true',
-'codicenazione'		=> 'true', // false
+'codicenazione'		=> 'false', 
 'codicecomune'		=> 'true',
 'quartiere'			=> 'true',
 'localita'			=> 'true',
 'zona'				=> 'true',
-'strada'			=> 'true', // false
+'strada'			=> 'false', 
 'indirizzo'			=> 'true',
 'civico'			=> 'true',
 'cap'				=> 'true',
@@ -121,7 +121,7 @@ $swp180214_shortcode_atts = array(
 'ipe'				=> 'true',
 'video'				=> 'true',
 'immagini'			=> 'true',
-'allegati'			=> 'false',
+'allegati'			=> 'false',//TODO
 'custom'			=> ''
 );
 
@@ -340,27 +340,19 @@ function swp180214_shortcode_search(){
 	$prezzo_massimo = isset($_REQUEST['prezzo_massimo']) ? $_REQUEST['prezzo_massimo'] : '' ;
 	$libero = isset($_REQUEST['libero']) ? $_REQUEST['libero'] : '' ;
 	
-	/*$sql = 	"SELECT ".swp180214_table_prefix()."descrizione.idimmobile,
+	
+	$sql = 	"SELECT ".swp180214_table_prefix()."descrizione.idimmobile,
  			".swp180214_table_prefix()."descrizione.titolo,
  			".swp180214_table_prefix()."descrizione.testo,
  			".swp180214_table_prefix()."descrizione.testobreve,
- 			".swp180214_table_prefix()."immagine.url AS thumb
- 			FROM ".swp180214_table_prefix()."descrizione 
- 			LEFT OUTER JOIN ".swp180214_table_prefix()."immagine 
+ 			".swp180214_table_prefix()."immagine.url AS thumb,
+ 			".swp180214_table_prefix()."immobile.datamodifica
+ 			FROM ".swp180214_table_prefix()."descrizione
+ 			LEFT OUTER JOIN ".swp180214_table_prefix()."immagine
  			ON ".swp180214_table_prefix()."descrizione.idimmobile = ".swp180214_table_prefix()."immagine.idimmobile
- 			WHERE ".swp180214_table_prefix()."descrizione.idimmobile IN (" ;*/
-	$sql = 	"SELECT ".swp180214_table_prefix()."descrizione.idimmobile,
- 								".swp180214_table_prefix()."descrizione.titolo,
- 								".swp180214_table_prefix()."descrizione.testo,
- 								".swp180214_table_prefix()."descrizione.testobreve,
- 								".swp180214_table_prefix()."immagine.url AS thumb,
- 								".swp180214_table_prefix()."immobile.datamodifica
- 								FROM ".swp180214_table_prefix()."descrizione
- 								LEFT OUTER JOIN ".swp180214_table_prefix()."immagine
- 								ON ".swp180214_table_prefix()."descrizione.idimmobile = ".swp180214_table_prefix()."immagine.idimmobile
- 								LEFT OUTER JOIN ".swp180214_table_prefix()."immobile
- 								ON ".swp180214_table_prefix()."descrizione.idimmobile = ".swp180214_table_prefix()."immobile.idimmobile
- 								WHERE ".swp180214_table_prefix()."descrizione.idimmobile IN (" ;
+ 			LEFT OUTER JOIN ".swp180214_table_prefix()."immobile
+ 			ON ".swp180214_table_prefix()."descrizione.idimmobile = ".swp180214_table_prefix()."immobile.idimmobile
+ 			WHERE ".swp180214_table_prefix()."descrizione.idimmobile IN (" ;
 	
 	$sql .= "SELECT idimmobile FROM ".swp180214_table_prefix()."immobile" ;
 	
