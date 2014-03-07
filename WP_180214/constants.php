@@ -25,7 +25,7 @@ if ( !function_exists( 'add_action' ) ) {
 /** The internal plugin prefix */
 define('SWP180214_PREFIX','swp180214_');
 /** The plugin version */
-define('SWP180214_VERSION','1.0.0');
+define('SWP180214_VERSION','1.0.1');
 /** The display plugin name */
 define('SWP180214_DISPLAY_NAME','WP180214');
 /** The slug plugin name */

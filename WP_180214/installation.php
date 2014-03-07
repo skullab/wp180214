@@ -26,6 +26,11 @@ function swp180214_update(){
 	//swp180214_debug('verifica aggiornamenti');
 	$current_db_version = get_option(SWP180214_OPT_DB_VERSION);
 	$current_plugin_version = get_option(SWP180214_OPT_PLUGIN_VERSION);
+	
+	if($current_plugin_version != SWP180214_VERSION){
+		update_option(SWP180214_OPT_PLUGIN_VERSION,SWP180214_VERSION);
+	}
+	
 	//TODO ONLINE UPDATE RESPONSE
 	if($current_db_version != SWP180214_DB_VERSION){
 		update_option(SWP180214_OPT_UPDATE_AVAILABLE,true);
@@ -42,6 +47,11 @@ function swp180214_update(){
 function swp180214_table_prefix(){
 	global $wpdb ;
 	return $wpdb->prefix.SWP180214_PREFIX ;
+}
+
+function swp180214_log_on_file($line){
+	$filepath = plugins_url('log/log_'.date("Y_m_d").'.txt');
+	file_put_contents($filepath, $line.PHP_EOL, FILE_APPEND);
 }
 
 function swp180214_install_db(){
@@ -248,6 +258,7 @@ function swp180214_install_db(){
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	
 	foreach ( $sql_tables_structure as $sql ) {
+		swp180214_log_on_file($sql);
 		dbDelta( $sql );
 	}
 	// ==================================================================================

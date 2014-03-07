@@ -294,31 +294,31 @@ function swp180214_shortcode_show_details(response){
 			var duratacontratto = '' ;
 			switch(value['tipospese']){
 			case '1':
-				tipospese = '4 + 4 anni' ;
+				duratacontratto = '4 + 4 anni' ;
 				break;
 			case '2':
-				tipospese = '6 + 6' ;
+				duratacontratto = '6 + 6' ;
 				break;
 			case '3':
-				tipospese = '8 + 8' ;
+				duratacontratto = '8 + 8' ;
 				break;
 			case '4':
-				tipospese = '12 + 12' ;
+				duratacontratto = '12 + 12' ;
 				break;
 			case '5':
-				tipospese = 'studentesco' ;
+				duratacontratto = 'studentesco' ;
 				break;
 			case '6':
-				tipospese = 'uso foresteria' ;
+				duratacontratto = 'uso foresteria' ;
 				break;
 			case '7':
-				tipospese = 'stagionale' ;
+				duratacontratto = 'stagionale' ;
 				break;
 			case '8':
-				tipospese = 'annuale' ;
+				duratacontratto = 'annuale' ;
 				break;
 			case '255':
-				tipospese = 'n.d.' ;
+				duratacontratto = 'n.d.' ;
 				break;
 		}
 			html += '<tr valign="top"><th scope="row">Durata contratto</th><td>'+duratacontratto+'</td></tr>';

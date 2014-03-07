@@ -3,7 +3,7 @@
 Plugin Name: WP180214
 Plugin URI: http://www.skullab.com
 Description: Questo plugin &egrave; stato sviluppato ad uso esclusivo del richiedente e non &egrave; disponibile in nessun repository pubblico.Per ulteriori dettagli contattare il fornitore dei servizi e/o il programmatore del plugin. PROCEDURA DI INSTALAZZIONE : (1) Cliccare su "Attiva" a sinistra di questa descrizione (2) Accedere alla pagina delle Impostazioni per apportare modifiche al plugin.Per ulteriori dettagli si consiglia la lettura della <strong>documentazione allegata</strong>.
-Version: 1.0.0
+Version: 1.0.1
 Author: <A HREF="mailto:ivan.maruca@gmail.com?subject=WP180214">Ivan Maruca</A>
 Author URI: http://www.skullab.com
 License: Apache License, Version 2.0
