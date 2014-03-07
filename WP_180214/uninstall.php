@@ -50,17 +50,17 @@ delete_option(SWP180214_OPT_UPLOAD_DIR);
 ******************************************************************************************************/
 global $wpdb ;
 $sql = "DROP TABLE IF EXISTS %s";
-$tables = $wpdb->get_results("SELECT tables FROM ".swp180214_table_prefix()."getrix_tree",ARRAY_A);
+$tables = $wpdb->get_results("SELECT tables FROM wp_swp180214_getrix_tree",ARRAY_A);
 foreach ($tables as $table){
-	if($table['tables'] != swp180214_table_prefix()."immobile"){
+	if($table['tables'] != "wp_swp180214_immobile"){
 		$sql_sane = sprintf($sql,$table['tables']);
 		$wpdb->query($sql_sane);
 	}
 }
-$wpdb->query("DROP TABLE IF EXISTS ".swp180214_table_prefix()."immobile");
-$wpdb->query("DROP TABLE IF EXISTS ".swp180214_table_prefix()."categorie");
-$wpdb->query("DROP TABLE IF EXISTS ".swp180214_table_prefix()."contratti");
-$wpdb->query("DROP TABLE IF EXISTS ".swp180214_table_prefix()."proprieta");
-$wpdb->query("DROP TABLE IF EXISTS ".swp180214_table_prefix()."spese");
-$wpdb->query("DROP TABLE IF EXISTS ".swp180214_table_prefix()."getrix_tree");
+$wpdb->query("DROP TABLE IF EXISTS wp_swp180214_immobile");
+$wpdb->query("DROP TABLE IF EXISTS wp_swp180214_categorie");
+$wpdb->query("DROP TABLE IF EXISTS wp_swp180214_contratti");
+$wpdb->query("DROP TABLE IF EXISTS wp_swp180214_proprieta");
+$wpdb->query("DROP TABLE IF EXISTS wp_swp180214_spese");
+$wpdb->query("DROP TABLE IF EXISTS wp_swp180214_getrix_tree");
 ?>
