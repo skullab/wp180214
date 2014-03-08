@@ -371,7 +371,7 @@ function swp180214_page_install(){
 			</style>
 			<div class="wrap">
 			<div id="icon-options-general" class="icon32"></div>
-				<h2><?php echo SWP180214_PAGE_NAME_INSTALL ; ?></h2>
+				<h2><?php echo SWP180214_PAGE_NAME_INSTALL ; ?> - Fase 1</h2>
 				<span class="description"><?php echo SWP180214_PAGE_NAME_INSTALL_DESCRIPTION?></span>
 				<form id="<?php echo SWP180214_PREFIX.'install_form'?>" method="post" action="options.php" onsubmit="swp180214_onsubmit()">
 				<?php 
@@ -434,7 +434,7 @@ function swp180214_page_install(){
 			?>
 			<div class="wrap">
 				<div id="icon-options-general" class="icon32"></div>
-				<h2><?php echo SWP180214_PAGE_NAME_INSTALL ; ?></h2>
+				<h2><?php echo SWP180214_PAGE_NAME_INSTALL ; ?> - Fase 2</h2>
 				<span class="description"><?php echo SWP180214_PAGE_NAME_INSTALL_DESCRIPTION?></span>
 				
 	            <div class="description" id="swp180214_install_info">
@@ -454,7 +454,7 @@ function swp180214_page_install(){
 			</style>
 			<div class="wrap">
 				<div id="icon-options-general" class="icon32"></div>
-				<h2><?php echo SWP180214_PAGE_NAME_INSTALL ; ?></h2>
+				<h2><?php echo SWP180214_PAGE_NAME_INSTALL ; ?> - Fase 3</h2>
 				<span class="description"><?php echo SWP180214_PAGE_NAME_INSTALL_DESCRIPTION?></span>
 					<form id="<?php echo SWP180214_PREFIX.'install_form'?>" method="post" action="options.php" onsubmit="swp180214_onsubmit()">
 					<?php 

@@ -51,9 +51,7 @@ function swp180214_onsubmit(settings,nonce){
 	if(!jQuery('#swp180214_install_form').valid())return false ;
 	jQuery('#swp180214_loader').css('display','block');
 	
-	if(nonce == null && nonce == ''){
-		nonce = swp180214_ajax_placeholder.nonce ;
-	}
+	nonce = nonce == null ? swp180214_ajax_placeholder.nonce : nonce;
 	
 	if(swp180214_install_process == 0 || settings == 1){
 		setTimeout(function(){

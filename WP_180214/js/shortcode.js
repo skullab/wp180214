@@ -292,7 +292,7 @@ function swp180214_shortcode_show_details(response){
 		}
 		if(swp180214_dettaglio_duratacontratto && value['duratacontratto'] != null){
 			var duratacontratto = '' ;
-			switch(value['tipospese']){
+			switch(value['duratacontratto']){
 			case '1':
 				duratacontratto = '4 + 4 anni' ;
 				break;
