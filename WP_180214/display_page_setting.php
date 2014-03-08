@@ -290,7 +290,7 @@ function swp180214_get_display_page_settings(){
 			</span>
 			<tr valign="top"><th scope="row">Contenuto</th>
 				<td>
-					<textarea rows="15" cols="200" name="<?php echo SWP180214_OPT_GETRIX_PAGE_CONTENT ;?>" required><?php echo get_option(SWP180214_OPT_GETRIX_PAGE_CONTENT);?></textarea>
+					<textarea rows="15" cols="100" name="<?php echo SWP180214_OPT_GETRIX_PAGE_CONTENT ;?>" required><?php echo get_option(SWP180214_OPT_GETRIX_PAGE_CONTENT);?></textarea>
 				</td>
 			</tr>
 			

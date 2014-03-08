@@ -46,16 +46,20 @@ function swp180214_restore_default_feed_values(){
 	jQuery('input[name=swp180214_opt_getrix_feed_uri]').val(swp180214_js_placeholder.feeduri);
 }
 
-function swp180214_onsubmit(settings){
+function swp180214_onsubmit(settings,nonce){
 	
 	if(!jQuery('#swp180214_install_form').valid())return false ;
 	jQuery('#swp180214_loader').css('display','block');
+	
+	if(nonce == null && nonce == ''){
+		nonce = swp180214_ajax_placeholder.nonce ;
+	}
 	
 	if(swp180214_install_process == 0 || settings == 1){
 		setTimeout(function(){
 			jQuery.post(swp180214_ajax_placeholder.url,{
 				action:'swp180214_action_submit_install',
-				_nonce:swp180214_ajax_placeholder.nonce,
+				_nonce:nonce,
 			},function(response) {
 				//console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
 				if(response != '')alert(response);
@@ -65,7 +69,7 @@ function swp180214_onsubmit(settings){
 		setTimeout(function(){
 			jQuery.post(swp180214_ajax_placeholder.url,{
 				action:'swp180214_action_submit_feed',
-				_nonce:swp180214_ajax_placeholder.nonce,
+				_nonce:nonce,
 			},function(response) {
 				//console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
 				if(response != '')alert(response);

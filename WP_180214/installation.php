@@ -50,7 +50,7 @@ function swp180214_table_prefix(){
 }
 
 function swp180214_log_on_file($line){
-	$filepath = plugins_url('log/log_'.date("Y_m_d").'.txt');
+	$filepath = plugin_dir_path( __FILE__ ).'log/log_'.date("Y_m_d").'.txt';
 	file_put_contents($filepath, $line.PHP_EOL, FILE_APPEND);
 }
 

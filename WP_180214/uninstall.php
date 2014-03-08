@@ -21,6 +21,8 @@ if ( !defined( 'WP_UNINSTALL_PLUGIN' ) )exit();
  										DELETE OPTIONS
 ******************************************************************************************************/
 delete_option(SWP180214_OPT_DB_VERSION);
+delete_option(SWP180214_OPT_PLUGIN_VERSION);
+
 delete_option(SWP180214_OPT_FIRST_INSTALL);
 delete_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE);
 delete_option(SWP180214_OPT_GETRIX_FEED_URI);
@@ -42,7 +44,6 @@ delete_option(SWP180214_OPT_GROUP_PAGE);
 delete_option(SWP180214_OPT_INSTALL_PROCESS);
 delete_option(SWP180214_OPT_PAGE_CREATED);
 delete_option(SWP180214_OPT_PAGE_UPDATED);
-delete_option(SWP180214_OPT_PLUGIN_VERSION);
 delete_option(SWP180214_OPT_UPDATE_AVAILABLE);
 delete_option(SWP180214_OPT_UPLOAD_DIR);
 /*****************************************************************************************************

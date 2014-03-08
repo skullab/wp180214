@@ -25,7 +25,7 @@ if ( !function_exists( 'add_action' ) ) {
 /** The internal plugin prefix */
 define('SWP180214_PREFIX','swp180214_');
 /** The plugin version */
-define('SWP180214_VERSION','1.0.1');
+define('SWP180214_VERSION','1.1.0');
 /** The display plugin name */
 define('SWP180214_DISPLAY_NAME','WP180214');
 /** The slug plugin name */
@@ -49,7 +49,7 @@ define('SWP180214_DEFAULT_GETRIX_SCHEMA_URI','http://feed.getrix.it/xml/feed_2_0
 define('SWP180214_DEFAULT_GETRIX_SCHEMA_VERSION','2.0.0');
 define('SWP180214_DEFAULT_GETRIX_USER','9F431778-4CAC-4534-B5F9-F458A87E2279');
 define('SWP180214_DEFAULT_GETRIX_FEED_URI','http://feed.getrix.it/xml/'.SWP180214_DEFAULT_GETRIX_USER.'.zip');
-define('SWP180214_DEFAULT_GETRIX_FEED_UPDATE_MODE',SWP180214_AUTOMATIC);
+define('SWP180214_DEFAULT_GETRIX_FEED_UPDATE_MODE',SWP180214_MANUAL);
 /*******************************************************************************************************************/
 define('SWP180214_OPT_PLUGIN_VERSION','swp180214_opt_plugin_version');
 define('SWP180214_OPT_DB_VERSION','swp180214_opt_db_version');

@@ -31,6 +31,7 @@ function swp180214_page_settings(){
 		array('usercode' => SWP180214_DEFAULT_GETRIX_USER,
 			  'feeduri' => SWP180214_DEFAULT_GETRIX_FEED_URI,
 			  'process' => get_option(SWP180214_OPT_INSTALL_PROCESS)));
+	
 	wp_localize_script(SWP180214_JS_VALIDATOR,'swp180214_ajax_placeholder',
 		array('url' => admin_url('admin-ajax.php'),'nonce' => wp_create_nonce('swp180214_action_submit_install_nonce')));
 	?>
@@ -92,7 +93,7 @@ function swp180214_page_settings(){
 							#swp180214_install_form label.error { color:#a10000; margin-left:5px;}
 						</style>
 					
-					<form id="<?php echo SWP180214_PREFIX.'install_form'?>" method="post" action="options.php" onsubmit="swp180214_onsubmit(2);">
+					<form id="<?php echo SWP180214_PREFIX.'install_form'?>" method="post" action="options.php" onsubmit="swp180214_onsubmit(2,'<?php echo wp_create_nonce('swp180214_action_submit_install_nonce');?>');">
 					<?php 
 						settings_fields(SWP180214_OPT_GROUP_FEED);
 						do_settings_sections(SWP180214_OPT_GROUP_FEED);
@@ -169,6 +170,24 @@ function swp180214_page_settings(){
 				<h3>Info</h3>
 				<span class="description">
 				<ul>
+					<?php
+					global $wpdb ;
+					$tables = @$wpdb->get_results("SELECT tables FROM ".swp180214_table_prefix()."getrix_tree",ARRAY_A);
+					if($tables){
+						$sql = "SELECT COUNT(*) FROM %s";
+						foreach ($tables as $table){
+							$sql_sane = sprintf($sql,$table['tables']);
+							$count = $wpdb->get_var($sql_sane);
+							?>
+							<li>Numero records trovati in tabella <?php echo $table['tables']." : ".$count ; ?> 
+							<?php 
+						}
+					}else{
+						?>
+						<li><strong><img src="<?php echo plugins_url('res/images/warning.png',__FILE__);?>" />Attenzione ! Integratita database compromessa. Verificare l'esistenza delle tabelle.</strong> 
+						<?php 
+					}
+					?>
 					<li>Versione database : <?php echo SWP180214_DB_VERSION; ?>
 					<?php
 					if(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE) == SWP180214_AUTOMATIC){
@@ -230,7 +249,7 @@ function swp180214_page_settings(){
 					#swp180214_install_form label.error { color:#a10000; margin-left:5px;}
 				</style>
 	
-				<form id="<?php echo SWP180214_PREFIX.'install_form'?>" method="post" action="options.php" onsubmit="swp180214_onsubmit(1);">
+				<form id="<?php echo SWP180214_PREFIX.'install_form'?>" method="post" action="options.php" onsubmit="swp180214_onsubmit(1,'<?php echo wp_create_nonce('swp180214_action_submit_install_nonce');?>');">
 				<?php 
 					settings_fields(SWP180214_OPT_GROUP_INSTALL);
 					do_settings_sections(SWP180214_OPT_GROUP_INSTALL);
@@ -329,6 +348,7 @@ function swp180214_page_feed_confirm(){
 
 // PROCEDURA DI INSTALLAZIONE
 function swp180214_page_install(){
+
 	wp_enqueue_script(SWP180214_JS_VALIDATOR);
 	wp_localize_script(SWP180214_JS_VALIDATOR,'swp180214_js_placeholder',
 		array('usercode' => SWP180214_DEFAULT_GETRIX_USER,
@@ -343,155 +363,153 @@ function swp180214_page_install(){
 		return;
 	}
 	
-	if(get_option(SWP180214_OPT_INSTALL_PROCESS) == 1){
-		?>		
-		<div class="wrap">
-			<div id="icon-options-general" class="icon32"></div>
-			<h2><?php echo SWP180214_PAGE_NAME_INSTALL ; ?></h2>
-			<span class="description"><?php echo SWP180214_PAGE_NAME_INSTALL_DESCRIPTION?></span>
-			
-            <div class="description" id="swp180214_install_info">
-            	<ul type="circle">
-               		<?php swp180214_install_db(); ?>
-               	</ul>
-         	</div>
-           
-           <a href="admin.php?page=<?php echo SWP180214_SLUG_SETTINGS ;?>" class="button-primary">Prosegui</a>
-		</div><?php
-		return;
-	}
-	
-	if(get_option(SWP180214_OPT_INSTALL_PROCESS) == 2){
-		?>
-		<style type="text/css">
-			#swp180214_install_form label.error { color:#a10000; margin-left:5px;}
-		</style>
-		<div class="wrap">
-			<div id="icon-options-general" class="icon32"></div>
-			<h2><?php echo SWP180214_PAGE_NAME_INSTALL ; ?></h2>
-			<span class="description"><?php echo SWP180214_PAGE_NAME_INSTALL_DESCRIPTION?></span>
-			<form id="<?php echo SWP180214_PREFIX.'install_form'?>" method="post" action="options.php" onsubmit="swp180214_onsubmit()">
-			<?php 
-			settings_fields(SWP180214_OPT_GROUP_FEED);
-			do_settings_sections(SWP180214_OPT_GROUP_FEED);
+	switch(get_option(SWP180214_OPT_INSTALL_PROCESS)){
+		case 0:
 			?>
-			<table class="form-table">
-			<tbody>
-				<tr valign="top">
-					<th scope="row">Getrix Feed URI</th>
-					<td>
-						<label for="<?php echo SWP180214_OPT_GETRIX_FEED_URI ;?>"></label>
-						<input id="<?php echo SWP180214_OPT_GETRIX_FEED_URI ;?>" type="url" size="100" name="<?php echo SWP180214_OPT_GETRIX_FEED_URI ;?>" value="<?php echo get_option(SWP180214_OPT_GETRIX_FEED_URI);?>" required/><br>
-						<span class="description">
-						Indirizzo URI relativo al feed XML da utilizzare.<br>Se non si &egrave; sicuri lasciare le impostazioni di default.
-						</span>
-					</td>
-				</tr>
-				
-				<tr valign="top">
-					<th scope="row">Modalita di aggiornamento dati</th>
-					<td>
+			<style type="text/css">
+				#swp180214_install_form label.error { color:#a10000; margin-left:5px;}
+			</style>
+			<div class="wrap">
+			<div id="icon-options-general" class="icon32"></div>
+				<h2><?php echo SWP180214_PAGE_NAME_INSTALL ; ?></h2>
+				<span class="description"><?php echo SWP180214_PAGE_NAME_INSTALL_DESCRIPTION?></span>
+				<form id="<?php echo SWP180214_PREFIX.'install_form'?>" method="post" action="options.php" onsubmit="swp180214_onsubmit()">
+				<?php 
+					settings_fields(SWP180214_OPT_GROUP_INSTALL);
+					do_settings_sections(SWP180214_OPT_GROUP_INSTALL);
+				?>
+					<table class="form-table">
+						<tbody>
+							<tr valign="top"><th scope="row">Getrix Schema URI</th>
+								<td>
+									<label for="<?php echo SWP180214_OPT_GETRIX_SCHEMA_URI ;?>"></label>
+									<input id="<?php echo SWP180214_OPT_GETRIX_SCHEMA_URI ;?>" type="url" size="100" name="<?php echo SWP180214_OPT_GETRIX_SCHEMA_URI ;?>" value="<?php echo get_option(SWP180214_OPT_GETRIX_SCHEMA_URI);?>" required/><br>
+									<span class="description">
+									Indirizzo URI relativo allo schema XSD da utilizzare.<br>Se non si &egrave; sicuri lasciare le impostazioni di default.
+									</span>
+								</td>
+							</tr>
 					
-						<input id="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>_auto" type="radio" name="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" value="<?php echo SWP180214_AUTOMATIC;?>" <?php checked(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE),SWP180214_AUTOMATIC);?>/>
-						<label for="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>_auto">Automatica (CronJob)</label>						
-						<br>
-						<input id="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>_manual" type="radio" name="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" value="<?php echo SWP180214_MANUAL;?>" <?php checked(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE),SWP180214_MANUAL);?>/>
-						<label for="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>_manual">Manuale</label>	
-						
-						<br>
-						<span class="description">
-						Specifica la modalita di aggiornamento dei dati.<br>Se non si &egrave; sicuri lasciare le impostazioni di default.
-						</span>
-					</td>
-				</tr>
+							<tr valign="top">
+								<th scope="row">Getrix versione schema</th>
+								<td>
+									<label for="<?php echo SWP180214_OPT_GETRIX_SCHEMA_VERSION ;?>"></label>
+									<input id="<?php echo SWP180214_OPT_GETRIX_SCHEMA_VERSION ;?>" type="text" size="10" name="<?php echo SWP180214_OPT_GETRIX_SCHEMA_VERSION ;?>" value="<?php echo get_option(SWP180214_OPT_GETRIX_SCHEMA_VERSION);?>" required/><br>
+									<span class="description">
+									Versione dello schema da utilizzare.<br>Se non si &egrave; sicuri lasciare le impostazioni di default.
+									</span>
+								</td>
+							</tr>
+					
+							<tr valign="top">
+								<th scope="row">Getrix codice utente</th>
+								<td>
+									<label for="<?php echo SWP180214_OPT_GETRIX_USER ;?>"></label>
+									<input id="<?php echo SWP180214_OPT_GETRIX_USER ;?>" type="text" size="100" name="<?php echo SWP180214_OPT_GETRIX_USER ;?>" value="<?php echo get_option(SWP180214_OPT_GETRIX_USER);?>" required/><br>
+									<span class="description">
+									Inserire il codice utente rilasciato dal fornitore del feed.<br>Se non si &egrave; sicuri lasciare le impostazioni di default.
+									</span>
+								</td>
+							</tr>
+					
+							<tr valign="top"><th scope="row"></th>
+				            	<td>
+				                	<p>
+				                    	<input type="submit" class="button-primary" id="submit" name="submit" value="<?php _e('Installa') ?> " />
+				                        <input type="button" class="button-primary" onclick="swp180214_restore_default_install_values()" value="<?php _e('Ripristina valori di default') ?> " />
+				                        <div id="swp180214_loader" style="display: none;">
+				               				<img style="float:left;padding-right:10px;" src="<?php echo plugins_url('res/images/circular_loader.gif',__FILE__);?>"/>
+				               				<div><h3>Installazione in corso...</h3></div>
+				               			</div>                                  
+				                    </p>
+				                 </td>
+				            </tr>
+						</tbody>
+					</table>
+				</form>
+			</div>
+			<?php 
+			break;
+		case 1:
+			?>
+			<div class="wrap">
+				<div id="icon-options-general" class="icon32"></div>
+				<h2><?php echo SWP180214_PAGE_NAME_INSTALL ; ?></h2>
+				<span class="description"><?php echo SWP180214_PAGE_NAME_INSTALL_DESCRIPTION?></span>
 				
-				<tr valign="top">
-                	<th scope="row"></th>
-                    	<td>
-                        	<p>
-                            	<input type="submit" class="button-primary" id="submit" name="submit" value="<?php _e('Prosegui') ?> " />
-                               	<input type="button" class="button-primary" onclick="swp180214_restore_default_feed_values()" value="<?php _e('Ripristina valori di default') ?> " />
-                               	<div id="swp180214_loader" style="display: none;">
-               						<img style="float:left;padding-right:10px;" src="<?php echo plugins_url('res/images/circular_loader.gif',__FILE__);?>"/>
-               						<div><h3>Salvataggio in corso...</h3></div>
-               					</div>                                  
-                            </p>
-                        </td>
-                </tr>
-				
-			</tbody>
-			</table>
-			</form>
-		</div><?php
-		return;
+	            <div class="description" id="swp180214_install_info">
+	            	<ul type="circle">
+	               		<?php swp180214_install_db(); ?>
+	               	</ul>
+	         	</div>
+	           
+	           	<a href="admin.php?page=<?php echo SWP180214_SLUG_SETTINGS ;?>" class="button-primary">Prosegui</a>
+			</div>
+			<?php 
+			break;
+		case 2:
+			?>
+			<style type="text/css">
+				#swp180214_install_form label.error { color:#a10000; margin-left:5px;}
+			</style>
+			<div class="wrap">
+				<div id="icon-options-general" class="icon32"></div>
+				<h2><?php echo SWP180214_PAGE_NAME_INSTALL ; ?></h2>
+				<span class="description"><?php echo SWP180214_PAGE_NAME_INSTALL_DESCRIPTION?></span>
+					<form id="<?php echo SWP180214_PREFIX.'install_form'?>" method="post" action="options.php" onsubmit="swp180214_onsubmit()">
+					<?php 
+					settings_fields(SWP180214_OPT_GROUP_FEED);
+					do_settings_sections(SWP180214_OPT_GROUP_FEED);
+					?>
+					<table class="form-table">
+						<tbody>
+							<tr valign="top"><th scope="row">Getrix Feed URI</th>
+								<td>
+									<label for="<?php echo SWP180214_OPT_GETRIX_FEED_URI ;?>"></label>
+									<input id="<?php echo SWP180214_OPT_GETRIX_FEED_URI ;?>" type="url" size="100" name="<?php echo SWP180214_OPT_GETRIX_FEED_URI ;?>" value="<?php echo get_option(SWP180214_OPT_GETRIX_FEED_URI);?>" required/><br>
+									<span class="description">
+									Indirizzo URI relativo al feed XML da utilizzare.<br>Se non si &egrave; sicuri lasciare le impostazioni di default.
+									</span>
+								</td>
+							</tr>
+					
+							<tr valign="top">
+								<th scope="row">Modalita di aggiornamento dati</th>
+								<td>
+								
+									<input id="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>_auto" type="radio" name="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" value="<?php echo SWP180214_AUTOMATIC;?>" <?php checked(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE),SWP180214_AUTOMATIC);?>/>
+									<label for="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>_auto">Automatica (CronJob)</label>						
+									<br>
+									<input id="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>_manual" type="radio" name="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>" value="<?php echo SWP180214_MANUAL;?>" <?php checked(get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE),SWP180214_MANUAL);?>/>
+									<label for="<?php echo SWP180214_OPT_GETRIX_FEED_UPDATE_MODE ;?>_manual">Manuale</label>	
+									
+									<br>
+									<span class="description">
+									Specifica la modalita di aggiornamento dei dati.<br>Se non si &egrave; sicuri lasciare le impostazioni di default.
+									</span>
+								</td>
+							</tr>
+					
+							<tr valign="top">
+			                	<th scope="row"></th>
+			                    	<td>
+			                        	<p>
+			                            	<input type="submit" class="button-primary" id="submit" name="submit" value="<?php _e('Prosegui') ?> " />
+			                               	<input type="button" class="button-primary" onclick="swp180214_restore_default_feed_values()" value="<?php _e('Ripristina valori di default') ?> " />
+			                               	<div id="swp180214_loader" style="display: none;">
+			               						<img style="float:left;padding-right:10px;" src="<?php echo plugins_url('res/images/circular_loader.gif',__FILE__);?>"/>
+			               						<div><h3>Salvataggio in corso...</h3></div>
+			               					</div>                                  
+			                            </p>
+			                        </td>
+			                </tr>
+					
+						</tbody>
+					</table>
+				</form>
+			</div>
+			<?php 
+			break;
 	}
-	
-	if(get_option(SWP180214_OPT_INSTALL_PROCESS) == 0){
-	?>
-	<style type="text/css">
-		#swp180214_install_form label.error { color:#a10000; margin-left:5px;}
-	</style>
-	<div class="wrap">
-		<div id="icon-options-general" class="icon32"></div>
-		<h2><?php echo SWP180214_PAGE_NAME_INSTALL ; ?></h2>
-		<span class="description"><?php echo SWP180214_PAGE_NAME_INSTALL_DESCRIPTION?></span>
-		<form id="<?php echo SWP180214_PREFIX.'install_form'?>" method="post" action="options.php" onsubmit="swp180214_onsubmit()">
-		<?php 
-			settings_fields(SWP180214_OPT_GROUP_INSTALL);
-			do_settings_sections(SWP180214_OPT_GROUP_INSTALL);
-		?>
-		<table class="form-table">
-			<tbody>
-			<tr valign="top">
-				<th scope="row">Getrix Schema URI</th>
-				<td>
-					<label for="<?php echo SWP180214_OPT_GETRIX_SCHEMA_URI ;?>"></label>
-					<input id="<?php echo SWP180214_OPT_GETRIX_SCHEMA_URI ;?>" type="url" size="100" name="<?php echo SWP180214_OPT_GETRIX_SCHEMA_URI ;?>" value="<?php echo get_option(SWP180214_OPT_GETRIX_SCHEMA_URI);?>" required/><br>
-					<span class="description">
-					Indirizzo URI relativo allo schema XSD da utilizzare.<br>Se non si &egrave; sicuri lasciare le impostazioni di default.
-					</span>
-				</td>
-			</tr>
-			
-			<tr valign="top">
-				<th scope="row">Getrix versione schema</th>
-				<td>
-					<label for="<?php echo SWP180214_OPT_GETRIX_SCHEMA_VERSION ;?>"></label>
-					<input id="<?php echo SWP180214_OPT_GETRIX_SCHEMA_VERSION ;?>" type="text" size="10" name="<?php echo SWP180214_OPT_GETRIX_SCHEMA_VERSION ;?>" value="<?php echo get_option(SWP180214_OPT_GETRIX_SCHEMA_VERSION);?>" required/><br>
-					<span class="description">
-					Versione dello schema da utilizzare.<br>Se non si &egrave; sicuri lasciare le impostazioni di default.
-					</span>
-				</td>
-			</tr>
-			
-			<tr valign="top">
-				<th scope="row">Getrix codice utente</th>
-				<td>
-					<label for="<?php echo SWP180214_OPT_GETRIX_USER ;?>"></label>
-					<input id="<?php echo SWP180214_OPT_GETRIX_USER ;?>" type="text" size="100" name="<?php echo SWP180214_OPT_GETRIX_USER ;?>" value="<?php echo get_option(SWP180214_OPT_GETRIX_USER);?>" required/><br>
-					<span class="description">
-					Inserire il codice utente rilasciato dal fornitore del feed.<br>Se non si &egrave; sicuri lasciare le impostazioni di default.
-					</span>
-				</td>
-			</tr>
-			
-			<tr valign="top">
-                       <th scope="row"></th>
-                           <td>
-                               <p>
-                                   <input type="submit" class="button-primary" id="submit" name="submit" value="<?php _e('Installa') ?> " />
-                                   <input type="button" class="button-primary" onclick="swp180214_restore_default_install_values()" value="<?php _e('Ripristina valori di default') ?> " />
-                                  	<div id="swp180214_loader" style="display: none;">
-               							<img style="float:left;padding-right:10px;" src="<?php echo plugins_url('res/images/circular_loader.gif',__FILE__);?>"/>
-               							<div><h3>Installazione in corso...</h3></div>
-               						</div>                                  
-                               </p>
-                           </td>
-                   </tr>
-			</tbody>
-		</table>
-		</form>
-	</div><?php
-	} 
 }
 ?>
