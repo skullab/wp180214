@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 var swp180214_risultati_loader 				= swp180214_js_placeholder.loader ;
+var swp180214_risultati_details_loader		= swp180214_js_placeholder.details ;
 var swp180214_risultati_no_image			= swp180214_js_placeholder.noimage ;
 var swp180214_risultati_limit 				= swp180214_js_placeholder.limit ;
 var swp180214_risultati_titolo 				= swp180214_js_placeholder.titolo ;
@@ -138,16 +139,17 @@ function swp180214_shortcode_risultati(response){
 function swp180214_shortcode_details(idimmobile,div){
 	
 	if(jQuery('#wp180214_dettaglio') == undefined)return ;
-	
 	jQuery('#wp180214_risultati').slideUp(200);
+	NProgress.start();
 	
 	jQuery.post(swp180214_ajax_placeholder.url,{
 		action:'swp180214_action_shortcode_details',
 		idimmobile:idimmobile
 	},function(response) {
-		if(response != 'error'){
+		if(response != 'error'){			
 			swp180214_shortcode_show_details(response);
 		}
+		NProgress.done();
 	});
 }
 
@@ -175,11 +177,15 @@ function swp180214_shortcode_show_details(response){
 	}
 	if(swp180214_dettaglio_immagini){
 		html += '<label id="wp180214_dettaglio_immagini_label">Foto</label><div id="wp180214_dettaglio_immagini">';
+		var checkFoto = false ;
 		jQuery.each(json.T7,function(index,value){
 				if(value['url'] != undefined && value['url'] != ''){
+					checkFoto = true ;
+					if(value['titolo'] == null)value['titolo'] = '' ;
 					html += '<a href="'+value['url']+'" title="'+value['titolo']+'" data-lightbox="'+value['idimmobile']+'"><img src="'+value['url']+'" width="60" height="60"></a>';
 				}
 		});
+		if(!checkFoto)html += 'Nessuna foto disponibile';
 		html += '</div>';
 	}
 	//=========================================================================
@@ -503,6 +509,9 @@ function swp180214_shortcode_show_details(response){
 			}
 			if(value['idyoutube4'] != null){
 				html += '<iframe width="560" height="315" src="http://www.youtube.com/embed/'+value['idyoutube4']+'" frameborder="0" allowfullscreen></iframe>' ;
+			}
+			if(value['urlvideo'] == null && value['idyoutube1'] == null && value['idyoutube2'] == null && value['idyoutube3'] == null && value['idyoutube4'] == null){
+				html += 'Nessun video disponibile.';
 			}
 		});
 		

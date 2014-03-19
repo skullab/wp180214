@@ -207,8 +207,9 @@ function swp180214_populate_database(){
 			// ==================================================================================
 			$datamodifica = $wpdb->get_var("SELECT datamodifica FROM $table_immobile WHERE idimmobile = $idimmobile");
 			//$datamodifica = "1970-01-01 00:00:00" ;
+			$force_update = get_option(SWP180214_OPT_GETRIX_FEED_UPDATE_MODE) == SWP180214_MANUAL ? true : false ;
 			
-			if($datamodifica != null && $datamodifica != $immobile_data['datamodifica']){
+			if(($datamodifica != null && $datamodifica != $immobile_data['datamodifica']) || $force_update){
 				//swp180214_debug('UPDATE');
 				swp180214_debug('AGGIORNAMENTO NECESSARIO PER IDIMMOBILE '.$idimmobile);
 				$where = array('idimmobile'=>$idimmobile);

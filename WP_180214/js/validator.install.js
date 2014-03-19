@@ -57,7 +57,7 @@ function swp180214_onsubmit(settings,nonce){
 		setTimeout(function(){
 			jQuery.post(swp180214_ajax_placeholder.url,{
 				action:'swp180214_action_submit_install',
-				_nonce:nonce,
+				_nonce:nonce
 			},function(response) {
 				//console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
 				if(response != '')alert(response);
@@ -67,7 +67,7 @@ function swp180214_onsubmit(settings,nonce){
 		setTimeout(function(){
 			jQuery.post(swp180214_ajax_placeholder.url,{
 				action:'swp180214_action_submit_feed',
-				_nonce:nonce,
+				_nonce:nonce
 			},function(response) {
 				//console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
 				if(response != '')alert(response);

@@ -113,10 +113,12 @@ function swp180214_register_script(){
 function swp180214_register_script_shortcode(){
 	wp_register_script(SWP180214_JS_SHORTCODE,plugins_url('js/shortcode.js',__FILE__),array('jquery'));
 	wp_register_script(SWP180214_JS_LIGHTBOX,plugins_url('js/lightbox-2.6.min.js',__FILE__),array('jquery'));
+	wp_register_script(SWP180214_JS_NPROGRESS,plugins_url('js/nprogress.js',__FILE__),array('jquery'));
 }
 function swp180214_register_style_shortcode(){
 	wp_register_style(SWP180214_CSS_SHORTCODE,plugins_url('css/page_layout.css',__FILE__));
 	wp_register_style(SWP180214_CSS_LIGHTBOX,plugins_url('css/lightbox.css',__FILE__));
+	wp_register_style(SWP180214_CSS_NPROGRESS,plugins_url('css/nprogress.css',__FILE__));
 }
 /*****************************************************************************************************/
 if(is_admin()){

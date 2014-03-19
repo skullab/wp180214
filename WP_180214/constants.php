@@ -96,8 +96,10 @@ define('SWP180214_JS_VALIDATOR','swp180214_js_validator');
 define('SWP180214_JS_SETTINGS_PAGE','swp180214_js_settings_page');
 define('SWP180214_JS_SHORTCODE','swp180214_js_shortcode');
 define('SWP180214_JS_LIGHTBOX','swp180214_js_lightbox');
+define('SWP180214_JS_NPROGRESS','swp180214_js_nprogress');
 /*******************************************************************************************************************/
 define('SWP180214_CSS_SETTINGS_MENU','swp180214_css_settings_menu');
 define('SWP180214_CSS_SHORTCODE','swp180214_css_shortcode');
 define('SWP180214_CSS_LIGHTBOX','swp180214_css_lightbox');
+define('SWP180214_CSS_NPROGRESS','swp180214_css_nprogress');
 ?>

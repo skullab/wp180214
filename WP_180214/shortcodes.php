@@ -129,9 +129,11 @@ function swp180214_shortcode($atts,$content = null){
 	global $swp180214_shortcode_atts,$wpdb ;
 	extract(shortcode_atts($swp180214_shortcode_atts,$atts));
 	
+	wp_enqueue_style(SWP180214_CSS_NPROGRESS);
 	wp_enqueue_style(SWP180214_CSS_LIGHTBOX);
 	wp_enqueue_style(SWP180214_CSS_SHORTCODE);
 	
+	wp_enqueue_script(SWP180214_JS_NPROGRESS);
 	wp_enqueue_script(SWP180214_JS_LIGHTBOX);
 	wp_enqueue_script(SWP180214_JS_SHORTCODE);
 	wp_localize_script(SWP180214_JS_SHORTCODE,'swp180214_ajax_placeholder',
@@ -144,6 +146,7 @@ function swp180214_shortcode($atts,$content = null){
 	'thumb' 			=> strtolower($thumb) == 'true' ? true : false ,
 	'ultimi'			=> is_numeric($ultimi)? $ultimi : 0 ,
 	'loader'			=> '<div id="wp180214_risultati_loader"><img src="'.plugins_url('res/images/circular_loader.gif',__FILE__).'" />&nbsp;Ricerca in corso...</div>',
+	'details'			=> '<div id="wp180214_risultati_loader"><img src="'.plugins_url('res/images/circular_loader.gif',__FILE__).'" />&nbsp;Caricamento...</div>',
 	'noimage'			=> plugins_url('res/images/no_image.png',__FILE__),
 	'arrow'				=> plugins_url('res/images/arrow_back.png',__FILE__),
 	'youtube'			=> plugins_url('res/images/youtube.png',__FILE__),
@@ -247,7 +250,7 @@ function swp180214_shortcode($atts,$content = null){
 					<?php 	
 					}
 					if(strtolower($contratto) == 'true' || strtolower($categoria) == 'true' || strtolower($prezzo) == 'true' || strtolower($libero) == 'true'){
-					?><tr valign="top"><th scope="row"></th>
+					?><tr id="wp180214_ricerca_button_tr" valign="top"><th scope="row"></th>
 						<td id="wp180214_ricerca_button_td">
 							<input id="wp180214_ricerca_button" type="button" value="CERCA" onclick="swp180214_shortcode_search('<?php echo wp_create_nonce('swp180214_action_shortcode_search_nonce');?>');"/>
 						</td>
