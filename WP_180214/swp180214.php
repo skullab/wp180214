@@ -3,7 +3,7 @@
 Plugin Name: WP180214
 Plugin URI: http://www.skullab.com
 Description: Questo plugin &egrave; stato sviluppato ad uso esclusivo del richiedente e non &egrave; disponibile in nessun repository pubblico.Per ulteriori dettagli contattare il fornitore dei servizi e/o il programmatore del plugin. PROCEDURA DI INSTALAZZIONE : (1) Cliccare su "Attiva" a sinistra di questa descrizione (2) Accedere alla pagina delle Impostazioni per apportare modifiche al plugin.Per ulteriori dettagli si consiglia la lettura della <strong>documentazione allegata</strong>.
-Version: 1.1.0
+Version: 1.1.1
 Author: <A HREF="mailto:ivan.maruca@gmail.com?subject=WP180214">Ivan Maruca</A>
 Author URI: http://www.skullab.com
 License: Apache License, Version 2.0
@@ -112,9 +112,11 @@ function swp180214_register_script(){
 }
 function swp180214_register_script_shortcode(){
 	wp_register_script(SWP180214_JS_SHORTCODE,plugins_url('js/shortcode.js',__FILE__),array('jquery'));
+	wp_register_script(SWP180214_JS_LIGHTBOX,plugins_url('js/lightbox-2.6.min.js',__FILE__),array('jquery'));
 }
 function swp180214_register_style_shortcode(){
 	wp_register_style(SWP180214_CSS_SHORTCODE,plugins_url('css/page_layout.css',__FILE__));
+	wp_register_style(SWP180214_CSS_LIGHTBOX,plugins_url('css/lightbox.css',__FILE__));
 }
 /*****************************************************************************************************/
 if(is_admin()){

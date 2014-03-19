@@ -129,10 +129,10 @@ function swp180214_shortcode($atts,$content = null){
 	global $swp180214_shortcode_atts,$wpdb ;
 	extract(shortcode_atts($swp180214_shortcode_atts,$atts));
 	
-	//wp_enqueue_style(SWP180214_CSS_PRETTYPHOTO);
+	wp_enqueue_style(SWP180214_CSS_LIGHTBOX);
 	wp_enqueue_style(SWP180214_CSS_SHORTCODE);
 	
-	//wp_enqueue_script(SWP180214_JS_PRETTYPHOTO);
+	wp_enqueue_script(SWP180214_JS_LIGHTBOX);
 	wp_enqueue_script(SWP180214_JS_SHORTCODE);
 	wp_localize_script(SWP180214_JS_SHORTCODE,'swp180214_ajax_placeholder',
 	array('url' => admin_url('admin-ajax.php')));
@@ -248,7 +248,7 @@ function swp180214_shortcode($atts,$content = null){
 					}
 					if(strtolower($contratto) == 'true' || strtolower($categoria) == 'true' || strtolower($prezzo) == 'true' || strtolower($libero) == 'true'){
 					?><tr valign="top"><th scope="row"></th>
-						<td>
+						<td id="wp180214_ricerca_button_td">
 							<input id="wp180214_ricerca_button" type="button" value="CERCA" onclick="swp180214_shortcode_search('<?php echo wp_create_nonce('swp180214_action_shortcode_search_nonce');?>');"/>
 						</td>
 					  </tr>

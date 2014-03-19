@@ -24,7 +24,8 @@ limitations under the License.
 #wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_prezzo_minimo {}
 #wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_prezzo_massimo {}
 #wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_libero {}
-#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_button {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_button_td {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_button_td #wp180214_ricerca_button {}
 /******************************************************************************************************************/
 #wp180214_risultati {}
 #wp180214_risultati #wp180214_risultati_loader {}

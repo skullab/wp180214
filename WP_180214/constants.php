@@ -25,7 +25,7 @@ if ( !function_exists( 'add_action' ) ) {
 /** The internal plugin prefix */
 define('SWP180214_PREFIX','swp180214_');
 /** The plugin version */
-define('SWP180214_VERSION','1.1.0');
+define('SWP180214_VERSION','1.1.1');
 /** The display plugin name */
 define('SWP180214_DISPLAY_NAME','WP180214');
 /** The slug plugin name */
@@ -95,9 +95,9 @@ define('SWP180214_JS_JQUERY_VALIDATOR','swp180214_js_jquery_validator');
 define('SWP180214_JS_VALIDATOR','swp180214_js_validator');
 define('SWP180214_JS_SETTINGS_PAGE','swp180214_js_settings_page');
 define('SWP180214_JS_SHORTCODE','swp180214_js_shortcode');
-define('SWP180214_JS_PRETTYPHOTO','swp180214_js_prettycode');
+define('SWP180214_JS_LIGHTBOX','swp180214_js_lightbox');
 /*******************************************************************************************************************/
 define('SWP180214_CSS_SETTINGS_MENU','swp180214_css_settings_menu');
 define('SWP180214_CSS_SHORTCODE','swp180214_css_shortcode');
-define('SWP180214_CSS_PRETTYPHOTO','swp180214_css_prettycode');
+define('SWP180214_CSS_LIGHTBOX','swp180214_css_lightbox');
 ?>

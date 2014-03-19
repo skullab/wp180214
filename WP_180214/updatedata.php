@@ -270,19 +270,21 @@ function swp180214_populate_database(){
 				
 				$is_immagine = $wpdb->get_var("SELECT COUNT(*) FROM $table_immagine WHERE idimmobile = $idimmobile");
 				if($is_immagine != null && !empty($immobile_immagini)){
-					foreach ($immobile_immagini as $immagine_data){
-						//unset($immagine_data['idimmobile']);
+					$wpdb->query("DELETE FROM $table_immagine WHERE idimmobile = $idimmobile");
+					foreach ($immobile_immagini as $immagine_data){						
 						swp180214_debug('UPDATE IMMAGINI');
-						swp180214_populate_database_update($table_immagine, $immagine_data, $where);
+						swp180214_populate_database_insert($table_immagine, $immagine_data);
+						//swp180214_populate_database_update($table_immagine, $immagine_data, $where);
 					}
 				}
 				
 				$is_allegato = $wpdb->get_var("SELECT COUNT(*) FROM $table_allegato WHERE idimmobile = $idimmobile");
 				if($is_allegato != null && !empty($immobile_allegati)){
-					foreach ($immobile_allegati as $allegato_data){
-						//unset($allegato_data['idimmobile']);
+					$wpdb->query("DELETE FROM $table_allegato WHERE idimmobile = $idimmobile");
+					foreach ($immobile_allegati as $allegato_data){						
 						swp180214_debug('UPDATE ALLEGATO');
-						swp180214_populate_database_update($table_allegato, $allegato_data, $where);
+						swp180214_populate_database_insert($table_allegato, $allegato_data);
+						//swp180214_populate_database_update($table_allegato, $allegato_data, $where);
 					}
 				}
 			}

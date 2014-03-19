@@ -177,7 +177,7 @@ function swp180214_shortcode_show_details(response){
 		html += '<label id="wp180214_dettaglio_immagini_label">Foto</label><div id="wp180214_dettaglio_immagini">';
 		jQuery.each(json.T7,function(index,value){
 				if(value['url'] != undefined && value['url'] != ''){
-					html += '<a href="'+value['url']+'" title="'+value['titolo']+'"><img src="'+value['url']+'" width="60" height="60"></a>';
+					html += '<a href="'+value['url']+'" title="'+value['titolo']+'" data-lightbox="'+value['idimmobile']+'"><img src="'+value['url']+'" width="60" height="60"></a>';
 				}
 		});
 		html += '</div>';
@@ -185,7 +185,7 @@ function swp180214_shortcode_show_details(response){
 	//=========================================================================
 	html += '<label id="wp180214_dettaglio_dettagli_label">Dettagli</label>';
 	//=========================================================================
-	html += '<div><table id="wp180214_dettaglio_dettagli_table><tbody>';
+	html += '<div><table id="wp180214_dettaglio_dettagli_table"><tbody>';
 	var categoria = 0 ;
 	jQuery.each(json.T0,function(index,value){
 		categoria = value['categoria'] ;
