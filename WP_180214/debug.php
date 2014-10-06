@@ -80,7 +80,7 @@ function swp180214_debug($output,$err = false){
 		}else{$color_code = '#329932' ;}
 		
 		$rect = '<div style="width:3px;background-color:'.$color_code.';"float:left;>&nbsp;</div>' ;
-		echo '<table><tr><td>'.$rect.'</td><td>'.date("F j, Y, g:i a").' : '.$output.'</td></tr></table>' ;
+		echo '<table><tr><td>'.$rect.'</td><td>'.date("F j, Y, g:i a").' : '.$output.'</td></tr></table><script>console.log(WP180214 - "'.$output.'");</script>' ;
 	}
 }
 ?>

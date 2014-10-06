@@ -1,0 +1,121 @@
+@CHARSET "ISO-8859-1";
+/*
+ Copyright 2014 Ivan Maruca
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+#wp180214_ricerca {}
+#wp180214_ricerca [name=wp180214_form_ricerca] {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_contratto_affitto {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_contratto_vendita {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table [name=wp180214_ricerca_categoria] {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_prezzo_minimo {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_prezzo_massimo {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_libero {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_button_tr {}
+#wp180214_ricerca [name=wp180214_form_ricerca] #wp180214_ricerca_table #wp180214_ricerca_button_tr #wp180214_ricerca_button_td {}
+
+#wp180214_ricerca [name="wp180214_form_ricerca"] #wp180214_ricerca_table #wp180214_ricerca_button_tr #wp180214_ricerca_button_td #wp180214_ricerca_button {
+    background: none repeat scroll 0 0 #2D371C;
+    border: medium none;
+    color: #FFFFFF;
+    float: right;
+    font-family: "Georgia","Times New Roman",serif;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 5px 10px;
+	cursor: pointer;
+ }
+#wp180214_ricerca [name="wp180214_form_ricerca"] #wp180214_ricerca_table #wp180214_ricerca_button:hover {
+    background: #8CA853;
+	cursor: pointer;
+}
+
+/******************************************************************************************************************/
+#wp180214_risultati {}
+#wp180214_risultati #wp180214_risultati_loader {}
+#wp180214_risultati #wp180214_risultati_risultato_nessuno {}
+#wp180214_risultati .wp180214_risultati_risultato {
+	border: 1px solid #d3d3d3;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	padding: 5px;
+	margin-bottom: 5px;
+	cursor:pointer;
+	position:relative; display:inline-block; clear:both;
+}
+#wp180214_risultati .wp180214_risultati_risultato:hover {
+	border: 1px solid 	#8CA853;
+}
+#wp180214_risultati .wp180214_risultati_risultato .wp180214_risultati_risultato_thumb {float:left; width:150px; margin-right:10px;}
+#wp180214_risultati .wp180214_risultati_risultato .wp180214_risultati_risultato_titolo {
+	font-weight:bold;
+	float:left;
+	width:430px;
+}
+#wp180214_risultati .wp180214_risultati_risultato .wp180214_risultati_risultato_testobreve {float:left;	width:430px;
+}
+/******************************************************************************************************************/
+#wp180214_dettaglio {}
+#wp180214_dettaglio .wp180214_dettaglio_back {
+	cursor:pointer;
+}
+#wp180214_dettaglio #wp180214_dettaglio_titolo {
+	font-weight:bold;
+	font-size: 14pt;
+	margin:15px 0 10px;
+}
+#wp180214_dettaglio #wp180214_dettaglio_immagini_label {
+    display: block;
+    font-weight: bold;
+    margin: 15px 0 0;
+    text-transform: uppercase;
+	}
+#wp180214_dettaglio #wp180214_dettaglio_immagini {}
+#wp180214_dettaglio #wp180214_dettaglio_immagini a {
+	margin: 2px;
+}
+#wp180214_dettaglio #wp180214_dettaglio_immagini a img {
+	width:60px;
+	height:60px;
+}
+#wp180214_dettaglio #wp180214_dettaglio_dettagli_label {
+    display: block;
+    font-weight: bold;
+    margin: 15px 0 0;
+    text-transform: uppercase;
+}
+#wp180214_dettaglio #wp180214_dettaglio_dettagli_table {}
+#wp180214_dettaglio #wp180214_dettaglio_descrizione_label {
+	font-weight:bold;
+}
+#wp180214_dettaglio #wp180214_dettaglio_video_label {
+    display: block;
+    font-weight: bold;
+    margin: 15px 0 0;
+    text-transform: uppercase;
+	}
+#wp180214_dettaglio #wp180214_dettaglio_video {}
+#wp180214_dettaglio #wp180214_dettaglio_video a {}
+#wp180214_dettaglio #wp180214_dettaglio_video a img {}
+#wp180214_dettaglio #wp180214_dettaglio_video iframe {}
+#wp180214_dettaglio #wp180214_dettaglio_mappa_label {
+	font-weight:bold;
+}
+
+#wp180214_ricerca_table tr {margin:7px 0; display:block;}
+#wp180214_ricerca_table th {margin-right:15px; display:inline-block;}
+.wp180214_dettaglio_back img {margin-top:-2px}

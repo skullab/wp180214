@@ -139,6 +139,11 @@ function swp180214_request_install_update(nonce){
 		},function(response) {
 			//console.log('RESPONSE FROM '+swp180214_ajax_placeholder.url+' : '+response);
 			jQuery('#swp180214_loader_install_update').css('display','none');
+			if(response != ''){
+				alert(response);
+			}else{
+				alert('AGGIORNAMENTO ESEGUITO !');
+			}
 			location.reload();
 		});
 		},0);

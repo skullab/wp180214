@@ -28,7 +28,9 @@ function swp180214_update(){
 	$current_plugin_version = get_option(SWP180214_OPT_PLUGIN_VERSION);
 	
 	if($current_plugin_version != SWP180214_VERSION){
-		update_option(SWP180214_OPT_PLUGIN_VERSION,SWP180214_VERSION);
+		//update_option(SWP180214_OPT_PLUGIN_VERSION,SWP180214_VERSION);
+		update_option(SWP180214_OPT_UPDATE_AVAILABLE,true);
+		swp180214_show_warning(true);
 	}
 	
 	//TODO ONLINE UPDATE RESPONSE
@@ -38,7 +40,7 @@ function swp180214_update(){
 		return;
 	}
 	
-	update_option(SWP180214_OPT_UPDATE_AVAILABLE,false);
+	//update_option(SWP180214_OPT_UPDATE_AVAILABLE,false);
 }
 
 /*****************************************************************************************************

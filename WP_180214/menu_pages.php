@@ -315,10 +315,16 @@ function swp180214_page_settings(){
 
 function swp180214_confirm_install_update(){
 	if(wp_verify_nonce( $_REQUEST['_nonce'], 'swp180214_action_install_update_nonce' )){
-		swp180214_install_db();
+		$current_db_version = get_option(SWP180214_OPT_DB_VERSION);
+		
+		if($current_db_version != SWP180214_DB_VERSION){
+			swp180214_install_db();
+		}
+		
+		swp180214_populate_database();
 		update_option(SWP180214_OPT_DB_VERSION,SWP180214_DB_VERSION);
+		update_option(SWP180214_OPT_PLUGIN_VERSION,SWP180214_VERSION);
 		update_option(SWP180214_OPT_UPDATE_AVAILABLE,false);
-		echo 'Aggiornamento eseguito !';
 	}else die('RICHIESTA NON PERMESSA');
 	die();
 }

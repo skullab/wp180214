@@ -133,8 +133,12 @@ function swp180214_populate_database(){
 	global $wpdb ;
 	
 	$immobili = $getrix_feed->get_immobili();
+	$immobili_id_list = array();
+	
 	foreach ($immobili as $immobile){
 		$idimmobile = $immobile['idimmobile'];
+		array_push($immobili_id_list, $idimmobile);
+		
 		$immobile_data = array();
 		$immobile_descrizione = array();
 		$immobile_residenziale = array();
@@ -336,6 +340,54 @@ function swp180214_populate_database(){
 		}
 	}
 	
+	//CLEAR OLD DATA ! Rimozione immobili non esistenti nel feed.
+	$stored_id_list = $wpdb->get_results("SELECT idimmobile FROM $table_immobile ");
+	$remove_counter = 0 ;
+	if($stored_id_list != NULL){
+		foreach ($stored_id_list as $stored_immobile){
+			$isvalid = false ;
+			foreach ($immobili_id_list as $feed_id){
+				if($stored_immobile->idimmobile == $feed_id){
+					$isvalid = true ;
+					break;
+				}
+			}
+			if(!$isvalid){
+				$remove_counter++ ;
+				$where = array('idimmobile'=>$stored_immobile->idimmobile);
+				
+				//TABELLA IMMOBILE				
+				swp180214_populate_database_delete($table_immobile, $where);
+				
+				//TABELLA DESCRIZIONE
+				swp180214_populate_database_delete($table_descrizione, $where);
+				
+				//TABELLA RESIDENZIALE
+				swp180214_populate_database_delete($table_residenziale, $where);
+				
+				//TABELLA COMMERCIALE
+				swp180214_populate_database_delete($table_commerciale, $where);
+				
+				//TABELLA ATTIVITA
+				swp180214_populate_database_delete($table_attivita, $where);
+				
+				//TABELLA TERRENO
+				swp180214_populate_database_delete($table_terreno, $where);
+				
+				//TABELLA VACANZE
+				swp180214_populate_database_delete($table_vacanze, $where);
+				
+				//TABELLA IMMAGINE
+				swp180214_populate_database_delete($table_immagine, $where);
+				
+				//TABELLA ALLEGATO
+				swp180214_populate_database_delete($table_allegato, $where);
+			}
+		}
+		if($remove_counter > 0){
+			echo "Sono stati rimossi n° ".$remove_counter." immobili\n";
+		}
+	}
 }
 
 function swp180214_populate_database_insert($tablename,$data){
@@ -350,6 +402,13 @@ function swp180214_populate_database_update($tablename,$data,$where){
 	global $wpdb ;
 	if(!$wpdb->update($tablename,$data,$where)){
 		swp180214_debug('errore aggiornamento dati per tabella : '.$tablename.' ID : '.$data['idimmobile']);
+	};
+}
+
+function swp180214_populate_database_delete($tablename,$where){
+	global $wpdb ;
+	if(!$wpdb->delete($tablename,$where)){
+		swp180214_debug('errore eliminazione dati per tabella : '.$tablename.' ID : '.$where['idimmobile']);
 	};
 }
 ?>
